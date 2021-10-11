@@ -1,0 +1,14 @@
+autopep8
+ipykernel
+jupyter
+jupyterlab
+jupyter_nbextensions_configurator
+jupyter_contrib_nbextensions
+matplotlib
+notebook
+nb_conda
+numpy
+pandas
+scipy
+scikit-learn
+tensorflow
