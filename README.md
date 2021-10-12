@@ -12,7 +12,7 @@ Jupyter notebooks can be accessed via the services
 
 ## Anaconda Environment for Local Usage
 
-The [Anaconda distribution](https://www.anaconda.com/distribution/) is a convenient solution to install a required environment, i.e. to have access to the Jupyter Notebook renderer with a Python interpreter on a personal computer. It is very likely that a very recent installation of Anaconda already delivers all required packages just using the `base` environment. It is however good practice to create a dedicated environment for each projects So, for this tutorial we might use a `myddasp` (or whatever name works for us) environment.
+The [Anaconda distribution](https://www.anaconda.com/distribution/) is a convenient solution to install a required environment, i.e. to have access to the Jupyter Notebook renderer with a Python interpreter on a personal computer. It is very likely that a very recent installation of Anaconda already delivers all required packages just using the `base` environment. It is however good practice to create a dedicated environment for each project. So, for this tutorial we might use a `myddasp` (or whatever name works for us) environment.
 
 - `conda create -n myddasp python=3.9 pip numpy scipy tensorflow scikit-learn pandas matplotlib notebook jupyterlab ipykernel nb_conda jupyter_nbextensions_configurator jupyter_contrib_nbextensions autopep8`
 `pip install soundfile`
