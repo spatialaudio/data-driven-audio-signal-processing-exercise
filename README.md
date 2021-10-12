@@ -6,9 +6,20 @@ This tutorial accompanies the lecture [Data Driven Audio Signal Processing](http
 
 Jupyter notebooks can be accessed via the services
 
-- **dynamic** version using **mybinder**: TBA
-- **static** version using **nbviewer**: TBA
+- **dynamic** version using **mybinder**: https://mybinder.org/v2/gh/spatialaudio/data-driven-audio-signal-processing-exercise/main?labpath=index.ipynb
+- **static** version using **nbviewer**: https://nbviewer.org/github/spatialaudio/data-driven-audio-signal-processing-exercise/blob/main/index.ipynb
 - **sources** (tex, ipynb) at: https://github.com/spatialaudio/data-driven-audio-signal-processing-exercise
+
+## Branch Conventions
+
+- we use the `main` branch as presentation branch, i.e. with plots / results rendered (for student's convenience)
+- we use the `dev` branch as the developing main branch, i.e. all notebook outputs are cleared for convenient diff handling
+- note that the `main` branch could be **hard reset** from time to time in order to represent an actual desired state of the learning material
+- so please don't rely on `main` related commits, but rather act on the `dev` commits, where git history is not changed!!
+
+## Versions / Tags
+
+- TBA for winter term 2021/2022
 
 ## Anaconda Environment for Local Usage
 
@@ -34,25 +45,20 @@ and using soundfile version 0.10.3
 
 - start the notebook `index.ipynb`as the landing page for the tutorial
 
-- make sure that the notebook we want to work with uses our kernel `myddasp`
-
-## License
-
-- Creative Commons Attribution 4.0 International License (CC BY 4.0) for text/graphics
-- MIT License for software
-
-## Versions / Tags / Branches
-
-- TBA for winter term 2021/2022
+- make sure that the notebook we want to work with is using our kernel `myddasp`
 
 ## Referencing
 
 Please cite this open educational resource (OER) project as
 *Frank Schultz, Data Driven Audio Signal Processing - A Tutorial Featuring Computational Examples, University of Rostock* ideally with relevant ``file(s), github URL, commit number and/or version tag, year``.
 
+## License
+
+- Creative Commons Attribution 4.0 International License (CC BY 4.0) for text/graphics
+- MIT License for software
+
 ## Authorship
 
-University of Rostock:
-
-- Frank Schultz
-- Sascha Spors
+- University of Rostock:
+    - Frank Schultz
+    - Sascha Spors
