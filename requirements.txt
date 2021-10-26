@@ -4,6 +4,7 @@ jupyter
 jupyterlab
 jupyter_nbextensions_configurator
 jupyter_contrib_nbextensions
+librosa
 matplotlib
 notebook
 numpy
