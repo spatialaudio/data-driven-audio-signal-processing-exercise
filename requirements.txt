@@ -9,6 +9,7 @@ matplotlib
 notebook
 numpy
 pandas
+pyloudnorm
 scipy
 scikit-learn
 tensorflow
