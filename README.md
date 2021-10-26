@@ -26,9 +26,11 @@ Jupyter notebooks can be accessed via the services
 The [Anaconda distribution](https://www.anaconda.com/distribution/) is a convenient solution to install a required environment, i.e. to have access to the Jupyter Notebook renderer with a Python interpreter on a personal computer. It is very likely that a very recent installation of Anaconda already delivers all required packages just using the `base` environment. It is however good practice to create a dedicated environment for each project. So, for this tutorial we might use a `myddasp` (or whatever name works for us) environment.
 
 - `conda create -n myddasp python=3.9 pip numpy scipy librosa tensorflow scikit-learn pandas matplotlib notebook jupyterlab ipykernel nb_conda jupyter_nbextensions_configurator jupyter_contrib_nbextensions autopep8`
+- `pip install pyloudnorm`
 
 - under `conda 4.10.3` and `conda-build 3.21.4` the current environment to develop and test the notebooks locally by github user *fs446* is
 `conda create -n myddasp python=3.9.7 pip=21.3.1 numpy=1.21.3 scipy=1.7.1 librosa=0.8.1 tensorflow=2.4.3 scikit-learn=1.0.1 pandas=1.3.4 matplotlib=3.4.3  notebook=6.4.5 jupyterlab=3.2.1 ipykernel=6.4.2 nb_conda=2.2.1 jupyter_nbextensions_configurator=0.4.1 jupyter_contrib_nbextensions=0.5.1 autopep8=1.6.0`
+- `pip install pyloudnorm==0.1.0`
 
 - activate this environment with `conda activate myddasp`
 
