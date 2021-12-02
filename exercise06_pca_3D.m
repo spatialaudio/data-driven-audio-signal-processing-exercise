@@ -88,13 +88,13 @@ norm(A_R_red2-A_R_red,'fro')
 % Reconstruction using a limited number of principle components, cf. slide 5-23
 
 %% plot
-subplot(1, 4, 1)
+ax_original_feature_space = subplot(1, 4, 1);
 for n = 1:N
     plot3(A(n, 1), A(n, 2), A(n, 3), 'ko'), hold on 
 end
-plot3([0 5*V(1,1)],[0 5*V(2,1)],[0 5*V(3,1)], 'color', '#1f77b4', 'linewidth', 6)
-plot3([0 5*V(1,2)],[0 5*V(2,2)],[0 5*V(3,2)], 'color', '#ff7f0e', 'linewidth', 4)
-plot3([0 5*V(1,3)],[0 5*V(2,3)],[0 5*V(3,3)], 'color', '#2ca02c', 'linewidth', 2)
+plot3([0, 5*V(1,1)],[0, 5*V(2,1)],[0, 5*V(3,1)], 'color', '#1f77b4', 'linewidth', 6)
+plot3([0, 5*V(1,2)],[0, 5*V(2,2)],[0, 5*V(3,2)], 'color', '#ff7f0e', 'linewidth', 4)
+plot3([0, 5*V(1,3)],[0, 5*V(2,3)],[0, 5*V(3,3)], 'color', '#2ca02c', 'linewidth', 2)
 hold off
 xlim([-xmax, xmax])
 ylim([-xmax, xmax])
@@ -106,10 +106,16 @@ zlabel('Feature 3')
 title('original data')
 grid on
 
-subplot(1, 4, 2)
+ax_pc_space = subplot(1, 4, 2);
 for n = 1:N
     plot3(pcs(n, 1), pcs(n, 2), pcs(n, 3), 'ko'), hold on 
 end
+% we can plot PC directions
+% make sure that the example has no reflection in the SVD data!
+% hence usage of rng(4)
+plot3([0, 5], [0, 0], [0, 0], 'color', '#1f77b4', 'linewidth', 6)
+plot3([0, 0], [0, 5], [0, 0], 'color', '#ff7f0e', 'linewidth', 4)
+plot3([0, 0], [0, 0], [0, 5], 'color', '#2ca02c', 'linewidth', 2)
 hold off
 xlim([-xmax, xmax])
 ylim([-xmax, xmax])
@@ -166,7 +172,24 @@ max(max(abs(pcs)))...
 max(max(abs(A_R_red)))...
 max(max(abs(A_Dim_red)))])
 
+%%
+% check specific data points
+n1 = 187;
+n2 = 120;
+n3 = 60
 
+axes(ax_original_feature_space)
+hold on
+plot3(A(n1,1), A(n1,2), A(n1,3), '*', 'color', '#d62728', 'markersize', 10)
+plot3(A(n2,1), A(n2,2), A(n2,3), 'p', 'color', '#e377c2', 'markersize', 10)
+plot3(A(n3,1), A(n3,2), A(n3,3), 'x', 'color', '#17becf', 'markersize', 10)
+hold off
+axes(ax_pc_space)
+hold on
+plot3(S(1,1) * U(n1,1), S(2,2) * U(n1,2), S(3,3) * U(n1,3), '*', 'color', '#d62728', 'markersize', 10)
+plot3(S(1,1) * U(n2,1), S(2,2) * U(n2,2), S(3,3) * U(n2,3), 'p', 'color', '#e377c2', 'markersize', 10)
+plot3(S(1,1) * U(n3,1), S(2,2) * U(n3,2), S(3,3) * U(n3,3), 'x', 'color', '#17becf', 'markersize', 10)
+hold off
 
 
 
