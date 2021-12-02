@@ -97,10 +97,13 @@ norm(A_R_red2-A_R_red,'fro')
 % Reconstruction using a limited number of principle components, cf. slide 5-23
 
 %% plot
-subplot(1, 4, 1)
+ax_original_feature_space = subplot(1, 4, 1);
 for n = 1:N
     plot(A(n, 1), A(n, 2), 'ko'), hold on 
 end
+% plot 4*v0 and 4*v1:
+plot([0 4*V(1,1)],[0 4*V(2,1)], 'color', '#1f77b4', 'linewidth', 6)
+plot([0 4*V(1,2)],[0 4*V(2,2)], 'color', '#ff7f0e', 'linewidth', 2)
 hold off
 xlim([-xmax, xmax])
 ylim([-xmax, xmax])
@@ -110,10 +113,13 @@ ylabel('Feature 2')
 title('original data')
 grid on
 
-subplot(1, 4, 2)
+ax_pc_space = subplot(1, 4, 2);
 for n = 1:N
     plot(pcs(n, 1), pcs(n, 2), 'ko'), hold on 
 end
+plot([0 4],[0 0], 'color', '#1f77b4', 'linewidth', 6)
+plot([0 0],[0 4], 'color', '#ff7f0e', 'linewidth', 2)
+
 hold off
 xlim([-xmax, xmax])
 ylim([-xmax, xmax])
@@ -133,7 +139,7 @@ ylim([-xmax, xmax])
 axis square
 xlabel('New Feature 1')
 ylabel('New Feature 2')
-title('rank reduced')
+title('rank reduced to rank 1, basically a truncated SVD')
 grid on
 
 subplot(1, 4, 4)
@@ -146,7 +152,7 @@ ylim([-xmax, xmax])
 axis square
 xlabel('\sigma_0 U[0]')
 ylabel('\sigma_1 U[1]')
-title('U space dimensionality reduced')
+title('U space dimensionality reduced, U[1]=0 and/or \sigma_0=0')
 grid on
 
 
@@ -163,6 +169,53 @@ max(max(abs(pcs)))...
 max(max(abs(A_R_red)))...
 max(max(abs(A_Dim_red)))])
 
+%% how the covariance comes into play
+% eigenwert / -value problem is often used to proof PCA without further
+% knowledge that PCA == SVD for mean free columns, check text books
+% (A V0)' (A V0) = (Sigma0 U0)' (Sigma0 U0)
+% V0' A' A V0 = Sigma0^2 U0' U0 = Sigma0^2
+% V0 * (V0' A' A V0) = (V0) * Sigma0^2
+% A'A V0 = Sigma0^2 V0
+% with CovA = A'A this leads to eigenval/-vector problem for CovA
+% CovV V0 = Sigma0^2 V0 with eigen val Sigma0^2 / eigen vec v0
+% normalize this by (N-1) (bias free estimate of CovA if mean was estimated from data)
+% CovV/(N-1) V0 = Sigma0^2/(N-1) V0
+% so  Sigma0^2/(N-1) is the variance of the first pcs = first latent of pca()
+% this variance explains most of data
+% do this for all other V vectors
 
+% variance for first principal component (v0 -> sigma0 u0)
+[(A*V(:,1))' * (A*V(:,1)) / (N-1)... % ==
+S(1,1)^2  / (N-1)... %==
+latent(1)]
+% variance for second principal component (v1 -> sigma1 u1)
+[(A*V(:,2))' * (A*V(:,2)) / (N-1)... % ==
+S(2,2)^2  / (N-1)... % ==
+latent(2)]
 
+% check specific data point
+n = 195
 
+disp('specific data point in original feature space')
+[A(n,1)...
+A(n,2)]
+
+disp('(v0 -> sigma0 u0)')
+[A(n,:) * V(:,1)... % proj onto v0 ==
+S(1,1) * U(n,1)] % sigma0 * u0 
+disp('(v1 -> sigma1 u1)')
+[A(n,:) * V(:,2)... % proj onto v1 ==
+S(2,2) * U(n,2)] % sigma1 * u1
+
+disp('specific data point in the PC space')
+[S(1,1) * U(n,1)...
+S(2,2) * U(n,2)]
+
+axes(ax_original_feature_space)
+hold on
+plot(A(n,1), A(n,2), '*', 'color', '#d62728', 'markersize', 10)
+hold off
+axes(ax_pc_space)
+hold on
+plot(S(1,1) * U(n,1), S(2,2) * U(n,2), '*', 'color', '#d62728', 'markersize', 10)
+hold off

@@ -92,6 +92,9 @@ subplot(1, 4, 1)
 for n = 1:N
     plot3(A(n, 1), A(n, 2), A(n, 3), 'ko'), hold on 
 end
+plot3([0 5*V(1,1)],[0 5*V(2,1)],[0 5*V(3,1)], 'color', '#1f77b4', 'linewidth', 6)
+plot3([0 5*V(1,2)],[0 5*V(2,2)],[0 5*V(3,2)], 'color', '#ff7f0e', 'linewidth', 4)
+plot3([0 5*V(1,3)],[0 5*V(2,3)],[0 5*V(3,3)], 'color', '#2ca02c', 'linewidth', 2)
 hold off
 xlim([-xmax, xmax])
 ylim([-xmax, xmax])
@@ -130,7 +133,7 @@ axis square
 xlabel('New Feature 1')
 ylabel('New Feature 2')
 zlabel('New Feature 3')
-title('rank reduced')
+title('rank reduced to rank 2, i.e. plane in 3D space')
 grid on
 
 subplot(1, 4, 4)
@@ -145,7 +148,7 @@ axis square
 xlabel('\sigma_0 U[0]')
 ylabel('\sigma_1 U[1]')
 zlabel('\sigma_3 U[2]')
-title('U space dimensionality reduced')
+title('U space dimensionality reduced, i.e. plane in 2D space')
 grid on
 
 
