@@ -63,7 +63,7 @@ step_size = 0.25
 steps = 500
 
 # we create some data
-m = 100000  # training data examples, even int!
+m = 100000  # data examples
 nx = 2  # number of features
 train_size = 0.8  # 80% are used for training
 
@@ -195,9 +195,9 @@ print('our confusion matrix\n[TP FP]\n[FN TN] =\n',
 print('our F1_score', F1_score_test*100, '%')
 
 if nx == 2:  # 2D plot of data and classification line
-    x = np.arange(-6, 6, 0.1)
-    y = np.arange(-6, 6, 0.1)
-    xv, yv = np.meshgrid(x, y)
+    f1 = np.arange(-6, 6, 0.1)
+    f2 = np.arange(-6, 6, 0.1)
+    xv, yv = np.meshgrid(f1, f2)
     tmp = my_sigmoid(w[0]*xv + w[1]*yv + b)
     tmp[tmp > 0.5] = 1
     tmp[tmp <= 0.5] = 0
@@ -206,7 +206,7 @@ if nx == 2:  # 2D plot of data and classification line
     plt.subplot(2, 1, 1)
     plt.plot(X_train[Y_train == 0, 0], X_train[Y_train == 0, 1], 'C0o', ms=1)
     plt.plot(X_train[Y_train == 1, 0], X_train[Y_train == 1, 1], 'C1o', ms=1)
-    plt.contourf(x, y, tmp, cmap='RdBu_r')
+    plt.contourf(f1, f2, tmp, cmap='RdBu_r')
     plt.axis('equal')
     plt.colorbar()
     plt.title(X_train.shape)
@@ -215,7 +215,7 @@ if nx == 2:  # 2D plot of data and classification line
     plt.subplot(2, 1, 2)
     plt.plot(X_test[Y_test == 0, 0], X_test[Y_test == 0, 1], 'C0o', ms=1)
     plt.plot(X_test[Y_test == 1, 0], X_test[Y_test == 1, 1], 'C1o', ms=1)
-    plt.contourf(x, y, tmp, cmap='RdBu_r')
+    plt.contourf(f1, f2, tmp, cmap='RdBu_r')
     plt.axis('equal')
     plt.colorbar()
     plt.title(X_test.shape)
