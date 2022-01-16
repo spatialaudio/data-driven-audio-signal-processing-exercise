@@ -56,7 +56,7 @@ steps = 500
 # we create some training data
 mean_offset = 0.75  # apply +-mean_offset to randn data to simulate two classes
 m = 100000  # training data examples, even int!
-m_train = m//10  # test data examples, even int!
+m_test = m//10  # test data examples, even int!
 nx = 5  # number of features, increasing -> higher F1 score
 X, Y = create_data(nx, m, mean_offset)
 
@@ -91,7 +91,7 @@ print('w', w, '\nb', b)
 # we check model performance on unseen! test data
 # therefore we create some test data with same
 # PDF characteristics as training data
-X, Y = create_data(nx, m_train, mean_offset)
+X, Y = create_data(nx, m_test, mean_offset)
 # do model prediction == forward propagation using test data
 A = my_sigmoid(np.dot(w.T, X) + b)  # Yhat
 print('cost function on test data:', cost(Y, A))
