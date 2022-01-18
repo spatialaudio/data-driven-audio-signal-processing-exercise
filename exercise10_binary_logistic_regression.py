@@ -28,6 +28,41 @@ def cost(y, a):
     return(J)
 
 
+def evaluate(y_true, y_pred):
+    # actually not nice, # since we generally overwrite y_pred
+    y_pred[y_pred < 0.5], y_pred[y_pred >= 0.5] = 0, 1
+    # which might get dangerous if we need original data outside the function
+    # therefore we should call: evaluate(np.copy(), np.copy())
+
+    # inverted logic to be consistent with the TF confusion matrix
+    # of labels starting with 0:
+    # label positive == 0
+    # label negative == 1
+    # confusion matrix (row = actual label, column = predicted label):
+    # [TP    FN] = [0,0    0,1<-this 1 is negative label and hene false]
+    # [FP    TN] = [1,0    1,1]
+    TP = np.sum(np.logical_and(np.logical_not(y_true), np.logical_not(y_pred)))
+    TN = np.sum(np.logical_and(y_true, y_pred))
+    FN = np.sum(np.logical_xor(y_true[y_true == 0], y_pred[y_true == 0]))
+    FP = np.sum(np.logical_xor(y_true[y_true == 1], y_pred[y_true == 1]))
+    cm = np.array([[TP, FN], [FP, TN]])
+    n_cm = cm / np.sum(np.sum(cm))
+
+    # sensitivity, recall, hit rate, or true positive rate (TPR)
+    recall = TP / (TP + FN)
+    # specificity, selectivity or true negative rate (TNR)
+    TN / (TN + FP)
+    # precision or positive predictive value (PPV)
+    precision = TP / (TP + FP)
+    # negative predictive value (NPV)
+    TN / (TN + FN)
+    # accuracy (ACC)
+    accuracy = (TP + TN) / (TP + TN + FP + FN)
+    # balanced F-score, F1 score
+    F1_score = 2 / (1/precision + 1/recall)  # harmonic mean
+    return cm, n_cm, precision, recall, F1_score, accuracy
+
+
 def create_data(nx, m, mean_offset):
     # std=1,  all features have same +mean
     X1 = rng.randn(nx, m//2) + mean_offset
@@ -57,7 +92,7 @@ steps = 500
 mean_offset = 0.75  # apply +-mean_offset to randn data to simulate two classes
 m = 100000  # training data examples, even int!
 m_test = m//10  # test data examples, even int!
-nx = 5  # number of features, increasing -> higher F1 score
+nx = 5  # number of features, increasing
 X, Y = create_data(nx, m, mean_offset)
 
 # we init weights and bias
@@ -71,7 +106,7 @@ for step in range(steps):
     # using the current weights and bias:
     Z = np.dot(w.T, X) + b  # forward step 1 = inner product + bias
     A = my_sigmoid(Z)  # forward step 2 = activation function
-    print('cost function on training data', cost(Y, A))
+    print('epoch', step, '/', steps, ', cost function on train data', cost(Y, A))
 
     # backward propagation, start at the output from model and subsequently
     # move back to the model input
@@ -88,31 +123,34 @@ for step in range(steps):
 # we trained the model and hope for useful weights and bias
 print('w', w, '\nb', b)
 
-# we check model performance on unseen! test data
+# check model prediction on training data
+print('\n\nmetrics on train data:')
+A = my_sigmoid(np.dot(w.T, X) + b)
+print('cost function:', cost(Y, A))
+A[A < 0.5], A[A >= 0.5] = 0, 1
+cm, n_cm, precision, recall, F1_score, accuracy = evaluate(Y, A)
+print('accuray', accuracy)
+print('precision', precision)
+print('recall', recall)
+print('F1_score', F1_score*100, '%')
+print('confusion matrix\n[TP FN]\n[FP TN] =\n',
+      n_cm*100, '%')
+
+
+# we check model performance on ! unseen ! test data
 # therefore we create some test data with same
 # PDF characteristics as training data
 X, Y = create_data(nx, m_test, mean_offset)
-# do model prediction == forward propagation using test data
-A = my_sigmoid(np.dot(w.T, X) + b)  # Yhat
-print('cost function on test data:', cost(Y, A))
-print('       Y   ', Y)
-# print('Yhat', A)
-A[A > 0.5] = 1
-A[A <= 0.5] = 0
-print('binary Yhat', A)
 
-TP = np.sum(np.logical_and(Y, A))
-TN = np.sum(np.logical_and(np.logical_not(Y), np.logical_not(A)))
-FN = np.sum(np.logical_xor(Y[Y == 1], A[Y == 1]))
-FP = np.sum(np.logical_xor(Y[Y == 0], A[Y == 0]))
-confusion_matrix = np.array([[TP, FP], [FN, TN]])
-n_confusion_matrix = confusion_matrix / np.sum(np.sum(confusion_matrix))
-precision = TP / (TP + FP)  # TP normalized by sum row1
-recall = TP / (TP + FN)  # TP normalized by sum column 1
-F1_score = 2 / (1/precision + 1/recall)  # harmonic mean
-
-print('normalized confusion matrix in % \n[TP FP]\n[FN TN] =\n',
-      n_confusion_matrix*100)
+# check model prediction on test data
+print('\n\nmetrics on test data:')
+A = my_sigmoid(np.dot(w.T, X) + b)
+print('cost function:', cost(Y, A))
+A[A < 0.5], A[A >= 0.5] = 0, 1
+cm, n_cm, precision, recall, F1_score, accuracy = evaluate(Y, A)
+print('accuray', accuracy)
 print('precision', precision)
 print('recall', recall)
-print('F1_score in %', F1_score*100)
+print('F1_score', F1_score*100, '%')
+print('confusion matrix\n[TP FN]\n[FP TN] =\n',
+      n_cm*100, '%')
