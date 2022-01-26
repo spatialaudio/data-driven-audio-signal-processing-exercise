@@ -13,10 +13,12 @@ import numpy as np
 from sklearn.datasets import make_classification
 from sklearn.model_selection import train_test_split
 import tensorflow as tf
+import tensorflow.keras as keras
 import tensorflow.keras.backend as K
 
 
-print(tf.__version__)
+print('TF version', tf.__version__,  # we used 2.4.3
+      '\nKeras version', keras.__version__)  # we used 2.4.0
 
 # rng = np.random.RandomState(1)  # for debug
 rng = np.random.RandomState()
@@ -28,9 +30,7 @@ verbose = 1  # plot training status
 m = int(5/4*80000)  # data examples
 nx = 2  # number of features
 
-# train_size = 1/2  # 50% are used for training
 train_size = 4/5  # 80% are used for training
-# train_size = 95/100  # 95% are used for training
 
 # these seeds produce 'nice' two classes each with
 # two clusters for chosen m, nx and train_size
@@ -55,7 +55,8 @@ print('X test dim', X_test.shape, 'Y test dim', Y_test.shape, '\n')
 
 
 # SETUP of TensorFlow MODEL
-# hyper parameters (should be learned as well)_
+# hyper parameters
+# in practice do hyper parameter tuning, see exercise 12
 epochs = 5
 batch_size = 32
 
@@ -76,20 +77,21 @@ no_perceptron_in_hl = np.array([5, 2])  # trainable params 30
 # no_perceptron_in_hl = np.array([5])  # trainable params 21
 
 
-optimizer = tf.optimizers.SGD()
-loss = tf.losses.BinaryCrossentropy(from_logits=False, label_smoothing=0)
-metrics = [tf.metrics.BinaryCrossentropy(),
-           tf.metrics.BinaryAccuracy(),
-           tf.metrics.Precision(),
-           tf.metrics.Recall()]
+optimizer = keras.optimizers.SGD()
+loss = keras.losses.BinaryCrossentropy(from_logits=False, label_smoothing=0)
+metrics = [keras.metrics.BinaryCrossentropy(),
+           keras.metrics.BinaryAccuracy(),
+           keras.metrics.Precision(),
+           keras.metrics.Recall()]
 
-model = tf.keras.Sequential()
-model.add(tf.keras.Input(shape=(nx,)))
-# hidden layers:
+model = keras.Sequential()
+# input layer
+model.add(keras.Input(shape=(nx,)))
+# hidden layers
 for n in no_perceptron_in_hl:
-    model.add(tf.keras.layers.Dense(n, activation=tf.nn.relu))
+    model.add(keras.layers.Dense(n, activation='relu'))
 # output layer with sigmoid for binary classificaton
-model.add(tf.keras.layers.Dense(1, activation=tf.nn.sigmoid))
+model.add(keras.layers.Dense(1, activation='sigmoid'))
 model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
 tw = np.sum([K.count_params(w) for w in model.trainable_weights])
 print('\ntrainable_weights', tw, '\n')
