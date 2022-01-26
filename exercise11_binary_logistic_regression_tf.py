@@ -17,9 +17,11 @@ import numpy as np
 from sklearn.datasets import make_classification
 from sklearn.model_selection import train_test_split
 import tensorflow as tf
+import tensorflow.keras as keras
 
 
-print(tf.__version__)
+print('TF version', tf.__version__,  # we used 2.4.3
+      '\nKeras version', keras.__version__)  # we used 2.4.0
 
 # rng = np.random.RandomState(1)  # for debug
 rng = np.random.RandomState()
@@ -40,10 +42,10 @@ def cost(y_true, y_pred):
 
 
 def evaluate(y_true, y_pred):
-    # actually not nice, # since we generally overwrite y_pred
+    # actually not nice, since we generally overwrite y_pred
     y_pred[y_pred < 0.5], y_pred[y_pred >= 0.5] = 0, 1
     # which might get dangerous if we need original data outside the function
-    # therefore we should call: evaluate(np.copy(), np.copy())
+    # therefore we should call evaluate(np.copy(), np.copy())
 
     # inverted logic to be consistent with the TF confusion matrix
     # of labels starting with 0:
@@ -76,7 +78,7 @@ def evaluate(y_true, y_pred):
 
 # gradient descent hyper parameters
 # set up to see how things evolve
-# in practice do automated hyper parameter search
+# in practice do hyper parameter tuning, see exercise 12
 step_size = 0.25
 steps = 500
 
@@ -140,25 +142,25 @@ cm_train, n_cm_train, precision_train, recall_train,\
     F1_score_train, accuracy_train = evaluate(np.copy(Y), np.copy(A))
 
 #     TensorFlow MODEL
-initializer = tf.keras.initializers.RandomUniform(minval=0., maxval=1.)
-optimizer = tf.optimizers.SGD(learning_rate=step_size, momentum=0)
-# use some other gradient descent methods:
-# optimizer = tf.optimizers.Adam()
-# optimizer = tf.optimizers.SGD()
-loss = tf.losses.BinaryCrossentropy(from_logits=False, label_smoothing=0)
-metrics = [tf.metrics.BinaryCrossentropy(),
-           tf.metrics.BinaryAccuracy(),
-           tf.metrics.Precision(),
-           tf.metrics.Recall()]
-input = tf.keras.Input(shape=(nx,))
-output = tf.keras.layers.Dense(1, kernel_initializer=initializer,
-                               activation=tf.math.sigmoid)(input)
-# use default kernel_initializer:
-# output = tf.keras.layers.Dense(1, activation=tf.math.sigmoid)(input)
-model = tf.keras.Model(inputs=input, outputs=output)
+initializer = keras.initializers.RandomUniform(minval=0., maxval=1.)
+optimizer = keras.optimizers.SGD(learning_rate=step_size, momentum=0)
+# we can also use some other gradient descent methods:
+# optimizer = keras.optimizers.Adam()
+# optimizer = keras.optimizers.SGD()
+loss = keras.losses.BinaryCrossentropy(from_logits=False, label_smoothing=0)
+metrics = [keras.metrics.BinaryCrossentropy(),
+           keras.metrics.BinaryAccuracy(),
+           keras.metrics.Precision(),
+           keras.metrics.Recall()]
+input = keras.Input(shape=(nx,))
+output = keras.layers.Dense(1, kernel_initializer=initializer,
+                               activation='sigmoid')(input)
+# we can also use default kernel_initializer:
+# output = keras.layers.Dense(1, activation='sigmoid')(input)
+model = keras.Model(inputs=input, outputs=output)
 model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
 model.fit(X.T, Y.T, batch_size=m_train, epochs=steps, verbose=verbose)
-# explicit usage of epochs, batch_size (here hard coded):
+# explicit usage of epochs, batch_size hard coded:
 # model.fit(X.T, Y.T, epochs=20, batch_size=100, verbose=verbose)
 results_train_tf = model.evaluate(X.T, Y.T, batch_size=m_train,
                                   verbose=verbose)
