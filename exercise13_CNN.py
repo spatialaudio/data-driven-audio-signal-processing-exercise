@@ -115,80 +115,107 @@ def get_dim(n, f, p, s):
 
 
 # mix of hard and soft coded parameters allows us to recognize things
-# conveniently getting this code worked as soft-coded version is a good
-# exercise to think about the dimensions
+# conveniently getting this code worked as soft-coded version would be
+# a good exercise to think about the dimensions and calculations involved
 # the actual network is a toy example and probably not to be used in an
 # actual application
-n0 = 64
+n0 = 64  # we start with 64x64x3 image
 model = keras.Sequential()
 model.add(keras.Input(shape=(n0, n0, 3)))
 print('Input (None,', n0, n0, ',3)')
 
 kernel_size = 7
-model.add(keras.layers.Conv2D(filters=10, kernel_size=kernel_size,
+model.add(keras.layers.Conv2D(filters=10,
+                              kernel_size=kernel_size,
                               activation='relu',
                               padding='same',
                               strides=(1, 1)))
 n1 = get_dim(n0, kernel_size, 3, 1)  # 3 is for padding='same'
-print('L1 (conv2D): (None,', n1, ',', n1, ',  10)')
+print('Layer 1 (Conv2D): (None, ', n1, ', ', n1, ', 10), ', sep='', end='')
 print('Param #:', (kernel_size**2 * 3 + 1) * 10)
 
-kernel_size = 5
-model.add(keras.layers.Conv2D(filters=20, kernel_size=kernel_size,
-                              activation='relu',
-                              padding='valid',
-                              strides=(2, 2)))
-n2 = get_dim(n0, kernel_size, 0, 2)  # 0 is for padding='valid'
-print('L2 (conv2D): (None,', n2, ',', n2, ',  20)')
-print('Param #:', (kernel_size**2 * 10 + 1) * 20)
-
-model.add(keras.layers.MaxPool2D(pool_size=(3, 3),
-                                 strides=(1, 1)))
-n3 = get_dim(n2, 3, 0, 1)
-print('L3 (maxpool): (None,', n3, ',', n3, ',  20)')
-# no change of number of feature maps, since pool acts on all these equally
-print('Param #: 0')  # pool has nothing to learn
 
 model.add(keras.layers.MaxPool2D(pool_size=(2, 2),
                                  strides=(2, 2)))
-n4 = get_dim(n3, 2, 0, 2)
-print('L4 (maxpool): (None,', n4, ',', n4, ',  20)')
-# no change of number of feature maps, since pool acts on all these equally
-print('Param #: 0')  # pool has nothing to learn
+n2 = get_dim(n1, 2, 0, 2)
+# no change of number of feature maps
+print('Layer 2 (MaxPool2D): (None, ', n2, ', ', n2, ', 10), ', sep='', end='')
+print('Param #: 0')  # pool op has parameter to learn
+
+
+kernel_size = 5
+model.add(keras.layers.Conv2D(filters=20,
+                              kernel_size=kernel_size,
+                              activation='relu',
+                              padding='same',
+                              strides=(1, 1)))
+n3 = get_dim(n2, kernel_size, 2, 1)  # p=2 for padding='same' if n=32, f=5, s=1
+print('Layer 3 (Conv2D): (None, ', n3, ', ', n3, ', 20), ', sep='', end='')
+print('Param #:', (kernel_size**2 * 10 + 1) * 20)
+
+
+model.add(keras.layers.MaxPool2D(pool_size=(3, 3),
+                                 strides=(2, 2)))
+n4 = get_dim(n3, 3, 0, 2)
+# no change of number of feature maps
+print('Layer 4 (MaxPool2D): (None, ', n4, ', ', n4, ', 20), ', sep='', end='')
+print('Param #: 0')  # pool op has parameter to learn
+
 
 kernel_size = 3
-model.add(keras.layers.Conv2D(filters=30, kernel_size=kernel_size,
+model.add(keras.layers.Conv2D(filters=40,
+                              kernel_size=kernel_size,
+                              activation='relu',
+                              padding='same',
+                              strides=(1, 1)))
+n5 = get_dim(n4, kernel_size, 1, 1)  # p=1 for padding='same' if n=15, f=3, s=1
+print('Layer 5 (Conv2D): (None, ', n5, ', ', n5, ', 40), ', sep='', end='')
+print('Param #:', (kernel_size**2 * 20 + 1) * 40)
+
+
+kernel_size = 3
+model.add(keras.layers.Conv2D(filters=80,
+                              kernel_size=kernel_size,
+                              activation='relu',
+                              padding='valid',
+                              strides=(2, 2)))
+n6 = get_dim(n5, kernel_size, 0, 2)
+print('Layer 6 (Conv2D): (None, ', n6, ', ', n6, ', 80), ', sep='', end='')
+print('Param #:', (kernel_size**2 * 40 + 1) * 80)
+
+
+kernel_size = 1  # 1x1 conv
+model.add(keras.layers.Conv2D(filters=160,
+                              kernel_size=kernel_size,
                               activation='relu',
                               padding='valid',
                               strides=(1, 1)))
-n5 = get_dim(n4, kernel_size, 0, 1)
-print('L5 (conv2D): (None,', n5, ',', n5, ',  30)')
-print('Param #:', (kernel_size**2 * 20 + 1) * 30)
+n7 = get_dim(n6, kernel_size, 0, 1)
+print('Layer 7 (Conv2D 1x1): (None, ', n6, ', ', n6, ', 160), ',
+      sep='', end='')
+print('Param #:', (kernel_size**2 * 80 + 1) * 160)
 
-kernel_size = 3
-model.add(keras.layers.Conv2D(filters=40, kernel_size=kernel_size,
-                              activation='relu',
-                              padding='same',
-                              strides=(2, 2)))
-n6 = get_dim(n5, kernel_size, 1, 2)
-print('L6 (conv2D): (None,', n6, ',', n6, ',  40)')
-print('Param #:', (kernel_size**2 * 30 + 1) * 40)
 
 model.add(keras.layers.Flatten())
-print('L7 (Flatten): (None,', n6*n6*40, ')')
+print('Layer 8 (Flatten): (None, ', n7*n7*160, '), ', sep='', end='')
 print('Param #: 0')  # no learning param
 
-model.add(keras.layers.Dense(140, activation='relu'))
-print('L8 (Dense): (None, 140)')
-print('Param #:', n6*n6*40*140 + 140)
 
-model.add(keras.layers.Dense(70, activation='relu'))
-print('L9 (Dense): (None, 70)')
-print('Param #:', 140*70 + 70)
+model.add(keras.layers.Dense(100, activation='relu'))
+print('Layer 9 (Dense): (None, 100), ', sep='', end='')
+print('Param #:', n7*n7*160*100 + 100)
 
-model.add(keras.layers.Dense(10, activation='softmax'))
-print('L10 (Dense): (None, 10)')
-print('Param #:', 70*10 + 10)
+
+model.add(keras.layers.Dense(110, activation='relu'))
+print('Layer 10 (Dense): (None, 110), ', sep='', end='')
+print('Param #:', 100*110 + 110)
+
+
+# 9 classes to predict
+model.add(keras.layers.Dense(9, activation='softmax'))
+print('Layer 11 (Dense): (None, 9), ', sep='', end='')
+print('Param #:', 110*9 + 9)
+
 
 optimizer = keras.optimizers.Adam()
 loss = keras.losses.CategoricalCrossentropy(from_logits=False,
