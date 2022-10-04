@@ -1,0 +1,127 @@
+\iffalse
+  \documentclass[mathserif, aspectratio=43]{intbeamer}
+\else
+  \documentclass[aspectratio=169]{beamer}
+  \usetheme{Madrid}
+  \usecolortheme{dove}  % dove, whale
+  \usefonttheme{professionalfonts}
+  \setbeamertemplate{page number in head/foot}[appendixframenumber] % appendix pagenumbering restart
+\fi
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{subcaption}
+\captionsetup[subfigure]{skip=2pt} % global setting for subfigure
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{trfsigns}
+%\usepackage{gensymb}
+%\usepackage{macros}
+\usepackage{xcolor}
+%\usepackage{enumerate}
+\setbeamercovered{invisible}
+%\usepackage{tikz}
+%\usetikzlibrary{calc}
+\usepackage{comment}
+
+%\includecomment{plottikz}
+%\excludecomment{plottikz}
+\definecolor{pyplotC0}{RGB}{31,119,180}
+
+%\newcommand{\tw}{0.73}
+
+% ===== titlepage info =====
+\title[STiASP \#24512 - Exercise]%
+{Selected Topics in Audio Signal Processing\\(Data-Driven Methods in Signal Processing) \#24512}
+
+\author[Schultz, Spors]{%
+    \underline{Frank Schultz}, Sascha Spors}
+
+\date[Winter Term 2022/23]{%\raisebox{0mm}{\includegraphics[width=4.6cm]{logo.png}}\\
+  Exercise -- Winter Term 2022/23}
+
+\institute[]{Research Group Signal Processing and Virtual Acoustics,
+University of Rostock}
+
+\begin{document}
+\maketitle
+%
+%
+%
+\section{Exercise 1}
+\begin{frame}{Literature}
+  check textbooks in our main library
+  \begin{itemize}
+    \item \href{https://find.ub.uni-rostock.de/sk830}{SK830...SK840 statistics, (generalized) linear models, regression}
+    \item ST 285...ST 306 machine learning, artifical intelligence, neural networks
+    \item QH 212...QH 236 statistics mainly for economy, (generalized) linear models, regression
+  \end{itemize}
+  textbooks that I like very much
+  \begin{itemize}
+    \item Kevin P. Murphy (2022): "Probabilistic Machine Learning: An Introduction", MIT Press, 1st. ed.
+    \href{https://probml.github.io/pml-book/book1.html}{open source book and current draft as free pdf}
+    \item \href{https://math.mit.edu/~gs/}{Gilbert Strang} (2019): "Linear Algebra and Learning from Data", Wellesley, 1st ed.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Literature}
+  theory textbooks that inspired me a lot
+  \begin{itemize}
+    \item S. Theodoridis, Machine Learning, 2nd ed. Academic Press, 2020.
+    \href{https://www.sciencedirect.com/book/9780128188033/machine-learning}{free ebook}
+    \item T. Hastie, R. Tibshirani, and J. Friedman, The Elements of Statistical Learning, 2nd ed. Springer, 2009.
+    \href{https://hastie.su.domains/ElemStatLearn/}{free ebook}
+    \item G. James, D. Witten, T. Hastie, and R. Tibshirani, An Introduction to Statistical Learning with Applications in R, 2nd ed. Springer, 2021. \href{https://www.statlearning.com/}{free ebook}
+    \item I. Goodfellow, Y. Bengio, and A. Courville, Deep Learning. MIT Press, 2016.
+    \item C.C. Aggarwal, Neural Networks and Deep Learning. Springer, 2018.
+    \item C.C. Aggarwal, Linear Algebra and Optimization for Machine Learning. Springer, 2020.
+    \item Marc P. Deisenroth, A. Aldo Faisal, Cheng S. Ong, Mathematics for Machine Learning, Cambridge, 2020.
+    \item Steven L. Brunton, J. Nathan Kutz, Data Driven Science \& Engineering, Cambridge, 2019.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Resources}
+  highly recommended web resources
+  \begin{itemize}
+    \item MIT course 18065 \href{https://ocw.mit.edu/courses/18-065-matrix-methods-in-data-analysis-signal-processing-and-machine-learning-spring-2018/}{Matrix Methods in Data Analysis, Signal Processing, and Machine Learning} by Gilbert Strang
+    \item Steven L. Brunton, J. Nathan Kutz, Data Driven Science \& Engineering, Cambridge, 2019.
+    \href{http://www.databookuw.com/databook.pdf}{free draft},
+    \href{http://www.databookuw.com/}{video lectures},
+    \href{https://github.com/dylewsky/Data_Driven_Science_Python_Demos}{Python tutorials}
+    \item A. Gereon, Hands-On Machine Learning with SciKit \& TensorFlow, 1st/2nd ed. O'Reilly, 2017/2019.
+    \href{https://github.com/ageron/handson-ml2}{Python tutorials}
+    \item \href{https://playground.tensorflow.org}{A Neural Network Playground---TensorFlow}
+    \item courses by Andrew Ng at \url{https://www.deeplearning.ai/} and/or \url{https://www.coursera.org/}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Textbooks on Statistics}
+    ML deals with stuff that is actually known for decades, so if we are really
+    serious about to learn it deeply, we should think over concepts on
+    statistical signal processing, maximum-likelihood, Bayesian vs. frequentist
+    statistics, generalized linear models, hierarchical models ... ...
+
+    textbooks that I like very much
+  \begin{itemize}
+  \item L. Fahrmeir, A. Hamerle, and G. Tutz, Multivariate statistische Verfahren, 2nd ed. de Gruyter, 1996.
+  \href{https://www.degruyter.com/document/doi/10.1515/9783110816020/html}{free ebook}
+  \item L. Fahrmeir, T. Kneib, S. Lang, and B. D. Marx, Regression, 2nd ed. Springer, 2021.
+  \item A. J. Dobson and A. G. Barnett, An Introduction to Generalized Linear Models, 4th ed. CRC Press, 2018.
+  \item H. Madsen, P. Thyregod, Introduction to General and Generalized Linear Models, CRC Press, 2011.
+  \item A. Agresti, Foundations of Linear and Generalized Models, Wiley, 2015.
+  \end{itemize}
+\end{frame}
+
+
+
+\appendix
+\section{Appendix}
+\begin{frame}{}
+  $$\im^2=-1, f(x)=x^2$$
+  \begin{figure}
+  \captionsetup{width=.75\linewidth}
+  %\includegraphics[width=\tw\textwidth]{}
+  \caption{.}
+  \label{fig:}
+  \end{figure}
+\end{frame}
+\end{document}

@@ -1,3 +1,13 @@
+*.aux
+*.fdb_*
+*.fls
+*.log
+*.nav
+*.out
+*.snm
+*.synctex.gz
+*.toc
+ddasp_exercise_slides.pdf
 .binder/detailed_packages_list_conda.txt
 .binder/detailed_packages_list_pip.txt
 exercise11_binary_logistic_regression_tf.png
