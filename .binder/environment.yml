@@ -1,0 +1,26 @@
+name: myddasp
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python  #3.10.6
+  - pip  # 22.2.2
+  - ipykernel  # 6.16.0
+  - jupyterlab  # 3.4.7
+  - matplotlib  # 3.6.0
+  - ipympl  # 0.9.2
+  - numpy  # 1.23.3
+  - scipy  # 1.9.1
+  - autopep8  # 1.7.0
+  - jupyter_nbextensions_configurator  # 0.4.1
+  - jupyter_contrib_nbextensions  # 0.5.1
+  - scikit-learn  # 1.1.2
+  - tensorflow  # 2.10.0
+  - librosa  # 0.9.2
+  - pip:
+    - sounddevice==0.4.4
+    - soundfile==0.10.3.post1
+#conda env remove --name myddasp
+#conda env create -f environment.yml
+#pip manually?!?
+#python -m ipykernel install --user --name myddasp --display-name "myddasp"
