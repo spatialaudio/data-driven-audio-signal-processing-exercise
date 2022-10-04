@@ -1,3 +1,5 @@
+.binder/detailed_packages_list_conda.txt
+.binder/detailed_packages_list_pip.txt
 exercise11_binary_logistic_regression_tf.png
 exercise11_binary_logistic_regression_tf_seed_*.png
 .ipynb_checkpoints

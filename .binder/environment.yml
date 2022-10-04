@@ -20,7 +20,7 @@ dependencies:
   - pip:
     - sounddevice==0.4.4
     - soundfile==0.10.3.post1
-#conda env remove --name myddasp
-#conda env create -f environment.yml
-#pip manually?!?
-#python -m ipykernel install --user --name myddasp --display-name "myddasp"
+    - pyloudnorm=0.1.0
+# conda env create -f environment.yml  --force
+# pip manually?!
+# python -m ipykernel install --user --name myddasp --display-name "myddasp"
