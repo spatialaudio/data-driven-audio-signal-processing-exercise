@@ -6,7 +6,7 @@ dependencies:
   - python  #3.10.6
   - pip  # 22.2.2
   - ipykernel  # 6.16.0
-  - jupyterlab  # 3.4.7
+  - jupyterlab  # 3.4.8
   - matplotlib  # 3.6.0
   - ipympl  # 0.9.2
   - numpy  # 1.23.3
@@ -16,6 +16,7 @@ dependencies:
   - jupyter_contrib_nbextensions  # 0.5.1
   - scikit-learn  # 1.1.2
   - tensorflow  # 2.10.0
+  - keras-tuner  # 1.1.0
   - librosa  # 0.9.2
   - pip:
     - sounddevice==0.4.4
