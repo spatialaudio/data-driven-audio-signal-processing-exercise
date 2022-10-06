@@ -32,7 +32,7 @@ The [Anaconda distribution](https://www.anaconda.com/distribution/) is a conveni
     - we can remove this environment with `conda env remove --name myddasp`
 - this should also have installed sound/audio related libraries using pip
     - `pip install sounddevice==0.4.4`
-    - `pip install soundfile==0.10.3.post1`
+    - `pip install soundfile==0.11`
     - `pip install pyloudnorm==0.1.0`
     - we might check this with `pip list`
 - activate this environment with `conda activate myddasp`
@@ -60,4 +60,3 @@ Please cite this open educational resource (OER) project as
 
 - Creative Commons Attribution 4.0 International License (CC BY 4.0) for text/graphics
 - MIT License for software
-
