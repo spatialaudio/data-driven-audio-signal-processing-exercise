@@ -15,6 +15,7 @@ dependencies:
   - jupyter_nbextensions_configurator  # 0.4.1
   - jupyter_contrib_nbextensions  # 0.5.1
   - scikit-learn  # 1.1.2
+  - statsmodels  # 0.13.2
   - tensorflow  # 2.10.0
   - keras-tuner  # 1.1.0
   - librosa  # 0.9.2
