@@ -13,6 +13,7 @@
 \usepackage{subcaption}
 \captionsetup[subfigure]{skip=2pt} % global setting for subfigure
 \usepackage{amsmath,amssymb,amsfonts}
+\usepackage{bm}
 \usepackage{trfsigns}
 %\usepackage{gensymb}
 %\usepackage{macros}
@@ -47,7 +48,45 @@ University of Rostock}
 %
 %
 %
-\section{Exercise 1}
+\input{orga}
+%
+%
+%
+\section{Introduction}
+\begin{frame}{Topics}
+\begin{itemize}
+\item singular value decomposition (SVD)
+  \begin{itemize}
+  \item 4 subspaces of a matrix
+  \item left inverse, (right inverse)
+  \item projection matrices
+  \item dimensionality reduction of a feature space via PCA
+  \end{itemize}
+\item loss functions, empirical risk functions and numerical minimzation, quality measures
+\begin{itemize}
+\item mean squared error for prediction
+\item for binary, multinomial classification
+\item gradient descent to find (a suitable) minimum
+\item F-score, Rsquared, Goodness-Of-Fit Test
+\end{itemize}
+\item prediction models based on regression
+    \begin{itemize}
+    \item ordinary least squares (OLS)
+    \item ridge regression
+    \item SVD regression
+    \end{itemize}
+\item classifying models based on neural networks (NN)
+  \begin{itemize}
+  \item using fully connected layers (DNN)
+  \item using convolutional layers (CNN)
+  \end{itemize}
+\end{itemize}
+sketch of fields that contribute to data processing / data science...
+\end{frame}
+% sketch of fields that contribute to data processing / data science
+%
+%
+%
 \begin{frame}{Literature}
   check textbooks in our main library
   \begin{itemize}
@@ -95,7 +134,7 @@ University of Rostock}
 \end{frame}
 
 \begin{frame}{Textbooks on Statistics}
-    ML deals with stuff that is actually known for decades, so if we are really
+    ML deals with stuff that is actually known for decades (at least the linear modeling part), so if we are really
     serious about to learn it deeply, we should think over concepts on
     statistical signal processing, maximum-likelihood, Bayesian vs. frequentist
     statistics, generalized linear models, hierarchical models ... ...
@@ -113,15 +152,71 @@ University of Rostock}
 
 
 
-\appendix
-\section{Appendix}
-\begin{frame}{}
-  $$\im^2=-1, f(x)=x^2$$
-  \begin{figure}
-  \captionsetup{width=.75\linewidth}
-  %\includegraphics[width=\tw\textwidth]{}
-  \caption{.}
-  \label{fig:}
-  \end{figure}
+
+
+
+\begin{frame}{Structured Development of Data-Driven Methods}
+\textbf{Established Procedure}
+\begin{enumerate}
+\item Definition of the problem and of performance measures
+\item Data preparation and feature extraction
+\item Spot check potential model architectures
+\item Model selection
+\item Evaluation and reporting
+\item Application
+\end{enumerate}
+\textbf{Technical Aspects}
+\begin{itemize}
+\item identify independent / dependent variables, prepare them
+\item check for potential error measures and quality measures
+\item choose model type(s), identify potential model parameters and hyper parameters
+\item proper data handling with train/validate/test data sets
+\item train/fit model(s) including optimized hyper parameters
+\item choose best model(s), final train, final test, report quality
+\end{itemize}
+% sketch and explain x->model->y on blackboard
 \end{frame}
+
+
+
+
+\begin{frame}{Audio Toy Example for Regression and SVD}
+Consider the following linear combinations
+$$\bm{X} \bm{\beta} + \bm{n} = \bm{y}\qquad
+\bm{X} \bm{\theta} + \bm{n} = \bm{y}\qquad
+\bm{X} \bm{w} + \bm{n} = \bm{y}$$
+where $\bm{\beta}=\bm{\theta} = \bm{w}$ are typical variables for the model parameter vector. Let us use $\bm{\beta}$, the lecture will utilize $\bm{\theta}$.
+%
+\begin{itemize}
+\item $\bm{X}_{M \times N}$ matrix with $M$ audio samples for each column, $n$-th column represents the $n$-th audiotrack
+\item $\bm{\beta}_{N \times 1}$ column vector of scalar values that represent a dedicated gain for each audiotrack
+\item $\bm{n}_{M \times 1}$ column vector that represents a $M$-sample long noise signal added to the mixdown $\bm{X} \bm{\beta}$
+\item $\bm{y}_{M \times 1}$ audio signal with $M$ samples as a result of the linear combination plus noise
+\end{itemize}
+%
+Let us assume that i) we know $\bm{X}$ (i.e. the individual audio tracks) and $\bm{y}$ (i.e. the noise-corrupted final mixdown), ii) that we do not know the noise $\bm{n}$ and iii) that we want to estimate the 'real world' mixing gains $\bm{\theta}$
+% sketch Xb=y
+\end{frame}
+
+
+
+
+\begin{frame}{Audio Toy Example for Music Genre Classification}
+TBD...
+\end{frame}
+
+
+
+
+% \appendix
+% \section{Appendix}
+% \begin{frame}{}
+%   $$\im^2=-1, f(x)=x^2$$
+%   \begin{figure}
+%   \captionsetup{width=.75\linewidth}
+%   %\includegraphics[width=\tw\textwidth]{}
+%   \caption{.}
+%   \label{fig:}
+%   \end{figure}
+% \end{frame}
 \end{document}
