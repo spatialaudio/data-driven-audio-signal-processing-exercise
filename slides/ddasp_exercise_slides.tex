@@ -199,6 +199,67 @@ Let us assume that i) we know $\bm{X}$ (i.e. the individual audio tracks) and $\
 \end{frame}
 
 
+\section{SVD}
+\begin{frame}{Singular Value Decomposition (SVD)}
+most general matrix factorization that nicely reveals the 4 subspaces of a rank $r$ matrix $\bm{A}$
+
+fundamentally important for understanding the heart beat of linear algebra
+
+\includegraphics[width=0.4\textwidth]{figures_web/Figure_7.8_A.png}
+\includegraphics[width=0.55\textwidth]{figures_web/Figure_7.8_B.png}
+
+\begin{footnotesize}Fig. 7.8 from Kevin P. Murphy (2022): "Probabilistic Machine Learning: An Introduction" MIT Press. \href{https://probml.github.io/pml-book/book1.html}{open source book and current draft as free pdf}\end{footnotesize}
+
+$$\bm{A} = \bm{U} \bm{S} \bm{V}^\mathrm{H}$$
+
+left singular vectors\quad$\bm{U} = \mathrm{eigvec}(\bm{A}\bm{A}^\mathrm{H})$
+\begin{footnotesize}order must match to the corresponding singular values\end{footnotesize}
+
+right singular vectors $\bm{V} = \mathrm{eigvec}(\bm{A}^\mathrm{H}\bm{A})$
+\begin{footnotesize}order must match to the corresponding singular values\end{footnotesize}
+
+singular value matrix $\bm{S}$, $r$ singular values on diagonal descending order
+
+input-related matrix $\bm{V}$ and output related matrix $\bm{U}$ are unitary....
+
+%$$\bm{V}\bm{V}^\mathrm{H}=\bm{I},\quad\bm{V}^\mathrm{H}\bm{V}=\bm{I},\quad\bm{U}\bm{U}^\mathrm{H}=\bm{I},\quad\bm{U}^\mathrm{H}\bm{U}=\bm{I}$$
+
+\end{frame}
+
+
+\begin{frame}{Singular Value Decomposition (SVD)}
+input-related matrix $\bm{V}$ and output related matrix $\bm{U}$ are unitary, i.e.
+
+$$\bm{V}\bm{V}^\mathrm{H}=\bm{I},\quad\bm{V}^\mathrm{H}\bm{V}=\bm{I},\quad\bm{U}\bm{U}^\mathrm{H}=\bm{I},\quad\bm{U}^\mathrm{H}\bm{U}=\bm{I}$$
+
+superposition of rank-1 matrices (outer products) because diagonal singular values
+$$\bm{A} = \sum_{i=1}^{\text{rank }r} \sigma_i \bm{u}_i \bm{v}_i^\mathrm{H} = \bm{U} \bm{S} \bm{V}^\mathrm{H}$$
+
+SVD and the 4 subspaces of matrix $\bm{A}$ with rank $r$
+\begin{center}
+\includegraphics[width=0.3\textwidth]{figures_web/Strang_DiffEQ_LA_fig7_3.png}
+\end{center}
+\begin{footnotesize}consider Fig. 7.3 from Gilbert Strang (2014): "Differential Equations and Linear Algebra". Wellesley\end{footnotesize}
+
+\end{frame}
+
+
+\begin{frame}{Singular Value Decomposition (SVD)}
+SVD and the 4 subspaces of matrix $\bm{A}$ with rank $r$
+\begin{center}
+\includegraphics[width=0.55\textwidth]{figures_web/Strang_DiffEQ_LA_fig7_3.png}
+\end{center}
+\begin{footnotesize}consider Fig. 7.3 from Gilbert Strang (2014): "Differential Equations and Linear Algebra". Wellesley\end{footnotesize}
+
+$$R(\bm{A}) = C(\bm{A}^\mathrm{H})\perp N(\bm{A})
+\qquad\qquad C(\bm{A}) \perp N(\bm{A}^\mathrm{H})$$
+
+\end{frame}
+
+
+
+
+
 
 
 \begin{frame}{Audio Toy Example for Music Genre Classification}
