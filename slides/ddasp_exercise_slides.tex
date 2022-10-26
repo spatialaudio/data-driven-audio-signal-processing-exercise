@@ -257,7 +257,93 @@ $$R(\bm{A}) = C(\bm{A}^\mathrm{H})\perp N(\bm{A})
 \end{frame}
 
 
-\section{Ex03: SVD and Left Inverse Brings Us to LS Regression}
+\section{Ex03: SVD and Left Inverse Brings us to OLS Linear Regression}
+
+\begin{frame}{Ex03: SVD and Left Inverse Brings us to OLS Linear Regression}
+Objectives
+\begin{itemize}
+\item recap SVD $\bm{X} = \bm{U} \bm{S} \bm{V}^\mathrm{H}$/ 4 Subspaces
+\item nice SVD properties and essence
+\item projecting vectors onto $\bm{U}$ and $\bm{V}$ spaces
+\item for full column rank matrix $\bm{X}_{M \times N}$ we can try to bring a $\bm{y}\in \mathbb{R}^M$ back to $\bm{\beta}\in \mathbb{R}^N$ solving the inverse problem for $\bm{X} \bm{\beta} + \bm{n} = \bm{y}$...we should do this by understanding the SVD
+\item we then re-invented the so called left inverse of a matrix
+\item this can be used to solve an inverse problem in ordinary least squares (OLS) sense
+\item we check this with geometrical considerations rather than calculus
+\end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}{SVD Basics}
+due to $\bm{V}^\mathrm{H}\bm{V}=\bm{I}$ we can re-arrange
+$$\bm{X} = \bm{U} \bm{S} \bm{V}^\mathrm{H} \rightarrow
+\bm{X} \bm{V} = \bm{U} \bm{S}$$
+rank $r$ matrix $\bm{X}$ acting on row space $\bm{v}$ maps to corresponding column space $\bm{u}$ weighted by corresponding singular value
+$$\bm{X} \bm{v}_{1:r} = \sigma_{1:r} \bm{u}_{1:r}$$
+matrix acting on null space $\bm{v}$ maps to zero vector $\bm{0}_{M \times 1}$
+$$\bm{X} \bm{v}_{r+1:N} = \bm{0}$$
+we should make a sketch to visualisze this
+\end{frame}
+
+
+\begin{frame}{Subspace Properties and Characteristics of Inverse Problem}
+
+\begin{itemize}
+\item full rank, no nullspace, no left null space = square matrix = exactly solvable, typically learned in basic linear algebra course
+\item full column rank, no nullspace, potentially large left nullspace = tall/thin matrix, over determined system of equations, we need the left inverse, many practical problems, statistical model fitting
+\item full row rank, potentially large nullspace, no left nullspace = flat/fat matrix, under-determined system of equations, we need the right inverse
+\item rank deficient, potentially large nullspace, potentially large left nullspace, meaningful information of the matrix is not stored in optimum way $\rightarrow$ data-driven learning...but before doing this stuff, we should at least learn full column rank cases properly
+\end{itemize}
+sketches of the 4 subspaces for these 4 cases help to get the essence how the matrix maps things forward and backward
+\end{frame}
+
+
+\begin{frame}{Projection into V}
+tall, thin and full column rank matrix $\bm{X}_{M \times N}$ with rank $r=N$ and SVD $\bm{X} = \bm{U} \bm{S} \bm{V}^\mathrm{H}$
+
+we assume a made up vector $\bm{\beta} = 1.234 \bm{v}_1 + 5.678 \bm{v}_r$
+
+we should project $\bm{\beta}$ onto the $\bm{v}$ vectors, which needs $(\bm{v}_{1:r}^\mathrm{H} \bm{\beta}) \bm{v}_{1:r} = ?$
+
+we get $\bm{v}_{1}^\mathrm{H} \bm{\beta} = 1.234$, $\bm{v}_{2:r-1}^\mathrm{H} \bm{\beta} = 0$, $\bm{v}_{r}^\mathrm{H} \bm{\beta} = 5.678$ for the weights of the $\bm{v}$
+space vectors, not suprisingly due to orthonormality of the $\bm{V}$ matrix
+
+linear combination $(\bm{v}_{1}^\mathrm{H} \bm{\beta})\bm{v}_1 + 0 + ... + 0 + (\bm{v}_{r}^\mathrm{H} \bm{\beta})\bm{v}_r = \bm{\beta}$ yields precisely the made up vector $\bm{\beta}$ that we started with
+
+a made up vector $\bm{\alpha}$ might have non-zero weights for all $\bm{v}$ vectors, i.e. all $\bm{v}$ vectors really contribute to the spanning job...
+
+we should start to think always in linear combinations of SVD's $\bm{V}$ and $\bm{U}$ spaces
+
+as always a simple sketch is helping to understand
+
+all projections at once is written as $\bm{V}^\mathrm{H} \bm{\beta}$, cf. $\bm{X}\bm{\beta} = \bm{U} \bm{S} \bm{V}^\mathrm{H}\bm{\beta}$
+
+\end{frame}
+
+
+\begin{frame}{Left Inverse Via SVD}
+we want to solve for $\hat{\bm{\beta}}$, full column rank $\bm{X}_{M \times N}$, rank $r=N$
+$$\bm{X} \hat{\bm{\beta}} = \bm{y}$$
+apply SVD
+$$\bm{U} \bm{S} \bm{V}^\mathrm{H} \hat{\bm{\beta}} = \bm{y}$$
+get weights of U space projection
+$$\bm{U}^\mathrm{H} \bm{U} \bm{S} \bm{V}^\mathrm{H} \hat{\bm{\beta}} = \bm{U}^\mathrm{H}\bm{y}$$
+invert all singular values and setup $\bm{S}^\dagger_{N \times M} = [\mathrm{diag}(1/\sigma_i) \quad \bm{0}]$ such that
+$\bm{S}^\dagger\bm{S} = \bm{I}_{N \times N}$,
+this yields
+$$\bm{S}^\dagger\bm{S} \bm{V}^\mathrm{H} \hat{\bm{\beta}} = \bm{S}^\dagger\bm{U}^\mathrm{H}\bm{y}$$
+let matrix $\bm{V}$ act on this vector, i.e. map as linear combination into $\bm{V}$ space
+$$\bm{V} \bm{V}^\mathrm{H} \hat{\bm{\beta}} = \bm{V} \bm{S}^\dagger\bm{U}^\mathrm{H}\bm{y}
+\rightarrow \hat{\bm{\beta}} = \bm{V} \bm{S}^\dagger\bm{U}^\mathrm{H}\bm{y}$$
+we might want to show that the left inverse $\bm{X}^\dagger$ can be written equivalently as
+$$\bm{V} \bm{S}^\dagger\bm{U}^\mathrm{H} = (\bm{X}^\mathrm{H}\bm{X})^{-1} \bm{X}^\mathrm{H} = \bm{X}^\dagger$$
+
+\end{frame}
+
+
+
+
 \begin{frame}{Projection Matrices}
 TBD...
 \end{frame}
