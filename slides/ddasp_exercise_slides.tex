@@ -2,6 +2,8 @@
   \documentclass[mathserif, aspectratio=43]{intbeamer}
 \else
   \documentclass[aspectratio=169]{beamer}
+  \definecolor{urllinkcol}{RGB}{31,119,180}
+  \hypersetup{colorlinks,linkcolor=,urlcolor=urllinkcol}
   \usetheme{Madrid}
   \usecolortheme{dove}  % dove, whale
   \usefonttheme{professionalfonts}
@@ -62,7 +64,7 @@ University of Rostock}
   \item projection matrices
   \item dimensionality reduction of a feature space via PCA
   \end{itemize}
-\item loss functions, empirical risk functions and numerical minimzation, quality measures
+\item loss functions, empirical risk functions and numerical minimization, quality measures
 \begin{itemize}
 \item mean squared error for prediction
 \item for binary, multinomial classification
@@ -97,7 +99,7 @@ sketch of fields that contribute to data processing / data science...
   textbooks that I like very much
   \begin{itemize}
     \item Kevin P. Murphy (2022): "Probabilistic Machine Learning: An Introduction", MIT Press, 1st. ed.
-    \href{https://probml.github.io/pml-book/book1.html}{open source book and current draft as free pdf}
+    \href{https://probml.github.io/pml-book/book1.html}{current draft as free pdf}
     \item \href{https://math.mit.edu/~gs/}{Gilbert Strang} (2019): "Linear Algebra and Learning from Data", Wellesley, 1st ed.
   \end{itemize}
 \end{frame}
@@ -112,9 +114,9 @@ sketch of fields that contribute to data processing / data science...
     \item G. James, D. Witten, T. Hastie, and R. Tibshirani, An Introduction to Statistical Learning with Applications in R, 2nd ed. Springer, 2021. \href{https://www.statlearning.com/}{free ebook}
     \item I. Goodfellow, Y. Bengio, and A. Courville, Deep Learning. MIT Press, 2016.
     \item C.C. Aggarwal, Neural Networks and Deep Learning. Springer, 2018.
-    \item C.C. Aggarwal, Linear Algebra and Optimization for Machine Learning. Springer, 2020.
-    \item Marc P. Deisenroth, A. Aldo Faisal, Cheng S. Ong, Mathematics for Machine Learning, Cambridge, 2020.
-    \item Steven L. Brunton, J. Nathan Kutz, Data Driven Science \& Engineering, Cambridge, 2019.
+    \item C.C. Aggarwal, Linear Algebra and Optimization for Machine Learning. Springer, 2020. \href{https://link.springer.com/book/10.1007/978-3-030-40344-7}{free ebook}
+    \item Marc P. Deisenroth, A. Aldo Faisal, Cheng S. Ong, Mathematics for Machine Learning, Cambridge, 2020. \href{https://mml-book.github.io/book/mml-book.pdf}{free ebook}
+    \item Steven L. Brunton, J. Nathan Kutz, Data Driven Science \& Engineering, Cambridge, 2019. \href{http://www.databookuw.com/databook.pdf}{free ebook draft}
   \end{itemize}
 \end{frame}
 
@@ -123,10 +125,10 @@ sketch of fields that contribute to data processing / data science...
   \begin{itemize}
     \item MIT course 18065 \href{https://ocw.mit.edu/courses/18-065-matrix-methods-in-data-analysis-signal-processing-and-machine-learning-spring-2018/}{Matrix Methods in Data Analysis, Signal Processing, and Machine Learning} by Gilbert Strang
     \item Steven L. Brunton, J. Nathan Kutz, Data Driven Science \& Engineering, Cambridge, 2019.
-    \href{http://www.databookuw.com/databook.pdf}{free draft},
+    \href{http://www.databookuw.com/databook.pdf}{free ebook draft},
     \href{http://www.databookuw.com/}{video lectures},
     \href{https://github.com/dylewsky/Data_Driven_Science_Python_Demos}{Python tutorials}
-    \item A. Gereon, Hands-On Machine Learning with SciKit \& TensorFlow, 1st/2nd ed. O'Reilly, 2017/2019.
+    \item A. G\'{e}ron, Hands-On Machine Learning with SciKit \& TensorFlow, 1st/2nd ed. O'Reilly, 2017/2019.
     \href{https://github.com/ageron/handson-ml2}{Python tutorials}
     \item \href{https://playground.tensorflow.org}{A Neural Network Playground---TensorFlow}
     \item courses by Andrew Ng at \url{https://www.deeplearning.ai/} and/or \url{https://www.coursera.org/}
@@ -155,6 +157,17 @@ sketch of fields that contribute to data processing / data science...
 
 
 \section{Ex01: Introduction}
+\begin{frame}{Ex0x: Introduction}
+Objectives
+\begin{itemize}
+\item related fields for data science / learning from data
+\item model concept, un- \& supervised learning, prediction
+\item idea of model parameters and hyper parameters
+\item structured workflow for proper data learning
+\item audio toy example that is used for linear regression and SVD demo
+\end{itemize}
+\end{frame}
+
 \begin{frame}{Structured Development of Data-Driven Methods}
 \textbf{Established Procedure}
 \begin{enumerate}
@@ -180,12 +193,12 @@ sketch of fields that contribute to data processing / data science...
 
 
 
-\begin{frame}{Audio Toy Example for Regression and SVD}
+\begin{frame}{Audio Toy Example for Linear Regression and SVD}
 Consider the following linear combinations
 $$\bm{X} \bm{\beta} + \bm{n} = \bm{y}\qquad
 \bm{X} \bm{\theta} + \bm{n} = \bm{y}\qquad
 \bm{X} \bm{w} + \bm{n} = \bm{y}$$
-where $\bm{\beta}=\bm{\theta} = \bm{w}$ are typical variables for the model parameter vector. Let us use $\bm{\beta}$, the lecture will utilize $\bm{\theta}$.
+where $\bm{\beta}=\bm{\theta} = \bm{w}$ are typical variables for the model parameter vector. Let us use $\bm{\beta}=[\beta_0, \beta_1, \beta_2, ..., \beta_{N-1}]^\mathrm{T}$ here, the lecture will rather utilize $\bm{\theta}$.
 %
 \begin{itemize}
 \item $\bm{X}_{M \times N}$ matrix with $M$ audio samples for each column, $n$-th column represents the $n$-th audiotrack
@@ -200,6 +213,16 @@ Let us assume that i) we know $\bm{X}$ (i.e. the individual audio tracks) and $\
 
 
 \section{Ex02: SVD / 4 Subspaces}
+\begin{frame}{Ex02: SVD / 4 Subspaces}
+Objectives
+\begin{itemize}
+\item linear regression with least squares teaser
+\item subspaces example on simple matrix
+\item SVD and 4 subspaces within orthonormal bases V, U
+\item rank-1 matrix superposition
+\end{itemize}
+\end{frame}
+
 \begin{frame}{Singular Value Decomposition (SVD)}
 most general matrix factorization that nicely reveals the 4 subspaces of a rank $r$ matrix $\bm{A}$
 
@@ -213,10 +236,10 @@ fundamentally important for understanding the heart beat of linear algebra
 $$\bm{A} = \bm{U} \bm{S} \bm{V}^\mathrm{H}$$
 
 left singular vectors\quad$\bm{U} = \mathrm{eigvec}(\bm{A}\bm{A}^\mathrm{H})$
-\begin{footnotesize}order must match to the corresponding singular values\end{footnotesize}
+\begin{footnotesize}, order must match to the corresponding singular values\end{footnotesize}
 
 right singular vectors $\bm{V} = \mathrm{eigvec}(\bm{A}^\mathrm{H}\bm{A})$
-\begin{footnotesize}order must match to the corresponding singular values\end{footnotesize}
+\begin{footnotesize}, order must match to the corresponding singular values\end{footnotesize}
 
 singular value matrix $\bm{S}$, $r$ singular values on diagonal descending order
 
@@ -295,72 +318,112 @@ we should make a sketch to visualisze this
 \item full row rank, potentially large nullspace, no left nullspace = flat/fat matrix, under-determined system of equations, we need the right inverse
 \item rank deficient, potentially large nullspace, potentially large left nullspace, meaningful information of the matrix is not stored in optimum way $\rightarrow$ data-driven learning...but before doing this stuff, we should at least learn full column rank cases properly
 \end{itemize}
-sketches of the 4 subspaces for these 4 cases help to get the essence how the matrix maps things forward and backward
+sketches of the 4 subspaces for these 4 cases help to get the essence how a matrix maps things forward and (potentially) backward
 \end{frame}
 
 
 \begin{frame}{Projection into V}
+\begin{itemize}
+\item
 tall, thin and full column rank matrix $\bm{X}_{M \times N}$ with rank $r=N$ and SVD $\bm{X} = \bm{U} \bm{S} \bm{V}^\mathrm{H}$
-
+\item
 we assume a made up vector $\bm{\beta} = 1.234 \bm{v}_1 + 5.678 \bm{v}_r$
-
+\item
 we should project $\bm{\beta}$ onto the $\bm{v}$ vectors, which needs $(\bm{v}_{1:r}^\mathrm{H} \bm{\beta}) \bm{v}_{1:r} = ?$
-
+\item
 we get $\bm{v}_{1}^\mathrm{H} \bm{\beta} = 1.234$, $\bm{v}_{2:r-1}^\mathrm{H} \bm{\beta} = 0$, $\bm{v}_{r}^\mathrm{H} \bm{\beta} = 5.678$ for the weights of the $\bm{v}$
 space vectors, not suprisingly due to orthonormality of the $\bm{V}$ matrix
-
+\item
 linear combination $(\bm{v}_{1}^\mathrm{H} \bm{\beta})\bm{v}_1 + 0 + ... + 0 + (\bm{v}_{r}^\mathrm{H} \bm{\beta})\bm{v}_r = \bm{\beta}$ yields precisely the made up vector $\bm{\beta}$ that we started with
-
+\item
 a made up vector $\bm{\alpha}$ might have non-zero weights for all $\bm{v}$ vectors, i.e. all $\bm{v}$ vectors really contribute to the spanning job...
-
+\item
 we should start to think always in linear combinations of SVD's $\bm{V}$ and $\bm{U}$ spaces
-
+\item
 as always a simple sketch is helping to understand
-
+\item
 all projections at once is written as $\bm{V}^\mathrm{H} \bm{\beta}$, cf. $\bm{X}\bm{\beta} = \bm{U} \bm{S} \bm{V}^\mathrm{H}\bm{\beta}$
-
+\end{itemize}
 \end{frame}
 
 
 \begin{frame}{Left Inverse Via SVD}
-we want to solve for $\hat{\bm{\beta}}$, full column rank $\bm{X}_{M \times N}$, rank $r=N$
-$$\bm{X} \hat{\bm{\beta}} = \bm{y}$$
+we want to solve for ${\bm{\beta}}$, full column rank $\bm{X}_{M \times N}$, rank $r=N$
+$$\bm{X} {\bm{\beta}} = \bm{y}$$
 apply SVD
-$$\bm{U} \bm{S} \bm{V}^\mathrm{H} \hat{\bm{\beta}} = \bm{y}$$
+$$\bm{U} \bm{S} \bm{V}^\mathrm{H} {\bm{\beta}} = \bm{y}$$
 get weights of U space projection
-$$\bm{U}^\mathrm{H} \bm{U} \bm{S} \bm{V}^\mathrm{H} \hat{\bm{\beta}} = \bm{U}^\mathrm{H}\bm{y}$$
+$$\bm{U}^\mathrm{H} \bm{U} \bm{S} \bm{V}^\mathrm{H} {\bm{\beta}} = \bm{U}^\mathrm{H}\bm{y}$$
 invert all singular values and setup $\bm{S}^\dagger_{N \times M} = [\mathrm{diag}(1/\sigma_i) \quad \bm{0}]$ such that
-$\bm{S}^\dagger\bm{S} = \bm{I}_{N \times N}$,
-this yields
-$$\bm{S}^\dagger\bm{S} \bm{V}^\mathrm{H} \hat{\bm{\beta}} = \bm{S}^\dagger\bm{U}^\mathrm{H}\bm{y}$$
+$\bm{S}^\dagger\bm{S} = \bm{I}_{N \times N}$, apply
+$$\bm{S}^\dagger\bm{S} \bm{V}^\mathrm{H} {\bm{\beta}} = \bm{S}^\dagger\bm{U}^\mathrm{H}\bm{y}$$
 let matrix $\bm{V}$ act on this vector, i.e. map as linear combination into $\bm{V}$ space
-$$\bm{V} \bm{V}^\mathrm{H} \hat{\bm{\beta}} = \bm{V} \bm{S}^\dagger\bm{U}^\mathrm{H}\bm{y}
-\rightarrow \hat{\bm{\beta}} = \bm{V} \bm{S}^\dagger\bm{U}^\mathrm{H}\bm{y}$$
+$$\bm{V} \bm{V}^\mathrm{H} {\bm{\beta}} = \bm{V} \bm{S}^\dagger\bm{U}^\mathrm{H}\bm{y}
+\rightarrow \text{this yields our estimator } \hat{\bm{\beta}} = \bm{V} \bm{S}^\dagger\bm{U}^\mathrm{H}\bm{y} = \bm{X}^\dagger \bm{y}$$
 we might want to show that the left inverse $\bm{X}^\dagger$ can be written equivalently as
 $$\bm{V} \bm{S}^\dagger\bm{U}^\mathrm{H} = (\bm{X}^\mathrm{H}\bm{X})^{-1} \bm{X}^\mathrm{H} = \bm{X}^\dagger$$
-
 \end{frame}
 
 
 
 
-\begin{frame}{Projection Matrices}
-TBD...
+\begin{frame}{Projection Matrices Based on Left Inverse}
+For full column rank $\bm{X}_{M \times N}$, rank $r=N$ we got the left inverse
+$$\bm{V} \bm{S}^\dagger\bm{U}^\mathrm{H} = (\bm{X}^\mathrm{H}\bm{X})^{-1} \bm{X}^\mathrm{H} = \bm{X}^\dagger_{N \times M}$$
+from which we can create four projection matrices into the four subspaces
+\begin{itemize}
+\item into row space $\bm{P}_\text{row} = \bm{X}^\dagger \bm{X} = \bm{I}_{N \times N}$ \begin{footnotesize}(i.e. the concept of a left inverse)\end{footnotesize}
+\item into null space $\bm{P}_\text{null} = \bm{I} - \bm{P}_\text{row} = \bm{0}_{N \times N}$ \begin{footnotesize}(because no null space when full column rank)\end{footnotesize}
+\item into column space $\bm{P}_\text{column} = (\bm{X} \bm{X}^\dagger)_{M \times M}$ \begin{footnotesize}(very often called hat matrix)\end{footnotesize}
+\item into left nullspace $\bm{P}_\text{left null} = \bm{I}_{M \times M} - \bm{P}_\text{column}$
+\end{itemize}
+
+So the estimator $\hat{\bm{\beta}}$ from solving the inverse problem yields a vector living in the column space
+$$\bm{X} \hat{\bm{\beta}} = \bm{X} (\bm{X}^\dagger \bm{y}) = \bm{P}_\text{column} \bm{y} = \hat{\bm{y}}$$
+This means that there is a remaining part (typical called residual) $\bm{e}$ from measured $\bm{y}$
+$$\bm{e} = \bm{y} - \hat{\bm{y}} = \bm{y} - \bm{P}_\text{column} \bm{y} = (\bm{I}_{M \times M} - \bm{P}_\text{column}) \bm{y}=
+\bm{P}_\text{left null} \bm{y} = \bm{e}$$
+which lives in the left null space. Due to the orthogonal subspaces, we know that $\hat{\bm{y}} \perp \bm{e}$
+
 \end{frame}
 
-\begin{frame}{Left Inverse / Projections}
-TBD...
+\begin{frame}{Least Squares Sense Solution: Calculus vs. Graphical}
+Calculus way: As usually assuming full column rank, we can consider an optimization problem, where we want to minimize
+squared distance, hence the name least squares
+$$\min_{\text{wrt }\bm{\beta}} ||\bm{y} - \bm{X} \bm{\beta}||_2^2$$
+which needs 1st / 2nd derivatives, yielding the already found solution using the left inverse
+$$\hat{\bm{\beta}} = (\bm{X}^\mathrm{H}\bm{X})^{-1} \bm{X}^\mathrm{H} \bm{y}$$
+Graphical way: the shortest path to get $\bm{y}$ into the column space is by orthogonal projection, we get again $\hat{\bm{y}} \perp \bm{e}$...that's why the subspace
+stuff is so nice...the $\hat{\bm{y}}$ can be mapped back to row space yielding $\hat{\bm{\beta}}$
+\begin{center}
+\includegraphics[width=0.23\textwidth]{figures_web/Theodoridis_ML_2nd_Fig4.3.png}
+\end{center}
+\begin{footnotesize}consider Fig. 4.3 from S. Theodoridis, Machine Learning, 2nd ed. Academic Press, 2020\end{footnotesize}
 \end{frame}
 
-\begin{frame}{Least Squares / Left Inverse / Projections}
-TBD...
+\section{Ex04: Audio Example, Linear Regression, SVD}
+\begin{frame}{Ex04: Audio Example, Linear Regression, SVD}
+Objectives
+\begin{itemize}
+\item so far theoretical stuff
+\item we apply this to a toy example using audio data...listening to stuff in vectors and matrices is fun and helps us to understand what the linear algebra is doing
+\end{itemize}
 \end{frame}
+
 
 \section{Exxx: TBD}
 \begin{frame}{Audio Toy Example for Music Genre Classification}
 TBD...
 \end{frame}
 
+
+% \section{Ex0x: Topic}
+% \begin{frame}{Ex0x: Topic}
+% Objectives
+% \begin{itemize}
+% \item
+% \end{itemize}
+% \end{frame}
 
 
 
