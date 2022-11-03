@@ -357,12 +357,61 @@ $$\bm{U}^\mathrm{H} \bm{U} \bm{S} \bm{V}^\mathrm{H} {\bm{\beta}} = \bm{U}^\mathr
 invert all singular values and setup $\bm{S}^\dagger_{N \times M} = [\mathrm{diag}(1/\sigma_i) \quad \bm{0}]$ such that
 $\bm{S}^\dagger\bm{S} = \bm{I}_{N \times N}$, apply
 $$\bm{S}^\dagger\bm{S} \bm{V}^\mathrm{H} {\bm{\beta}} = \bm{S}^\dagger\bm{U}^\mathrm{H}\bm{y}$$
-let matrix $\bm{V}$ act on this vector, i.e. map as linear combination into $\bm{V}$ space
+let matrix $\bm{V}$ act on this vector, i.e. map as linear combination into row space in $\bm{V}$
 $$\bm{V} \bm{V}^\mathrm{H} {\bm{\beta}} = \bm{V} \bm{S}^\dagger\bm{U}^\mathrm{H}\bm{y}
 \rightarrow \text{this yields our estimator } \hat{\bm{\beta}} = \bm{V} \bm{S}^\dagger\bm{U}^\mathrm{H}\bm{y} = \bm{X}^\dagger \bm{y}$$
 we might want to show that the left inverse $\bm{X}^\dagger$ can be written equivalently as
 $$\bm{V} \bm{S}^\dagger\bm{U}^\mathrm{H} = (\bm{X}^\mathrm{H}\bm{X})^{-1} \bm{X}^\mathrm{H} = \bm{X}^\dagger$$
 \end{frame}
+
+
+
+\begin{frame}{Left Inverse Via SVD}
+full column rank $\bm{X}_{M \times N}$, rank $r=N$, singular values $\sigma_1 > \sigma_2 > \sigma_i > \sigma_r > 0$
+
+forward problem: map (row space+null space) to column space with $\bm{X} \bm{\beta} = \bm{y}$
+$$
+\bm{X}_{M \times N}
+=
+\bm{U}_{M \times M}\quad
+\bm{S}_{M \times N}\quad
+(\bm{V}_{N \times N})^\mathrm{H}=
+\bm{U}
+\begin{bmatrix}
+\sigma_1  & 0  & 0 & 0\\
+0 & \sigma_2 & 0 & 0\\
+0 & 0 & \sigma_i & 0\\
+0 & 0 & 0 & \sigma_r\\
+0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0
+\end{bmatrix}
+\bm{V}^\mathrm{H}
+$$
+inverse problem: map (column space+left null space) to row space with left inverse $\bm{X}^\dagger \bm{y} = \bm{\beta}$
+$$
+\bm{X}^\dagger_{N \times M}
+=
+\bm{V}_{N \times N}\quad
+\bm{S}^\dagger_{N \times M}\quad
+(\bm{U}_{M \times M})^\mathrm{H}
+=
+\bm{V}
+\begin{bmatrix}
+\frac{1}{\sigma_1} & 0 & 0 & 0 & 0 & 0\\
+0 & \frac{1}{\sigma_2} & 0 & 0 & 0 & 0\\
+0 & 0 & \frac{1}{\sigma_i} & 0 & 0 & 0\\
+0 & 0 & 0 & \frac{1}{\sigma_r} & 0 & 0\\
+\end{bmatrix}
+\bm{U}^\mathrm{H}
+$$
+
+
+
+
+
+
+\end{frame}
+
 
 
 
@@ -402,13 +451,34 @@ stuff is so nice...the $\hat{\bm{y}}$ can be mapped back to row space yielding $
 \end{frame}
 
 \section{Ex04: Audio Example, Linear Regression, SVD}
-\begin{frame}{Ex04: Audio Example, Linear Regression, SVD}
-Objectives
+\begin{frame}{Ex04: SVD Factorization of Multitrack Audio}
+Objectives: understanding the essence of SVD vs. utilizing SVD on real data
+%we can listen to audio or view images, so we should bring memorizable examples that feature these senses
+
 \begin{itemize}
-\item so far theoretical stuff
-\item we apply this to a toy example using audio data...listening to stuff in vectors and matrices is fun and helps us to understand what the linear algebra is doing
+\item given a $M \times N$ matrix $\bm{X}$ with full column rank $r=N$ containing $M$ audio samples on $N$ channels, this might be a studio recording of a song, e.g. 1st channel is bassdrum, 2nd is bass guitar, $N$-th channel is a synth line
+\item perform an economy size SVD on this multitrack audio data (a normal SVD would need way too much RAM to store left nullspace in $\bm{U}$)
+$$\bm{X} = \bm{U} \bm{S} \bm{V}^\mathrm{H}$$
+\item we can listen to and plot the weighted left singular vectors that span the column space
+$$\mathbf{H}_{M \times r} =  \mathbf{U}_{M \times r} \mathbf{S}_{r \times r}$$
+\item we could analyze polarity / level of the mixing weights $\mathbf{V}^\mathrm{H} \mathbf{g}$ of the mixdown
+$$\mathbf{y} = \mathbf{X}\mathbf{g} = \mathbf{H} \cdot \mathbf{V}^\mathrm{H} \mathbf{g}$$
+\item we could listen to the mixdown using the best rank $q<=r$ approximation
+$$\mathbf{y} =\bm{U} \bm{S}_q \bm{V}^\mathrm{H}\mathbf{g}$$
 \end{itemize}
+
 \end{frame}
+
+\section{Ex05: Audio Example}
+\begin{frame}{Ex05: Audio Example}
+Objectives
+%\begin{itemize}
+%\end{itemize}
+\end{frame}
+
+
+
+
 
 
 \section{Exxx: TBD}
