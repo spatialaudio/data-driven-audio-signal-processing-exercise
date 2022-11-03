@@ -10,6 +10,7 @@
 *.toc
 drafts
 svd_multitrack_audio
+ols_ridge_multitrack_audio
 tf_keras_logs
 slides/figures_web
 slides/orga.tex
