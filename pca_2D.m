@@ -152,7 +152,7 @@ ylim([-xmax, xmax])
 axis square
 xlabel('\sigma_0 U[0]')
 ylabel('\sigma_1 U[1]')
-title('U space dimensionality reduced, U[1]=0 and/or \sigma_0=0')
+title('U space dimensionality reduced, U[1]=0 and/or \sigma_1=0')
 grid on
 
 
