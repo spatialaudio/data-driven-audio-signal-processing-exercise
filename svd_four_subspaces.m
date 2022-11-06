@@ -5,8 +5,6 @@
 % Data Driven Audio Signal Processing - A Tutorial with Computational Examples
 % Feel free to contact lecturer frank.schultz@uni-rostock.de
 %
-% MIT License for this code snippet applies
-%
 % SVD and the 4 Subspaces - A Number Example
 % we might consider the matrix A from slide 4/30 of the highly recommended
 % web resource "A 2020 Vision of Linear Algebra, Gilbert Strang, MIT, 2020"
@@ -17,8 +15,8 @@ close all
 clc
 
 X = [1 4 5;
-     3 2 5;
-     2 1 3];
+    3 2 5;
+    2 1 3];
 
 [U,S,V]=svd(X);
 disp('rank r = ')
@@ -81,4 +79,16 @@ w2 = pinv(RS) * [3;2;5]
 
 w3 = pinv(RS) * [2;1;3]
 (RS*w3)' % output as a row
- 
+
+%%
+% Copyright
+% - the script is provided as [Open Educational Resources](https://en.wikipedia.org/wiki/Open_educational_resources)
+% - comment text is licensed under [Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/)
+% - Matlab code is licensed under the [MIT license](https://opensource.org/licenses/MIT)
+% - feel free to use for your own purposes
+% - please attribute the work as follows:
+% Frank Schultz, Data Driven Audio Signal Processing-A Tutorial Featuring
+% Computational Examples, University of Rostock* ideally with relevant
+% file(s), github URL
+% https://github.com/spatialaudio/data-driven-audio-signal-processing-exercise,
+% commit number and/or version tag, year.

@@ -1,11 +1,11 @@
-% Sascha Spors, Professorship Signal Theory and Digital Signal Processing, 
+% Sascha Spors, Professorship Signal Theory and Digital Signal Processing,
 % Institute of Communications Engineering (INT), Faculty of Computer Science
 % and Electrical Engineering (IEF), University of Rostock, Germany
 %
 % Data Driven Audio Signal Processing - A Tutorial with Computational Examples
 % Feel free to contact lecturer frank.schultz@uni-rostock.de
 %
-% Exercise 06: SVD / PCA on 2D data
+% Exercise: SVD / PCA on 2D data
 
 clear all
 %close all
@@ -54,7 +54,7 @@ disp('rot matrix = V = ')
 % ==
 V
 
-%% 
+%%
 disp('the variance of the principal component signals')
 var(pcs).'
 disp('is equal to the eigvals(A''*A) / (N-1)')
@@ -99,7 +99,7 @@ norm(A_R_red2-A_R_red,'fro')
 %% plot
 ax_original_feature_space = subplot(1, 4, 1);
 for n = 1:N
-    plot(A(n, 1), A(n, 2), 'ko'), hold on 
+    plot(A(n, 1), A(n, 2), 'ko'), hold on
 end
 % plot 4*v0 and 4*v1:
 plot([0 4*V(1,1)],[0 4*V(2,1)], 'color', '#1f77b4', 'linewidth', 6)
@@ -115,7 +115,7 @@ grid on
 
 ax_pc_space = subplot(1, 4, 2);
 for n = 1:N
-    plot(pcs(n, 1), pcs(n, 2), 'ko'), hold on 
+    plot(pcs(n, 1), pcs(n, 2), 'ko'), hold on
 end
 plot([0 4],[0 0], 'color', '#1f77b4', 'linewidth', 6)
 plot([0 0],[0 4], 'color', '#ff7f0e', 'linewidth', 2)
@@ -131,7 +131,7 @@ grid on
 
 subplot(1, 4, 3)
 for n = 1:N
-    plot(A_R_red(n, 1), A_R_red(n, 2), 'ko'), hold on 
+    plot(A_R_red(n, 1), A_R_red(n, 2), 'ko'), hold on
 end
 hold off
 xlim([-xmax, xmax])
@@ -144,7 +144,7 @@ grid on
 
 subplot(1, 4, 4)
 for n = 1:N
-    plot(A_Dim_red(n, 1), A_Dim_red(n, 2), 'ko'), hold on 
+    plot(A_Dim_red(n, 1), A_Dim_red(n, 2), 'ko'), hold on
 end
 hold off
 xlim([-xmax, xmax])
@@ -165,9 +165,9 @@ cumsum(latent)/sum(latent)*100
 xmax
 disp('xmax should be larger than')
 max([max(max(abs(A)))...
-max(max(abs(pcs)))...
-max(max(abs(A_R_red)))...
-max(max(abs(A_Dim_red)))])
+    max(max(abs(pcs)))...
+    max(max(abs(A_R_red)))...
+    max(max(abs(A_Dim_red)))])
 
 %% how the covariance comes into play
 % eigenwert / -value problem is often used to proof PCA without further
@@ -186,30 +186,30 @@ max(max(abs(A_Dim_red)))])
 
 % variance for first principal component (v0 -> sigma0 u0)
 [(A*V(:,1))' * (A*V(:,1)) / (N-1)... % ==
-S(1,1)^2  / (N-1)... %==
-latent(1)]
+    S(1,1)^2  / (N-1)... %==
+    latent(1)]
 % variance for second principal component (v1 -> sigma1 u1)
 [(A*V(:,2))' * (A*V(:,2)) / (N-1)... % ==
-S(2,2)^2  / (N-1)... % ==
-latent(2)]
+    S(2,2)^2  / (N-1)... % ==
+    latent(2)]
 
 % check specific data point
 n = 195
 
 disp('specific data point in original feature space')
 [A(n,1)...
-A(n,2)]
+    A(n,2)]
 
 disp('(v0 -> sigma0 u0)')
 [A(n,:) * V(:,1)... % proj onto v0 ==
-S(1,1) * U(n,1)] % sigma0 * u0 
+    S(1,1) * U(n,1)] % sigma0 * u0
 disp('(v1 -> sigma1 u1)')
 [A(n,:) * V(:,2)... % proj onto v1 ==
-S(2,2) * U(n,2)] % sigma1 * u1
+    S(2,2) * U(n,2)] % sigma1 * u1
 
 disp('specific data point in the PC space')
 [S(1,1) * U(n,1)...
-S(2,2) * U(n,2)]
+    S(2,2) * U(n,2)]
 
 axes(ax_original_feature_space)
 hold on
@@ -219,3 +219,16 @@ axes(ax_pc_space)
 hold on
 plot(S(1,1) * U(n,1), S(2,2) * U(n,2), '*', 'color', '#d62728', 'markersize', 10)
 hold off
+
+%%
+% Copyright
+% - the script is provided as [Open Educational Resources](https://en.wikipedia.org/wiki/Open_educational_resources)
+% - comment text is licensed under [Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/)
+% - Matlab code is licensed under the [MIT license](https://opensource.org/licenses/MIT)
+% - feel free to use for your own purposes
+% - please attribute the work as follows:
+% Frank Schultz, Data Driven Audio Signal Processing-A Tutorial Featuring
+% Computational Examples, University of Rostock* ideally with relevant
+% file(s), github URL
+% https://github.com/spatialaudio/data-driven-audio-signal-processing-exercise,
+% commit number and/or version tag, year.

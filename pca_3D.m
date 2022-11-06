@@ -5,7 +5,7 @@
 % Data Driven Audio Signal Processing - A Tutorial with Computational Examples
 % Feel free to contact lecturer frank.schultz@uni-rostock.de
 %
-% Exercise 06: SVD / PCA on 3D data
+% Exercise: SVD / PCA on 3D data
 
 clear all
 %close all
@@ -198,13 +198,15 @@ plot3(S(1,1) * U(n2,1), S(2,2) * U(n2,2), S(3,3) * U(n2,3), 'p', 'color', '#e377
 plot3(S(1,1) * U(n3,1), S(2,2) * U(n3,2), S(3,3) * U(n3,3), 'h', 'color', '#17becf', 'markersize', 12)
 hold off
 
-
-%##############################################################################
-function flag = allclose(a, b)
-% https://numpy.org/doc/stable/reference/generated/numpy.allclose.html
-% numpy.allclose(a, b, rtol=1e-05, atol=1e-08, equal_nan=False)
-% https://stackoverflow.com/questions/28975822/matlab-equivalent-for-numpy-allclose
-rtol=1e-05;
-atol=1e-08;
-flag = all( abs(a(:)-b(:)) <= atol+rtol*abs(b(:)) );
-end
+%%
+% Copyright
+% - the script is provided as [Open Educational Resources](https://en.wikipedia.org/wiki/Open_educational_resources)
+% - comment text is licensed under [Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/)
+% - Matlab code is licensed under the [MIT license](https://opensource.org/licenses/MIT)
+% - feel free to use for your own purposes
+% - please attribute the work as follows:
+% Frank Schultz, Data Driven Audio Signal Processing-A Tutorial Featuring
+% Computational Examples, University of Rostock* ideally with relevant
+% file(s), github URL
+% https://github.com/spatialaudio/data-driven-audio-signal-processing-exercise,
+% commit number and/or version tag, year.

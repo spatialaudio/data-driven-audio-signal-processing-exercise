@@ -17,7 +17,7 @@ y = [0; 1; 1; 0]
 
 % train model by least squares / left inverse (tall/thin, full col rank)
 Xtilde = [ones(4,1) X];
-wtilde = inv(Xtilde.'*Xtilde)*Xtilde.' * y;  
+wtilde = inv(Xtilde.'*Xtilde)*Xtilde.' * y;
 
 b = wtilde(1)  % bias
 w = wtilde(2:3)  % weights w1 and w2
@@ -53,5 +53,15 @@ tmp = w_inner.'*X + b_inner;  % input layer perceptron
 tmp = max(tmp, 0);  % nonlinear activation ReLU
 tmp = w_outer.'*tmp;  %output layer perceptron (no bias, linear activation)
 
-
- 
+%%
+% Copyright
+% - the script is provided as [Open Educational Resources](https://en.wikipedia.org/wiki/Open_educational_resources)
+% - comment text is licensed under [Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/)
+% - Matlab code is licensed under the [MIT license](https://opensource.org/licenses/MIT)
+% - feel free to use for your own purposes
+% - please attribute the work as follows:
+% Frank Schultz, Data Driven Audio Signal Processing-A Tutorial Featuring
+% Computational Examples, University of Rostock* ideally with relevant
+% file(s), github URL
+% https://github.com/spatialaudio/data-driven-audio-signal-processing-exercise,
+% commit number and/or version tag, year.

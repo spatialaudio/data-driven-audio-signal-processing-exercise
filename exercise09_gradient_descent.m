@@ -1,4 +1,4 @@
-% Sascha Spors, Professorship Signal Theory and Digital Signal Processing, 
+% Sascha Spors, Professorship Signal Theory and Digital Signal Processing,
 % Institute of Communications Engineering (INT), Faculty of Computer Science
 % and Electrical Engineering (IEF), University of Rostock, Germany
 %
@@ -21,13 +21,13 @@ x = [x1; x2]; % set up a vector
 S = [1 1; 1 2];
 a = [3; 2];
 
-% create a valley with min at 0,0 and fmin=0 
+% create a valley with min at 0,0 and fmin=0
 %S = [1 0; 0 1/100];
 %a = [0;0];
 
 S_is_posdef = all(eig(S)) > 0  % must be pos (semi)-def
 disp('inv(S)')
-inv(S) 
+inv(S)
 f = simplify(1/2*x.'*S*x - a.'* x)  % set up f(x1,x2)
 
 % analytical solutions
@@ -72,7 +72,7 @@ if strcmp(plot3_flag, 'surface')
 elseif strcmp(plot3_flag, 'contour')
     fcontour(f, [-6 6 -6 6], 'LevelStep', 2)
 else
-   disp('check plot3_flag') 
+    disp('check plot3_flag')
 end
 hold on % to add gradient descent points
 for k = 1:steps
@@ -84,10 +84,10 @@ for k = 1:steps
     plot_data(1, k) = xk(1);
     plot_data(2, k) = xk(2);
     plot_data(3, k) = farg;
-
+    
     if strcmp(gd_flag, 'normal_gd') % calc gradient descent
         tmp = gradf; % tmp var
-        tmp = subs(tmp, x1, xk(1)); %set current x1 value 
+        tmp = subs(tmp, x1, xk(1)); %set current x1 value
         tmp = subs(tmp, x2, xk(2)); %set current x2 value
         xk = xk - step_size * tmp; % update rule for gradient descent xk -> xk+1
     elseif strcmp(gd_flag, 'momentum_gd') % calc gradient descent with momentum
@@ -97,7 +97,7 @@ for k = 1:steps
         
         % grad for xk+1:
         tmp = gradf; % tmp var
-        tmp = subs(tmp, x1, xk(1)); %set current x1 value 
+        tmp = subs(tmp, x1, xk(1)); %set current x1 value
         tmp = subs(tmp, x2, xk(2)); %set current x2 value
         
         % update zk -> zk+1
@@ -132,10 +132,23 @@ S
 % so this 'gold' standard is of theoretical interest
 xk = [-4; -3]; % random init point
 tmp = gradf;
-tmp = subs(tmp, x1, xk(1)); %set current x1 value 
-tmp = subs(tmp, x2, xk(2)); %set current x2 value    
+tmp = subs(tmp, x1, xk(1)); %set current x1 value
+tmp = subs(tmp, x2, xk(2)); %set current x2 value
 % cf. textbook Gilbert Strang (2019):
 % "Linear Algebra and Learning from Data", Wellesley, p.327 (3),(4)
 % solve with Newton in one step
 inv(S) * (S*xk - tmp); % or rewritten
 xk = eval(xk - inv(S)*tmp)
+
+%%
+% Copyright
+% - the script is provided as [Open Educational Resources](https://en.wikipedia.org/wiki/Open_educational_resources)
+% - comment text is licensed under [Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/)
+% - Matlab code is licensed under the [MIT license](https://opensource.org/licenses/MIT)
+% - feel free to use for your own purposes
+% - please attribute the work as follows:
+% Frank Schultz, Data Driven Audio Signal Processing-A Tutorial Featuring
+% Computational Examples, University of Rostock* ideally with relevant
+% file(s), github URL
+% https://github.com/spatialaudio/data-driven-audio-signal-processing-exercise,
+% commit number and/or version tag, year.
