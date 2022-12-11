@@ -131,7 +131,7 @@ for step in range(steps):
     da = -Y / A + (1-Y) / (1-A)  # step1 -> dL/da
     dz = da * A*(1-A)  # step 2 -> (dL/da) * da/dz
     dw = np.dot(X, dz.T) / m_train  # step 3 -> dL/dw = (dL/da * da/dz) * dz/dw
-    db = np.mean(dz)  # dL/dw = dL/da * da/dz * dz/db
+    db = np.mean(dz)  # dL/db = dL/da * da/dz * dz/db
 
     # gradient descent update rule
     w = w - step_size * dw
