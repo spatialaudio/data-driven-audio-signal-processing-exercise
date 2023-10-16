@@ -1,7 +1,7 @@
 \iffalse
   \documentclass[mathserif, aspectratio=43]{intbeamer}
 \else
-  \documentclass[aspectratio=169]{beamer}
+  \documentclass[aspectratio=1610]{beamer}
   \definecolor{urllinkcol}{RGB}{31,119,180}
   \hypersetup{colorlinks,linkcolor=,urlcolor=urllinkcol}
   \usetheme{Madrid}
@@ -10,12 +10,14 @@
   \setbeamertemplate{page number in head/foot}[appendixframenumber] % appendix pagenumbering restart
 \fi
 
+\usepackage{fourier}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{subcaption}
 \captionsetup[subfigure]{skip=2pt} % global setting for subfigure
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{bm}
+\usepackage{nicefrac}
 \usepackage{trfsigns}
 %\usepackage{gensymb}
 %\usepackage{macros}
@@ -25,24 +27,39 @@
 %\usepackage{tikz}
 %\usetikzlibrary{calc}
 \usepackage{comment}
+\usepackage{drawmatrix}
 
 %\includecomment{plottikz}
 %\excludecomment{plottikz}
-\definecolor{pyplotC0}{RGB}{31,119,180}
+%\definecolor{pyplotC0}{RGB}{31,119,180}
+\definecolor{C0}{HTML}{1f77b4}  % column space
+\definecolor{C1}{HTML}{ff7f0e}  % left null space
+\definecolor{C2}{HTML}{2ca02c}  % row space
+\definecolor{C3}{HTML}{d62728}
+\definecolor{C4}{HTML}{9467bd}  % null space
+\definecolor{C5}{HTML}{8c564b}
+\definecolor{C6}{HTML}{e377c2}
+\definecolor{C7}{HTML}{7f7f7f}
+\definecolor{C8}{HTML}{bcbd22}
+\definecolor{C9}{HTML}{17becf}
+
+
 
 %\newcommand{\tw}{0.73}
 
 % ===== titlepage info =====
-\title[STiASP \#24512 - Exercise]%
-{Selected Topics in Audio Signal Processing\\(Data-Driven Methods in Signal Processing) \#24512}
+\title[DDASP \#24512 - Tutorial]%
+{Selected Topics in Audio Signal Processing (Data-Driven Methods in Signal Processing) \#24512}
 
 \author[Schultz, Spors]{%
     \underline{\href{https://orcid.org/0000-0002-3010-0294}{Frank Schultz}}, \href{https://orcid.org/0000-0001-7225-9992}{Sascha Spors}}
 
-\date[Winter Term 2022/23]{%\raisebox{0mm}{\includegraphics[width=4.6cm]{logo.png}}\\
-  Exercise -- Winter Term 2022/23}
+\date[Winter Term 2023/24]{%\raisebox{0mm}{\includegraphics[width=4.6cm]{logo.png}}\\
+  Exercise -- Winter Term 2023/24}
 
-\institute[]{Research Group Signal Processing and Virtual Acoustics,
+\institute[]{Research Group Signal Processing and Virtual Acoustics\\
+Institute of Communications Engineering\\
+Faculty of Computer Science and Electrical Engineering\\
 University of Rostock}
 
 \begin{document}
@@ -1075,7 +1092,152 @@ $$
 which in Python and Matlab produces unattractive numbers in the SVD data due to the square root involved.
 So we should better know what we are doing and what to expect from the SVD.
 \end{frame}
+%
+%
+%
+\begin{frame}{4 Subspaces of a Matrix}
 
+matrix $\bm{A}_{M \times N} = \bm{U} \bm{\Sigma} \bm{V}^H$ spans four fundamental subspaces
+
+\hspace{4.25cm}
+\textcolor{C0}{column space} $\perp$ \textcolor{C4}{left null space}
+\hspace{0.75cm}
+\textcolor{C2}{row space} $\perp$ \textcolor{C1}{null space}
+
+\textcolor{C0}{column space / range / image:} $$R(\bm{A}) = \{\bm{p}\in\mathbb{C}^M | \bm{A} \bm{g} = \bm{p},\qquad\forall \bm{g}\in\mathbb{C}^N\}$$
+
+\textcolor{C1}{null space / kernel:} $$N(\bm{A}) = \{\bm{g}\in\mathbb{C}^N | \bm{A} \bm{g} = \bm{0}\}$$
+
+the column/null-space concept for transposed matrix $\bm{A}^H$ yields the two other spaces:
+
+\textcolor{C2}{row space:} $$R(\bm{A}^H) = \{\bm{g}\in\mathbb{C}^N | \bm{A}^H \bm{p} = \bm{g},\qquad\forall \bm{p}\in\mathbb{C}^M\}$$
+
+\textcolor{C4}{left null space / cokernel:} $$N(\bm{A}^H) = \{\bm{p}\in\mathbb{C}^M | \bm{A}^H \bm{p} = \bm{0}\}$$
+
+rank of $\bm{A}$ == dimension of column space == dimension of row space == number of independent columns and rows
+
+\end{frame}
+%
+%
+%
+\begin{frame}{4 Subspaces of a Matrix}
+
+matrix $\bm{A}_{M \times N} = \bm{U} \bm{\Sigma} \bm{V}^H$ spans four fundamental subspaces, these are nicely encoded in the SVD
+
+\hspace{0.75cm}
+\textcolor{C2}{row space} $\perp$ \textcolor{C1}{null space}
+\hspace{4.5cm}
+\textcolor{C0}{column space} $\perp$ \textcolor{C4}{left null space}
+
+\centering
+\includegraphics[width=0.5\textwidth]{four_subspaces.pdf}
+
+\hspace{0.75cm}
+right singular vectors in $\bm{V}$
+\hspace{4.5cm}
+left singular vectors in $\bm{U}$
+
+\end{frame}
+%
+%
+%
+\begin{frame}{Singular Value Decomposition (SVD), full rank cases}
+
+$\cdot$ Sum of rank-1 matrices\qquad
+$\bm{A} = \bm{U} \bm{\Sigma} \bm{V}^H =  \sum\limits_{i=1}^{r} \sigma_i \quad \textcolor{C0}{\bm{u}}_i \quad \textcolor{C2}{\bm{v}}^H_i$
+
+\hspace{4.25cm}
+\textcolor{C0}{column space} $\perp$ \textcolor{C4}{left null space}
+\hspace{0.75cm}
+\textcolor{C2}{row space} $\perp$ \textcolor{C1}{null space}
+
+$\cdot$ Square matrix $\bm{A}$, \quad $M$ rows $=$ $N$ columns, \quad full rank ($r=M=N$), \quad inverse $\bm{A}^\dagger = \bm{A}^{-1}$
+\begin{center}
+$
+\def\M{1}
+\def\N{1}
+\def\rank{0.999999}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\N]U_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}
+\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}^H
+$
+\end{center}
+$\cdot$ Flat / fat matrix $\bm{A}$, \quad $M$ rows $<$ $N$ columns, \quad full row rank ($r=M$), \quad right inverse $\bm{A}^\dagger = \bm{A}^H (\bm{A} \bm{A}^H )^{-1}$
+\begin{center}
+$
+\def\M{1}
+\def\N{1.4}
+\def\rank{0.999999}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\M]U_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\M, width=\rank\M]\Sigma_\mathtt{M \times N}
+\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\M]{V}_\mathtt{N \times N}^H
+$
+\end{center}
+$\cdot$ Tall / thin matrix $\bm{A}$, \quad $M$ rows $>$ $N$ columns, \quad full column rank ($r=N$), \quad left inverse $\bm{A}^\dagger = (\bm{A}^H \bm{A})^{-1} \bm{A}^H$
+\begin{center}
+$
+\def\M{1.4}
+\def\N{1}
+\def\rank{0.999999}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\N]U_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}
+\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}^H
+$
+\end{center}
+\end{frame}
+%
+%
+%
+\begin{frame}{Singular Value Decomposition (SVD), rank-deficient cases}
+
+$\cdot$ Sum of rank-1 matrices\qquad
+$\bm{A} = \bm{U} \bm{\Sigma} \bm{V}^H =  \sum\limits_{i=1}^{r} \sigma_i \quad \textcolor{C0}{\bm{u}}_i \quad \textcolor{C2}{\bm{v}}^H_i$
+
+\hspace{4.25cm}
+\textcolor{C0}{column space} $\perp$ \textcolor{C4}{left null space}
+\hspace{0.75cm}
+\textcolor{C2}{row space} $\perp$ \textcolor{C1}{null space}
+
+$\cdot$ Square matrix $\bm{A}$, \quad $M$ rows $=$ $N$ columns, \quad rank deficient ($r<M=N$), \quad pseudo-inverse $\bm{A}^\dagger = \bm{V} \Sigma^\dagger \bm{U}^H$
+\begin{center}
+$
+\def\M{1}
+\def\N{1}
+\def\rank{0.5}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\N]U_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}
+\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}^H
+$
+\end{center}
+$\cdot$ Flat / fat matrix $\bm{A}$, \quad $M$ rows $<$ $N$ columns, \quad rank deficient ($r<M$), \quad pseudo-inverse $\bm{A}^\dagger = \bm{V} \Sigma^\dagger \bm{U}^H$
+\begin{center}
+$
+\def\M{1}
+\def\N{1.4}
+\def\rank{0.75}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\M]U_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\M, width=\rank\M]\Sigma_\mathtt{M \times N}
+\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\M]{V}_\mathtt{N \times N}^H
+$
+\end{center}
+$\cdot$ Tall / thin matrix $\bm{A}$, \quad $M$ rows $>$ $N$ columns, \quad rank deficient ($r<N$), \quad pseudo-inverse $\bm{A}^\dagger = \bm{V} \Sigma^\dagger \bm{U}^H$
+\begin{center}
+$
+\def\M{1.4}
+\def\N{1}
+\def\rank{0.67}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\N]U_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}
+\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}^H
+$
+\end{center}
+\end{frame}
 
 % \section{Appendix}
 % \begin{frame}{}
