@@ -1,5 +1,5 @@
 \iffalse
-  \documentclass[mathserif, aspectratio=43]{intbeamer}
+  \documentclass[mathserif, aspectratio=1610]{intbeamer}
 \else
   \documentclass[aspectratio=1610]{beamer}
   \definecolor{urllinkcol}{RGB}{31,119,180}
@@ -60,7 +60,7 @@
 \institute[]{Research Group Signal Processing and Virtual Acoustics\\
 Institute of Communications Engineering\\
 Faculty of Computer Science and Electrical Engineering\\
-University of Rostock}
+University of Rostock, Rostock, Germany}
 
 \begin{document}
 \maketitle
@@ -72,7 +72,7 @@ University of Rostock}
 %
 %
 
-\begin{frame}{Topics}
+\begin{frame}{Topics Proposal for Tutorial}
 \begin{itemize}
 \item singular value decomposition (SVD)
   \begin{itemize}
@@ -100,7 +100,6 @@ University of Rostock}
   \item using convolutional layers (CNN)
   \end{itemize}
 \end{itemize}
-sketch of fields that contribute to data processing / data science...
 \end{frame}
 % sketch of fields that contribute to data processing / data science
 %
@@ -174,7 +173,7 @@ sketch of fields that contribute to data processing / data science...
 
 
 \section{Ex01: Introduction}
-\begin{frame}{Ex0x: Introduction}
+\begin{frame}{Ex01: Introduction}
 Objectives
 \begin{itemize}
 \item related fields for data science / learning from data
@@ -208,6 +207,33 @@ Objectives
 \end{frame}
 
 
+\begin{frame}{We Can Do Machine Learning with a Linear Model}
+linear algebra\footnote{we should do ourselves a favour and read at least one of the linear algebra textbooks by Gilbert Strang}
+is THE tool to model linear models
+\begin{center}
+$
+\def\Mic{3}
+\def\LS{1}
+\drawmatrix[fill=none, height=\Mic, width=0]y_\mathtt{M \times 1} =
+\drawmatrix[fill=none, height=\Mic, width=\LS]F_\mathtt{M \times N}
+\drawmatrix[fill=none, height=\LS, width=0]\theta_\mathtt{M \times 1} +
+\drawmatrix[fill=none, height=\Mic, width=0]n_\mathtt{M \times 1}
+$
+\end{center}
+\vspace{5mm}
+\begin{equation*}
+\bm{y} = \bm{F} \,\,\, \bm{\theta} + \bm{n}
+\end{equation*}
+
+$\bm{y}$ output data
+
+$\bm{F}$ features as columns in a feature matrix
+
+$\bm{\theta}$ model parameters (which we want to learn)
+
+$\bm{n}$ noise (included in the measured output data)
+
+\end{frame}
 
 
 \begin{frame}{Audio Toy Example for Linear Regression and SVD}
@@ -230,27 +256,154 @@ Let us assume that i) we know $\bm{X}$ (i.e. the individual audio tracks) and $\
 
 
 \section{Ex02: SVD / 4 Subspaces}
+
 \begin{frame}{Ex02: SVD / 4 Subspaces}
 Objectives
 \begin{itemize}
-\item linear regression with least squares teaser
-\item subspaces example on simple matrix
+\item important matrix factorizations
 \item SVD and 4 subspaces within orthonormal bases V, U
 \item rank-1 matrix superposition
 \end{itemize}
 \end{frame}
 
+
+
+\begin{frame}{Matrix Factorization from Eigenwert Problem for Square Matrix}
+
+for square matrix $\bm{A}_{M \times M}$ we can have a factorization (known as diagonalization)
+
+$$\bm{A} = \bm{X} \bm{\Lambda} \bm{X}^{-1}$$
+
+(but only) when $M$ independent eigenvectors as columns in $\bm{X}$ (only then $\bm{X}^{-1}$ is possible)
+
+with the corresponding eigenvalues $\lambda$ in the diagonal matrix $\Lambda$
+
+\begin{center}
+$
+\def\M{1}
+\def\N{1}
+\def\rank{0.9999}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times M} =
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\N]X_\mathtt{M \times M}
+\drawmatrix[diag]\Lambda_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=C4}, bbox height=\N, bbox width=\N, fill=C0, height=\N, width=\rank\N]{X}_\mathtt{M \times M}^{-1}
+$
+\end{center}
+
+the matrix is acting onto $m$-th eigenvector as
+
+$$\bm{A} \bm{x}_m = \lambda_m \bm{x}_m$$
+
+$\Lambda$ might be complex-valued
+
+$\bm{X}$ might be complex-valued
+
+if some $\lambda_m=0$, we know that for this eigenvector we get $\bm{A} \bm{x}_m = 0 \bm{x}_m = \bm{0}$, i.e. $\bm{A}$ is a singular matrix, i.e. $\bm{A}$ is a non-full rank matrix
+
+\end{frame}
+
+
+
+
+\begin{frame}{Matrix Factorization from Eigenwert Problem for Symmetric Matrix}
+
+for \underline{symmetric} matrix $\bm{A}_{M \times M} = \bm{A}_{M \times M}^H$ we can have a special case of diagonalization
+
+$$\bm{A} = \bm{Q} \bm{\Lambda} \bm{Q}^{-1} = \bm{Q} \bm{\Lambda} \bm{Q}^{H}$$
+
+(only) when $M$ independent, \underline{orthogonal} eigenvectors as columns in $\bm{Q}$ \quad($\bm{Q} \bm{Q}^H = \bm{I}$, $\bm{Q}^H \bm{Q} = \bm{I}$)
+
+with the corresponding eigenvalues $\lambda\in\mathbb{R}$ in the diagonal matrix $\Lambda$
+
+\begin{center}
+$
+\def\M{1}
+\def\N{1}
+\def\rank{0.9999}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times M} =
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C1, height=\M, width=\rank\N]{Q}_\mathtt{M \times M}
+\drawmatrix[diag]\Lambda_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=C4}, bbox height=\N, bbox width=\N, fill=C1, height=\N, width=\rank\N]{Q}_\mathtt{M \times M}^{H}
+$
+\end{center}
+
+the matrix is acting onto $m$-th eigenvector as
+
+$$\bm{A} \bm{q}_m = \lambda_m \bm{q}_m$$
+
+$\Lambda\in\mathbb{R}$
+
+$\bm{Q}\in\mathbb{R}$ if $\bm{A}\in\mathbb{R}$, $\bm{Q}\in\mathbb{C}$ if $\bm{A}\in\mathbb{C}$
+
+if some $\lambda_m=0$ we know that for this eigenvector we get $\bm{A} \bm{q}_m = 0 \bm{q}_m = \bm{0}$, i.e. $\bm{A}$ is a singular matrix, i.e. $\bm{A}$ is a non-full rank matrix
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}{Generalized Factorization?!?}
+Over-Determined
+\begin{center}
+$
+\def\M{3}
+\def\N{1}
+\def\rank{0.8}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\N]U_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}
+\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}^H
+$
+\end{center}
+Under-Determined
+\begin{center}
+$
+\def\M{1}
+\def\N{3}
+\def\rank{0.2}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\M]U_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\M, width=\rank\M]\Sigma_\mathtt{M \times N}
+\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\M]{V}_\mathtt{N \times N}^H
+$
+\end{center}
+\end{frame}
+
+
+
 \begin{frame}{Singular Value Decomposition (SVD)}
-most general matrix factorization that nicely reveals the 4 subspaces of a rank $r$ matrix $\bm{A}$
+most general matrix factorization % that nicely reveals the 4 subspaces of a rank $r$ matrix $\bm{A}$
 
 fundamentally important for understanding the heart beat of linear algebra
 
-\includegraphics[width=0.4\textwidth]{figures_web/Figure_7.8_A.png}
-\includegraphics[width=0.55\textwidth]{figures_web/Figure_7.8_B.png}
+\begin{center}
+$
+\def\M{2}
+\def\N{1}
+\def\rank{0.999999}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\N]U_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}
+\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}^H
+$
+\end{center}
 
-\begin{footnotesize}Fig. 7.8 from Kevin P. Murphy (2022): "Probabilistic Machine Learning: An Introduction" MIT Press. \href{https://probml.github.io/pml-book/book1.html}{open source book and current draft as free pdf}\end{footnotesize}
+\begin{center}
+$
+\def\M{1}
+\def\N{2}
+\def\rank{0.999999}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\M]U_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\M, width=\rank\M]\Sigma_\mathtt{M \times N}
+\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\M]{V}_\mathtt{N \times N}^H
+$
+\end{center}
 
-$$\bm{A} = \bm{U} \bm{S} \bm{V}^\mathrm{H}$$
+$$\bm{A} = \bm{U} \bm{\Sigma} \bm{V}^\mathrm{H}$$
+
 
 left singular vectors\quad$\bm{U} = \mathrm{eigvec}(\bm{A}\bm{A}^\mathrm{H})$
 \begin{footnotesize}, order must match to the corresponding singular values\end{footnotesize}
@@ -258,11 +411,7 @@ left singular vectors\quad$\bm{U} = \mathrm{eigvec}(\bm{A}\bm{A}^\mathrm{H})$
 right singular vectors $\bm{V} = \mathrm{eigvec}(\bm{A}^\mathrm{H}\bm{A})$
 \begin{footnotesize}, order must match to the corresponding singular values\end{footnotesize}
 
-singular value matrix $\bm{S}$, $r$ singular values on diagonal descending order
-
-input-related matrix $\bm{V}$ and output related matrix $\bm{U}$ are unitary....
-
-%$$\bm{V}\bm{V}^\mathrm{H}=\bm{I},\quad\bm{V}^\mathrm{H}\bm{V}=\bm{I},\quad\bm{U}\bm{U}^\mathrm{H}=\bm{I},\quad\bm{U}^\mathrm{H}\bm{U}=\bm{I}$$
+singular value matrix $\bm{\Sigma}$, $r$ singular values on \underline{diagonal} descending order
 
 \end{frame}
 
@@ -272,29 +421,219 @@ input-related matrix $\bm{V}$ and output related matrix $\bm{U}$ are unitary, i.
 
 $$\bm{V}\bm{V}^\mathrm{H}=\bm{I},\quad\bm{V}^\mathrm{H}\bm{V}=\bm{I},\quad\bm{U}\bm{U}^\mathrm{H}=\bm{I},\quad\bm{U}^\mathrm{H}\bm{U}=\bm{I}$$
 
-superposition of rank-1 matrices (outer products) because diagonal singular values
+superposition of rank-1 matrices (outer products) because singular values in diagonal matrix $\bm{\Sigma}$
 $$\bm{A} = \sum_{i=1}^{\text{rank }r} \sigma_i \bm{u}_i \bm{v}_i^\mathrm{H} = \bm{U} \bm{S} \bm{V}^\mathrm{H}$$
 
-SVD and the 4 subspaces of matrix $\bm{A}$ with rank $r$
+Fundamentally important: $\bm{U}$ and $\bm{V}$ span the 4 subspaces of matrix $\bm{A}$
+
+\centering
+\includegraphics[width=0.4\textwidth]{four_subspaces.pdf}
+
+\end{frame}
+
+\begin{frame}{The 4 Subspaces of a Matrix}
+
+matrix $\bm{A}_{M \times N} = \bm{U} \bm{\Sigma} \bm{V}^H$ spans four fundamental subspaces
+
+\hspace{4.25cm}
+\textcolor{C0}{column space} $\perp$ \textcolor{C4}{left null space}
+\hspace{0.75cm}
+\textcolor{C2}{row space} $\perp$ \textcolor{C1}{null space}
+
+\textcolor{C0}{column space / range / image:} $$R(\bm{A}) = \{\bm{p}\in\mathbb{C}^M | \bm{A} \bm{g} = \bm{p},\qquad\forall \bm{g}\in\mathbb{C}^N\}$$
+
+\textcolor{C1}{null space / kernel:} $$N(\bm{A}) = \{\bm{g}\in\mathbb{C}^N | \bm{A} \bm{g} = \bm{0}\}$$
+
+the column/null-space concept for transposed matrix $\bm{A}^H$ yields the two other spaces:
+
+\textcolor{C2}{row space:} $$R(\bm{A}^H) = \{\bm{g}\in\mathbb{C}^N | \bm{A}^H \bm{p} = \bm{g},\qquad\forall \bm{p}\in\mathbb{C}^M\}$$
+
+\textcolor{C4}{left null space / cokernel:} $$N(\bm{A}^H) = \{\bm{p}\in\mathbb{C}^M | \bm{A}^H \bm{p} = \bm{0}\}$$
+
+rank of $\bm{A}$ == dimension of column space == dimension of row space == number of independent columns and rows
+
+\end{frame}
+%
+%
+%
+\begin{frame}{4 Subspaces of a Matrix}
+
+matrix $\bm{A}_{M \times N} = \bm{U} \bm{\Sigma} \bm{V}^H$ spans four fundamental subspaces, these are nicely encoded in the SVD
+
+\hspace{0.75cm}
+\textcolor{C2}{row space} $\perp$ \textcolor{C1}{null space}
+\hspace{4.5cm}
+\textcolor{C0}{column space} $\perp$ \textcolor{C4}{left null space}
+
+\centering
+\includegraphics[width=0.5\textwidth]{four_subspaces.pdf}
+
+\hspace{0.75cm}
+right singular vectors in $\bm{V}$
+\hspace{4.5cm}
+left singular vectors in $\bm{U}$
+
+\end{frame}
+%
+%
+%
+\begin{frame}{Singular Value Decomposition (SVD), full rank cases}
+
+$\cdot$ Sum of rank-1 matrices\qquad
+$\bm{A} = \bm{U} \bm{\Sigma} \bm{V}^H =  \sum\limits_{i=1}^{r} \sigma_i \quad \textcolor{C0}{\bm{u}}_i \quad \textcolor{C2}{\bm{v}}^H_i$
+
+\hspace{4.25cm}
+\textcolor{C0}{column space} $\perp$ \textcolor{C4}{left null space}
+\hspace{0.75cm}
+\textcolor{C2}{row space} $\perp$ \textcolor{C1}{null space}
+
+$\cdot$ Square matrix $\bm{A}$, \quad $M$ rows $=$ $N$ columns, \quad full rank ($r=M=N$), \quad inverse $\bm{A}^\dagger = \bm{A}^{-1}$
 \begin{center}
-\includegraphics[width=0.3\textwidth]{figures_web/Strang_DiffEQ_LA_fig7_3.png}
+$
+\def\M{1}
+\def\N{1}
+\def\rank{0.999999}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\N]U_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}
+\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}^H
+$
 \end{center}
-\begin{footnotesize}consider Fig. 7.3 from Gilbert Strang (2014): "Differential Equations and Linear Algebra". Wellesley\end{footnotesize}
+$\cdot$ Flat / fat matrix $\bm{A}$, \quad $M$ rows $<$ $N$ columns, \quad full row rank ($r=M$), \quad right inverse $\bm{A}^\dagger = \bm{A}^H (\bm{A} \bm{A}^H )^{-1}$
+\begin{center}
+$
+\def\M{1}
+\def\N{1.4}
+\def\rank{0.999999}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\M]U_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\M, width=\rank\M]\Sigma_\mathtt{M \times N}
+\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\M]{V}_\mathtt{N \times N}^H
+$
+\end{center}
+$\cdot$ Tall / thin matrix $\bm{A}$, \quad $M$ rows $>$ $N$ columns, \quad full column rank ($r=N$), \quad left inverse $\bm{A}^\dagger = (\bm{A}^H \bm{A})^{-1} \bm{A}^H$
+\begin{center}
+$
+\def\M{1.4}
+\def\N{1}
+\def\rank{0.999999}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\N]U_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}
+\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}^H
+$
+\end{center}
+\end{frame}
+%
+%
+%
+\begin{frame}{Singular Value Decomposition (SVD), rank-deficient cases}
+
+$\cdot$ Sum of rank-1 matrices\qquad
+$\bm{A} = \bm{U} \bm{\Sigma} \bm{V}^H =  \sum\limits_{i=1}^{r} \sigma_i \quad \textcolor{C0}{\bm{u}}_i \quad \textcolor{C2}{\bm{v}}^H_i$
+
+\hspace{4.25cm}
+\textcolor{C0}{column space} $\perp$ \textcolor{C4}{left null space}
+\hspace{0.75cm}
+\textcolor{C2}{row space} $\perp$ \textcolor{C1}{null space}
+
+$\cdot$ Square matrix $\bm{A}$, \quad $M$ rows $=$ $N$ columns, \quad rank deficient ($r<M=N$), \quad pseudo-inverse $\bm{A}^\dagger = \bm{V} \Sigma^\dagger \bm{U}^H$
+\begin{center}
+$
+\def\M{1}
+\def\N{1}
+\def\rank{0.5}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\N]U_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}
+\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}^H
+$
+\end{center}
+$\cdot$ Flat / fat matrix $\bm{A}$, \quad $M$ rows $<$ $N$ columns, \quad rank deficient ($r<M$), \quad pseudo-inverse $\bm{A}^\dagger = \bm{V} \Sigma^\dagger \bm{U}^H$
+\begin{center}
+$
+\def\M{1}
+\def\N{1.4}
+\def\rank{0.75}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\M]U_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\M, width=\rank\M]\Sigma_\mathtt{M \times N}
+\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\M]{V}_\mathtt{N \times N}^H
+$
+\end{center}
+$\cdot$ Tall / thin matrix $\bm{A}$, \quad $M$ rows $>$ $N$ columns, \quad rank deficient ($r<N$), \quad pseudo-inverse $\bm{A}^\dagger = \bm{V} \Sigma^\dagger \bm{U}^H$
+\begin{center}
+$
+\def\M{1.4}
+\def\N{1}
+\def\rank{0.67}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\N]U_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}
+\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}^H
+$
+\end{center}
+\end{frame}
+
+\begin{frame}{Subspace Properties and Characteristics of Inverse Problem}
+%
+sketches of the 4 subspaces for these 4 cases help to get the essence how a matrix maps things forward and (potentially) backward
+%
+\begin{itemize}
+\item full rank, no nullspace, no left null space = square matrix = exactly solvable, typically learned in basic linear algebra course
+\item full column rank, no nullspace, potentially large left nullspace = tall/thin matrix, over determined system of equations, we need the left inverse, many practical problems, statistical model fitting, least squares error solution
+\item full row rank, potentially large nullspace, no left nullspace = flat/fat matrix, under-determined system of equations, we need the right inverse, solution in the sense of least squares magnitude for unknown vector
+\item rank deficient, potentially large nullspace, potentially large left nullspace, meaningful information of the matrix is not stored in optimum way $\rightarrow$ data-driven learning...but before doing this stuff, we should at least learn full column rank cases properly
+\end{itemize}
+%
+\end{frame}
+
+
+\begin{frame}{SVD Basics}
+due to $\bm{V}^\mathrm{H}\bm{V}=\bm{I}$ we can re-arrange
+$$\bm{A} = \bm{U} \bm{\Sigma} \bm{V}^\mathrm{H} \rightarrow
+\bm{A} \bm{V} = \bm{U} \bm{\Sigma}$$
+rank $r$ matrix $\bm{A}$ acting on row space $\bm{v}$ maps to corresponding column space $\bm{u}$ weighted by corresponding singular value
+$$\bm{A} \bm{v}_{1:r} = \sigma_{1:r} \bm{u}_{1:r}$$
+matrix acting on null space $\bm{v}$ maps to zero vector $\bm{0}_{M \times 1}$
+$$\bm{A} \bm{v}_{r+1:N} = \bm{0}$$
+we should make a sketch to visualisze this
+
+\centering
+\includegraphics[width=0.3\textwidth]{four_subspaces.pdf}
 
 \end{frame}
 
 
-\begin{frame}{Singular Value Decomposition (SVD)}
-SVD and the 4 subspaces of matrix $\bm{A}$ with rank $r$
-\begin{center}
-\includegraphics[width=0.55\textwidth]{figures_web/Strang_DiffEQ_LA_fig7_3.png}
-\end{center}
-\begin{footnotesize}consider Fig. 7.3 from Gilbert Strang (2014): "Differential Equations and Linear Algebra". Wellesley\end{footnotesize}
 
-$$R(\bm{A}) = C(\bm{A}^\mathrm{H})\perp N(\bm{A})
-\qquad\qquad C(\bm{A}) \perp N(\bm{A}^\mathrm{H})$$
 
-\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 \section{Ex03: SVD and Left Inverse Brings us to OLS Linear Regression}
@@ -302,7 +641,8 @@ $$R(\bm{A}) = C(\bm{A}^\mathrm{H})\perp N(\bm{A})
 \begin{frame}{Ex03: SVD and Left Inverse Brings us to OLS Linear Regression}
 Objectives
 \begin{itemize}
-\item recap SVD $\bm{X} = \bm{U} \bm{S} \bm{V}^\mathrm{H}$/ 4 Subspaces
+\item linear regression with least squares error teaser
+\item subspaces example on simple matrix
 \item nice SVD properties and essence
 \item projecting vectors onto $\bm{U}$ and $\bm{V}$ spaces
 \item for full column rank matrix $\bm{X}_{M \times N}$ we can try to bring a $\bm{y}\in \mathbb{R}^M$ back to $\bm{\beta}\in \mathbb{R}^N$ solving the inverse problem for $\bm{X} \bm{\beta} + \bm{n} = \bm{y}$...we should do this by understanding the SVD
@@ -315,28 +655,7 @@ Objectives
 
 
 
-\begin{frame}{SVD Basics}
-due to $\bm{V}^\mathrm{H}\bm{V}=\bm{I}$ we can re-arrange
-$$\bm{X} = \bm{U} \bm{S} \bm{V}^\mathrm{H} \rightarrow
-\bm{X} \bm{V} = \bm{U} \bm{S}$$
-rank $r$ matrix $\bm{X}$ acting on row space $\bm{v}$ maps to corresponding column space $\bm{u}$ weighted by corresponding singular value
-$$\bm{X} \bm{v}_{1:r} = \sigma_{1:r} \bm{u}_{1:r}$$
-matrix acting on null space $\bm{v}$ maps to zero vector $\bm{0}_{M \times 1}$
-$$\bm{X} \bm{v}_{r+1:N} = \bm{0}$$
-we should make a sketch to visualisze this
-\end{frame}
 
-
-\begin{frame}{Subspace Properties and Characteristics of Inverse Problem}
-
-\begin{itemize}
-\item full rank, no nullspace, no left null space = square matrix = exactly solvable, typically learned in basic linear algebra course
-\item full column rank, no nullspace, potentially large left nullspace = tall/thin matrix, over determined system of equations, we need the left inverse, many practical problems, statistical model fitting
-\item full row rank, potentially large nullspace, no left nullspace = flat/fat matrix, under-determined system of equations, we need the right inverse
-\item rank deficient, potentially large nullspace, potentially large left nullspace, meaningful information of the matrix is not stored in optimum way $\rightarrow$ data-driven learning...but before doing this stuff, we should at least learn full column rank cases properly
-\end{itemize}
-sketches of the 4 subspaces for these 4 cases help to get the essence how a matrix maps things forward and (potentially) backward
-\end{frame}
 
 
 \begin{frame}{Projection into V}
@@ -1095,149 +1414,21 @@ So we should better know what we are doing and what to expect from the SVD.
 %
 %
 %
-\begin{frame}{4 Subspaces of a Matrix}
 
-matrix $\bm{A}_{M \times N} = \bm{U} \bm{\Sigma} \bm{V}^H$ spans four fundamental subspaces
 
-\hspace{4.25cm}
-\textcolor{C0}{column space} $\perp$ \textcolor{C4}{left null space}
-\hspace{0.75cm}
-\textcolor{C2}{row space} $\perp$ \textcolor{C1}{null space}
 
-\textcolor{C0}{column space / range / image:} $$R(\bm{A}) = \{\bm{p}\in\mathbb{C}^M | \bm{A} \bm{g} = \bm{p},\qquad\forall \bm{g}\in\mathbb{C}^N\}$$
 
-\textcolor{C1}{null space / kernel:} $$N(\bm{A}) = \{\bm{g}\in\mathbb{C}^N | \bm{A} \bm{g} = \bm{0}\}$$
 
-the column/null-space concept for transposed matrix $\bm{A}^H$ yields the two other spaces:
 
-\textcolor{C2}{row space:} $$R(\bm{A}^H) = \{\bm{g}\in\mathbb{C}^N | \bm{A}^H \bm{p} = \bm{g},\qquad\forall \bm{p}\in\mathbb{C}^M\}$$
 
-\textcolor{C4}{left null space / cokernel:} $$N(\bm{A}^H) = \{\bm{p}\in\mathbb{C}^M | \bm{A}^H \bm{p} = \bm{0}\}$$
 
-rank of $\bm{A}$ == dimension of column space == dimension of row space == number of independent columns and rows
 
-\end{frame}
-%
-%
-%
-\begin{frame}{4 Subspaces of a Matrix}
 
-matrix $\bm{A}_{M \times N} = \bm{U} \bm{\Sigma} \bm{V}^H$ spans four fundamental subspaces, these are nicely encoded in the SVD
 
-\hspace{0.75cm}
-\textcolor{C2}{row space} $\perp$ \textcolor{C1}{null space}
-\hspace{4.5cm}
-\textcolor{C0}{column space} $\perp$ \textcolor{C4}{left null space}
 
-\centering
-\includegraphics[width=0.5\textwidth]{four_subspaces.pdf}
 
-\hspace{0.75cm}
-right singular vectors in $\bm{V}$
-\hspace{4.5cm}
-left singular vectors in $\bm{U}$
 
-\end{frame}
-%
-%
-%
-\begin{frame}{Singular Value Decomposition (SVD), full rank cases}
 
-$\cdot$ Sum of rank-1 matrices\qquad
-$\bm{A} = \bm{U} \bm{\Sigma} \bm{V}^H =  \sum\limits_{i=1}^{r} \sigma_i \quad \textcolor{C0}{\bm{u}}_i \quad \textcolor{C2}{\bm{v}}^H_i$
-
-\hspace{4.25cm}
-\textcolor{C0}{column space} $\perp$ \textcolor{C4}{left null space}
-\hspace{0.75cm}
-\textcolor{C2}{row space} $\perp$ \textcolor{C1}{null space}
-
-$\cdot$ Square matrix $\bm{A}$, \quad $M$ rows $=$ $N$ columns, \quad full rank ($r=M=N$), \quad inverse $\bm{A}^\dagger = \bm{A}^{-1}$
-\begin{center}
-$
-\def\M{1}
-\def\N{1}
-\def\rank{0.999999}
-\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
-\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\N]U_\mathtt{M \times M}
-\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}
-\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}^H
-$
-\end{center}
-$\cdot$ Flat / fat matrix $\bm{A}$, \quad $M$ rows $<$ $N$ columns, \quad full row rank ($r=M$), \quad right inverse $\bm{A}^\dagger = \bm{A}^H (\bm{A} \bm{A}^H )^{-1}$
-\begin{center}
-$
-\def\M{1}
-\def\N{1.4}
-\def\rank{0.999999}
-\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
-\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\M]U_\mathtt{M \times M}
-\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\M, width=\rank\M]\Sigma_\mathtt{M \times N}
-\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\M]{V}_\mathtt{N \times N}^H
-$
-\end{center}
-$\cdot$ Tall / thin matrix $\bm{A}$, \quad $M$ rows $>$ $N$ columns, \quad full column rank ($r=N$), \quad left inverse $\bm{A}^\dagger = (\bm{A}^H \bm{A})^{-1} \bm{A}^H$
-\begin{center}
-$
-\def\M{1.4}
-\def\N{1}
-\def\rank{0.999999}
-\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
-\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\N]U_\mathtt{M \times M}
-\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}
-\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}^H
-$
-\end{center}
-\end{frame}
-%
-%
-%
-\begin{frame}{Singular Value Decomposition (SVD), rank-deficient cases}
-
-$\cdot$ Sum of rank-1 matrices\qquad
-$\bm{A} = \bm{U} \bm{\Sigma} \bm{V}^H =  \sum\limits_{i=1}^{r} \sigma_i \quad \textcolor{C0}{\bm{u}}_i \quad \textcolor{C2}{\bm{v}}^H_i$
-
-\hspace{4.25cm}
-\textcolor{C0}{column space} $\perp$ \textcolor{C4}{left null space}
-\hspace{0.75cm}
-\textcolor{C2}{row space} $\perp$ \textcolor{C1}{null space}
-
-$\cdot$ Square matrix $\bm{A}$, \quad $M$ rows $=$ $N$ columns, \quad rank deficient ($r<M=N$), \quad pseudo-inverse $\bm{A}^\dagger = \bm{V} \Sigma^\dagger \bm{U}^H$
-\begin{center}
-$
-\def\M{1}
-\def\N{1}
-\def\rank{0.5}
-\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
-\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\N]U_\mathtt{M \times M}
-\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}
-\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}^H
-$
-\end{center}
-$\cdot$ Flat / fat matrix $\bm{A}$, \quad $M$ rows $<$ $N$ columns, \quad rank deficient ($r<M$), \quad pseudo-inverse $\bm{A}^\dagger = \bm{V} \Sigma^\dagger \bm{U}^H$
-\begin{center}
-$
-\def\M{1}
-\def\N{1.4}
-\def\rank{0.75}
-\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
-\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\M]U_\mathtt{M \times M}
-\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\M, width=\rank\M]\Sigma_\mathtt{M \times N}
-\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\M]{V}_\mathtt{N \times N}^H
-$
-\end{center}
-$\cdot$ Tall / thin matrix $\bm{A}$, \quad $M$ rows $>$ $N$ columns, \quad rank deficient ($r<N$), \quad pseudo-inverse $\bm{A}^\dagger = \bm{V} \Sigma^\dagger \bm{U}^H$
-\begin{center}
-$
-\def\M{1.4}
-\def\N{1}
-\def\rank{0.67}
-\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
-\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\N]U_\mathtt{M \times M}
-\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}
-\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}^H
-$
-\end{center}
-\end{frame}
 
 % \section{Appendix}
 % \begin{frame}{}
