@@ -14,16 +14,16 @@ Jupyter notebooks can be accessed via the services
 
 - [v0.1](https://github.com/spatialaudio/data-driven-audio-signal-processing-exercise/releases/tag/v0.1) for winter term 2021/22, initial version
 - TBD for winter term 2022/23
+- TBD for winter term 2023/24
 
 ## Branch Conventions
 
-- we use the `dev` branch as the developing branch, i.e. all notebook outputs are cleared for convenient diff handling
-- we use the `main` branch as presentation branch, i.e. notebook outputs (such as plots, results) are included for students' convenience
-- note that we **hard reset** `main` branch regularly in order to represent an actual desired state of the material, so please **do not rely on** `main` related commits, but rather act on the `dev` commits, where we do not change git history
+- we use the `dev` branch as the developing branch, this is the default branch of the repositoty
+- all notebook outputs in `dev` branch are cleared for convenient diff handling
 
 ## Anaconda Environment for Local Usage
 
-The [Anaconda distribution](https://www.anaconda.com/distribution/) is a convenient solution to install a required environment, i.e. to have access to the Jupyter Notebook renderer with a Python interpreter on a personal computer. It is very likely that a very recent installation of Anaconda already delivers most of the required standard packages just using the `base` environment. It is however good practice to create a dedicated environment for each project. So, for this tutorial we might use a `myddasp` (or whatever name works for us) environment. We might consider the following install routine:
+The [Anaconda distribution](https://www.anaconda.com/distribution/) is a convenient solution to install a required environment, i.e. to have access to a Jupyter Notebook renderer with a Python interpreter on a personal computer. It is very likely that a very recent installation of Anaconda already delivers most of the required standard packages just using the `base` environment. It is however good practice to create a dedicated environment for each project. So, for this tutorial we might use a `myddasp` (or whatever name works for us) environment. We might consider the following install routine:
 
 - clone the repo to local machine (if not already available)
     - `git clone git@github.com:spatialaudio/data-driven-audio-signal-processing-exercise.git` (via SSH) or
@@ -35,8 +35,6 @@ The [Anaconda distribution](https://www.anaconda.com/distribution/) is a conveni
     - (we can remove this environment with `conda env remove --name myddasp`)
 - activate this environment with `conda activate myddasp`
 - this should also have installed sound / audio related libraries using pip
-    - `pip install sounddevice==0.4.4`
-    - `pip install soundfile==0.11`
     - `pip install pyloudnorm==0.1.0`
     - we might check this with `pip list`
 - Jupyter notebook renderer needs to know our dedicated environment:
@@ -44,15 +42,15 @@ The [Anaconda distribution](https://www.anaconda.com/distribution/) is a conveni
 - we might want to archive the actually installed package versions by
     - `python -m pip list > detailed_packages_list_pip.txt` and
     - `conda env export --no-builds > detailed_packages_list_conda.txt`
-- start either a Jupyter notebook or Jupyter lab working environment via a local server instance by either `jupyter notebook` or `jupyter lab`
+- start a Jupyter lab environment via a local server instance by `jupyter lab`
 - start the landing page `index.ipynb` of the tutorial
 - make sure that the notebooks we want to work with are using our dedicated kernel `myddasp`
 
 ## Authorship
 
 - University of Rostock:
-    - [Frank Schultz](https://orcid.org/0000-0002-3010-0294)
-    - [Sascha Spors](https://orcid.org/0000-0001-7225-9992)
+    - [Frank Schultz](https://orcid.org/0000-0002-3010-0294), concept, coding
+    - [Sascha Spors](https://orcid.org/0000-0001-7225-9992), concept
 
 ## Referencing
 
