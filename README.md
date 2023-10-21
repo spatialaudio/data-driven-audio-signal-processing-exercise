@@ -10,6 +10,8 @@ Jupyter notebooks can be accessed via the services
 - **static** version using **nbviewer**: https://nbviewer.org/github/spatialaudio/data-driven-audio-signal-processing-exercise/blob/dev/index.ipynb
 - **sources** (tex, ipynb) at: https://github.com/spatialaudio/data-driven-audio-signal-processing-exercise
 
+Jupyter notebooks with rendered **outputs** can be viewed at https://nbviewer.org/github/spatialaudio/data-driven-audio-signal-processing-exercise/blob/main/index.ipynb
+
 ## Versions / Tags
 
 - [v0.1](https://github.com/spatialaudio/data-driven-audio-signal-processing-exercise/releases/tag/v0.1) for winter term 2021/22, initial version
@@ -18,8 +20,11 @@ Jupyter notebooks can be accessed via the services
 
 ## Branch Conventions
 
-- we use the `dev` branch as the developing branch, this is the default branch of the repositoty
+- the **default branch** of the repository is `dev` used for development 
 - all notebook outputs in `dev` branch are cleared for convenient diff handling
+- `main` branch contains notebooks with rendered outputs, which is maintained from time to time
+- do **not** rely on `main` branch as this is hard reset from time to time
+- probably in future we rename `main` to somewhat less confusing
 
 ## Anaconda Environment for Local Usage
 
