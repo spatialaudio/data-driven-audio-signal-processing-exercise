@@ -1,0 +1,10 @@
+ipympl
+keras-tuner
+librosa
+matplotlib
+numpy
+pyloudnorm
+scipy
+scikit-learn
+statsmodels
+tensorflow
