@@ -13,7 +13,7 @@ Jupyter notebooks can be accessed via the services
 ## Versions / Tags
 
 - [v0.1](https://github.com/spatialaudio/data-driven-audio-signal-processing-exercise/releases/tag/v0.1) for winter term 2021/22, initial version
-- TBD for winter term 2022/23
+- [v0.2](https://github.com/spatialaudio/data-driven-audio-signal-processing-exercise/releases/tag/v0.2) for winter term 2022/23
 - TBD for winter term 2023/24
 
 ## Branch Conventions
