@@ -298,7 +298,9 @@ $\Lambda$ might be complex-valued
 
 $\bm{X}$ might be complex-valued
 
-if some $\lambda_m=0$, we know that for this eigenvector we get $\bm{A} \bm{x}_m = 0 \bm{x}_m = \bm{0}$, i.e. $\bm{A}$ is a singular matrix, i.e. $\bm{A}$ is a non-full rank matrix
+if $\lambda_m=0$ we get $\bm{A} \bm{x}_m = 0 \cdot \bm{x}_m = \bm{0}$, i.e. $\bm{A}$ is a singular matrix, i.e. $\bm{A}$ is a non-full rank matrix
+
+rank of matrix $\bm{A}$ is $R$ == number of non-zero eigenvalues
 
 \end{frame}
 
@@ -327,15 +329,51 @@ $
 $
 \end{center}
 
-the matrix is acting onto $m$-th eigenvector as
+the matrix is acting onto the $m$-th eigenvector as
 
 $$\bm{A} \bm{q}_m = \lambda_m \bm{q}_m$$
 
-$\Lambda\in\mathbb{R}$
+$\bm{\Lambda}\in\mathbb{R}$
 
 $\bm{Q}\in\mathbb{R}$ if $\bm{A}\in\mathbb{R}$, $\bm{Q}\in\mathbb{C}$ if $\bm{A}\in\mathbb{C}$
 
-if some $\lambda_m=0$ we know that for this eigenvector we get $\bm{A} \bm{q}_m = 0 \bm{q}_m = \bm{0}$, i.e. $\bm{A}$ is a singular matrix, i.e. $\bm{A}$ is a non-full rank matrix
+if $\lambda_m=0$ we get $\bm{A} \bm{q}_m = 0 \cdot \bm{q}_m = \bm{0}$, i.e. $\bm{A}$ is a singular matrix, i.e. $\bm{A}$ is a non-full rank matrix
+
+rank of matrix $\bm{A}$ is $R$ == number of non-zero eigenvalues
+\end{frame}
+
+
+
+
+
+\begin{frame}[t]{Matrix Factorization from Eigenwert Problem for Symmetric Matrix}
+
+for a normal matrix $\bm{A}$ (such as symmetric, i.e. $\bm{A}^H \bm{A} = \bm{A} \bm{A}^H$ )
+
+there is the fundamental spectral theorem
+$$\bm{A} = \bm{Q} \bm{\Lambda} \bm{Q}^{H}$$
+
+i.e. diagonalization in terms of eigenvectors in full rank matrix $\bm{Q}$ and eigenvalues in $\bm{\Lambda}\in\mathbb{R}$
+
+What does $\bm{A}$ with an eigenvector $\bm{q}$?
+
+\begin{flushleft}
+$
+\def\M{1}
+\def\N{1}
+\def\rank{0.9999}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times M}
+\drawmatrix[fill=none, height=\M, width=0]q_\mathtt{M \times 1}
+=
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C1, height=\M, width=\rank\N]{Q}_\mathtt{M \times M}
+\drawmatrix[diag]\Lambda_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=C4}, bbox height=\N, bbox width=\N, fill=C1, height=\N, width=\rank\N]{Q}_\mathtt{M \times M}^{H}
+\drawmatrix[fill=none, height=\M, width=0]q_\mathtt{M \times 1} = ?
+$
+
+%$$\bm{A} \bm{q} = \bm{Q} \bm{\Lambda} \bm{Q}^{H} \bm{q} = ?$$
+\end{flushleft}
+
 \end{frame}
 
 
@@ -344,8 +382,8 @@ if some $\lambda_m=0$ we know that for this eigenvector we get $\bm{A} \bm{q}_m 
 
 
 
-\begin{frame}{Generalized Factorization?!?}
-Over-Determined
+\begin{frame}{Generalized Factorization?!}
+Over-Determined (tall/thin matrix $\bm{A}$)
 \begin{center}
 $
 \def\M{3}
@@ -357,7 +395,7 @@ $
 \drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}^H
 $
 \end{center}
-Under-Determined
+Under-Determined (flat/fat or short/wide matrix $\bm{A}$)
 \begin{center}
 $
 \def\M{1}
@@ -373,8 +411,8 @@ $
 
 
 
-\begin{frame}{Singular Value Decomposition (SVD)}
-most general matrix factorization % that nicely reveals the 4 subspaces of a rank $r$ matrix $\bm{A}$
+\begin{frame}{Generalized Factorization: Singular Value Decomposition (SVD)}
+most general matrix factorization for a matrix $\bm{A}$ with rank $R$
 
 fundamentally important for understanding the heart beat of linear algebra
 
@@ -402,7 +440,7 @@ $
 $
 \end{center}
 
-$$\bm{A} = \bm{U} \bm{\Sigma} \bm{V}^\mathrm{H}$$
+$$\bm{A} = \bm{U} \bm{\Sigma} \bm{V}^\mathrm{H}\qquad \qquad \bm{U}\bm{U}^H = \bm{U}^H\bm{U} = \bm{I} \qquad \qquad \bm{V}\bm{V}^H = \bm{V}^H\bm{V} = \bm{I}$$
 
 
 left singular vectors\quad$\bm{U} = \mathrm{eigvec}(\bm{A}\bm{A}^\mathrm{H})$
@@ -411,59 +449,240 @@ left singular vectors\quad$\bm{U} = \mathrm{eigvec}(\bm{A}\bm{A}^\mathrm{H})$
 right singular vectors $\bm{V} = \mathrm{eigvec}(\bm{A}^\mathrm{H}\bm{A})$
 \begin{footnotesize}, order must match to the corresponding singular values\end{footnotesize}
 
-singular value matrix $\bm{\Sigma}$, $r$ singular values on \underline{diagonal} descending order
+singular value matrix $\bm{\Sigma}$
+\begin{footnotesize}, $\text{min}(M,N)$ singular values on \underline{diagonal} descending order, $R$ of them non-zero
+\end{footnotesize}
+
 
 \end{frame}
+
+
+
+
+
+\begin{frame}[label=SVD1]{Singular Value Decomposition (SVD)}
+
+\begin{flushleft}
+$
+\def\M{1.4}
+\def\N{1}
+\def\rank{0.4}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\N]U_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}
+\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}^H
+$
+\end{flushleft}
+
+\begin{flushleft}
+$
+\def\M{1}
+\def\N{1.4}
+\def\rank{0.7}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\M]U_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\M, width=\rank\M]\Sigma_\mathtt{M \times N}
+\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\M]{V}_\mathtt{N \times N}^H
+$
+\end{flushleft}
+
+%$$\bm{A} = \bm{U} \bm{\Sigma} \bm{V}^\mathrm{H}$$
+
+\vspace{3.25cm}
+
+left singular vectors\quad$\bm{U} = \mathrm{eigvec}(\bm{A}\bm{A}^\mathrm{H})$
+\begin{footnotesize}, order must match to the corresponding singular values\end{footnotesize}
+
+right singular vectors $\bm{V} = \mathrm{eigvec}(\bm{A}^\mathrm{H}\bm{A})$
+\begin{footnotesize}, order must match to the corresponding singular values\end{footnotesize}
+
+singular value matrix $\bm{\Sigma}$
+\begin{footnotesize}, $\text{min}(M,N)$ singular values on \underline{diagonal} descending order, $R$ of them non-zero
+\end{footnotesize}
+
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 \begin{frame}{Singular Value Decomposition (SVD)}
-input-related matrix $\bm{V}$ and output related matrix $\bm{U}$ are unitary, i.e.
 
-$$\bm{V}\bm{V}^\mathrm{H}=\bm{I},\quad\bm{V}^\mathrm{H}\bm{V}=\bm{I},\quad\bm{U}\bm{U}^\mathrm{H}=\bm{I},\quad\bm{U}^\mathrm{H}\bm{U}=\bm{I}$$
+\begin{flushleft}
+$
+\def\M{1.4}
+\def\N{1}
+\def\rank{0.4}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\N]U_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}
+\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}^H
+$
+\end{flushleft}
 
-superposition of rank-1 matrices (outer products) because singular values in diagonal matrix $\bm{\Sigma}$
-$$\bm{A} = \sum_{i=1}^{\text{rank }r} \sigma_i \bm{u}_i \bm{v}_i^\mathrm{H} = \bm{U} \bm{S} \bm{V}^\mathrm{H}$$
+\begin{flushleft}
+$
+\def\M{1}
+\def\N{1.4}
+\def\rank{0.7}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\M]U_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\M, width=\rank\M]\Sigma_\mathtt{M \times N}
+\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\M]{V}_\mathtt{N \times N}^H
+$
+\end{flushleft}
 
-Fundamentally important: $\bm{U}$ and $\bm{V}$ span the 4 subspaces of matrix $\bm{A}$
+$$\bm{A}
+\begin{bmatrix}
+\bm{v}_1 & \bm{v}_2 & \bm{v}_R & \bm{v}_N
+\end{bmatrix}
+= $$
 
-\centering
-\includegraphics[width=0.4\textwidth]{four_subspaces.pdf}
+$$\bm{A}
+\begin{bmatrix}
+\bm{v}_1 & \bm{v}_2 & \bm{v}_R & \bm{v}_N
+\end{bmatrix}
+= $$
 
+\vspace{1.5cm}
+
+left singular vectors\quad$\bm{U} = \mathrm{eigvec}(\bm{A}\bm{A}^\mathrm{H})$
+\begin{footnotesize}, order must match to the corresponding singular values\end{footnotesize}
+
+right singular vectors $\bm{V} = \mathrm{eigvec}(\bm{A}^\mathrm{H}\bm{A})$
+\begin{footnotesize}, order must match to the corresponding singular values\end{footnotesize}
+
+singular value matrix $\bm{\Sigma}$
+\begin{footnotesize}, $\text{min}(M,N)$ singular values on \underline{diagonal} descending order, $R$ of them non-zero
+\end{footnotesize}
 \end{frame}
+
+\againframe{SVD1}
+
+
+
+
 
 \begin{frame}{The 4 Subspaces of a Matrix}
 
-matrix $\bm{A}_{M \times N} = \bm{U} \bm{\Sigma} \bm{V}^H$ spans four fundamental subspaces
+matrix $\bm{A}_{M \times N}$ spans four fundamental subspaces
 
 \hspace{4.25cm}
 \textcolor{C0}{column space} $\perp$ \textcolor{C4}{left null space}
 \hspace{0.75cm}
 \textcolor{C2}{row space} $\perp$ \textcolor{C1}{null space}
 
-\textcolor{C0}{column space / range / image:} $$R(\bm{A}) = \{\bm{p}\in\mathbb{C}^M | \bm{A} \bm{g} = \bm{p},\qquad\forall \bm{g}\in\mathbb{C}^N\}$$
+\textcolor{C0}{column space / range / image in U:} $$\text{Range}(\bm{A}) = \{\bm{b}\in\mathbb{C}^M | \bm{A} \bm{x} = \bm{b},\qquad\forall \bm{x}\in\mathbb{C}^N\}$$
 
-\textcolor{C1}{null space / kernel:} $$N(\bm{A}) = \{\bm{g}\in\mathbb{C}^N | \bm{A} \bm{g} = \bm{0}\}$$
+\textcolor{C1}{null space / kernel in V:} $$\text{Null}(\bm{A}) = \{\bm{x}\in\mathbb{C}^N | \bm{A} \bm{x} = \bm{0}\}$$
 
 the column/null-space concept for transposed matrix $\bm{A}^H$ yields the two other spaces:
 
-\textcolor{C2}{row space:} $$R(\bm{A}^H) = \{\bm{g}\in\mathbb{C}^N | \bm{A}^H \bm{p} = \bm{g},\qquad\forall \bm{p}\in\mathbb{C}^M\}$$
+\textcolor{C2}{row space in V:} $$\text{Range}(\bm{A}^H) = \{\bm{x}\in\mathbb{C}^N | \bm{A}^H \bm{b} = \bm{x},\qquad\forall \bm{b}\in\mathbb{C}^M\}$$
 
-\textcolor{C4}{left null space / cokernel:} $$N(\bm{A}^H) = \{\bm{p}\in\mathbb{C}^M | \bm{A}^H \bm{p} = \bm{0}\}$$
+\textcolor{C4}{left null space / cokernel in U:} $$\text{Null}(\bm{A}^H) = \{\bm{b}\in\mathbb{C}^M | \bm{A}^H \bm{b} = \bm{0}\}$$
 
-rank of $\bm{A}$ == dimension of column space == dimension of row space == number of independent columns and rows
+matrix rank of $\bm{A}$ is $R\leq \text{min}(M,N)$ == dimension of column space == dimension of row space == number of independent columns and rows
+== number of pivots in rref($\bm{A}$)
 
 \end{frame}
-%
-%
-%
-\begin{frame}{4 Subspaces of a Matrix}
 
-matrix $\bm{A}_{M \times N} = \bm{U} \bm{\Sigma} \bm{V}^H$ spans four fundamental subspaces, these are nicely encoded in the SVD
+
+\begin{frame}[t]{Simple Example For Subspaces}
+
+matrix factorization column space times row space
+$$
+\bm{C} =
+\begin{bmatrix}
+1 & 0 \\ 0 & 2 \\ 0 & 0
+\end{bmatrix}
+\qquad
+\bm{R} =
+\begin{bmatrix}
+3 & 0 \\ 0 & 4
+\end{bmatrix}
+\qquad
+\bm{A} =
+\bm{C} \bm{R} =
+\begin{bmatrix}
+3 & 0 \\ 0 & 8 \\ 0 & 0
+\end{bmatrix}
+$$
+matrix factorization in terms of SVD
+$$
+\bm{A} = \bm{U} \bm{\Sigma} \bm{V}^H
+=
+\begin{bmatrix}
+0 & 1 & 0 \\
+1 & 0 & 0 \\
+0 & 0 & 1
+\end{bmatrix}
+%
+\begin{bmatrix}
+8 & 0\\
+0 & 3\\
+0 & 0
+\end{bmatrix}
+%
+\left(
+\begin{bmatrix}
+0 & 1\\
+1 & 0
+\end{bmatrix}
+\right)^H
+$$
+rank of matrix $\bm{A}$?
+
+subspaces of matrix $\bm{A}$? equations and sketch...
+
+\end{frame}
+
+
+
+
+\begin{frame}{SVD Fundamentals}
+%
+superposition of rank-1 matrices (outer products) because singular values in diagonal matrix $\bm{\Sigma}$
+$$\bm{A}_{M \times N} = \sum_{r=1}^{\text{rank }R} \sigma_r \bm{u}_r \bm{v}_r^\mathrm{H} = \bm{U} \bm{S} \bm{V}^\mathrm{H}$$
+%
+input-related matrix $\bm{V}$ and output related matrix $\bm{U}$ are unitary, i.e.
+$$\bm{V}\bm{V}^\mathrm{H}=\bm{I},\quad\bm{V}^\mathrm{H}\bm{V}=\bm{I},\quad\bm{U}\bm{U}^\mathrm{H}=\bm{I},\quad\bm{U}^\mathrm{H}\bm{U}=\bm{I}$$
+%
+due to $\bm{V}^\mathrm{H}\bm{V}=\bm{I}$ we can re-arrange
+$$\bm{A} = \bm{U} \bm{\Sigma} \bm{V}^\mathrm{H} \rightarrow
+\bm{A} \bm{V} = \bm{U} \bm{\Sigma}$$
+rank $R$ matrix $\bm{A}$ acting on \textcolor{C2}{row space} $\bm{v}$ maps to corresponding \textcolor{C0}{column space / range / image} $\bm{u}$ weighted by corresponding singular value $\sigma$
+$$\bm{A} \bm{v}_{1...R} = \sigma_{1...R} \bm{u}_{1...R}$$
+rank $R$ matrix $\bm{A}$ matrix acting on \textcolor{C1}{null space / kernel} $\bm{v}$ maps to zero vector $\bm{0}_{M \times 1}$
+$$\bm{A} \bm{v}_{R+1...N} = \bm{0}$$
+
+
+\end{frame}
+
+
+
+
+
+
+\begin{frame}{4 Subspaces of a Matrix}
+%
+every matrix $\bm{A}_{M \times N} = \bm{U} \bm{\Sigma} \bm{V}^H$ spans four fundamental subspaces
+
+$\bm{U}$ and $\bm{V}$ span the 4 subspaces of matrix $\bm{A}$ in the (probably) most elegant way
 
 \hspace{0.75cm}
-\textcolor{C2}{row space} $\perp$ \textcolor{C1}{null space}
-\hspace{4.5cm}
-\textcolor{C0}{column space} $\perp$ \textcolor{C4}{left null space}
+in $\bm{V}$: \textcolor{C2}{row space} $\perp$ \textcolor{C1}{null space}
+\hspace{2cm}
+in $\bm{U}$: \textcolor{C0}{column space} $\perp$ \textcolor{C4}{left null space}
 
 \centering
 \includegraphics[width=0.5\textwidth]{four_subspaces.pdf}
@@ -474,13 +693,45 @@ right singular vectors in $\bm{V}$
 left singular vectors in $\bm{U}$
 
 \end{frame}
+
+
+
+
+
+
+\begin{frame}[label=SubspacesForSketch]{4 Subspaces of a Matrix - Examples for Special Matrix Characteristics}
+
+\hspace{-0.5cm}
+\textcolor{C2}{row space} $\perp$ \textcolor{C1}{null space}
+\hspace{0.5cm}
+\textcolor{C0}{column space} $\perp$ \textcolor{C4}{left null space}
+
+\begin{flushleft}
+\includegraphics[width=0.5\textwidth]{four_subspaces.pdf}
+\end{flushleft}
+
+\hspace{-0.5cm}
+right singular vectors in $\bm{V}$
+\hspace{0.5cm}
+left singular vectors in $\bm{U}$
+
+\end{frame}
+\againframe{SubspacesForSketch}
+\againframe{SubspacesForSketch}
+\againframe{SubspacesForSketch}
+
+
+
+
+
+
 %
 %
 %
 \begin{frame}{Singular Value Decomposition (SVD), full rank cases}
 
 $\cdot$ Sum of rank-1 matrices\qquad
-$\bm{A} = \bm{U} \bm{\Sigma} \bm{V}^H =  \sum\limits_{i=1}^{r} \sigma_i \quad \textcolor{C0}{\bm{u}}_i \quad \textcolor{C2}{\bm{v}}^H_i$
+$\bm{A} = \bm{U} \bm{\Sigma} \bm{V}^H =  \sum\limits_{r=1}^{R} \sigma_r \quad \textcolor{C0}{\bm{u}}_r \quad \textcolor{C2}{\bm{v}}^H_r$
 
 \hspace{4.25cm}
 \textcolor{C0}{column space} $\perp$ \textcolor{C4}{left null space}
@@ -530,14 +781,16 @@ $
 \begin{frame}{Singular Value Decomposition (SVD), rank-deficient cases}
 
 $\cdot$ Sum of rank-1 matrices\qquad
-$\bm{A} = \bm{U} \bm{\Sigma} \bm{V}^H =  \sum\limits_{i=1}^{r} \sigma_i \quad \textcolor{C0}{\bm{u}}_i \quad \textcolor{C2}{\bm{v}}^H_i$
+$\bm{A} = \bm{U} \bm{\Sigma} \bm{V}^H =  \sum\limits_{r=1}^{R} \sigma_r \quad \textcolor{C0}{\bm{u}}_r \quad \textcolor{C2}{\bm{v}}^H_r$
+
+$\cdot$ Rank-deficient cases always need pseudo-inverse $\bm{A}^\dagger = \bm{V} \Sigma^\dagger \bm{U}^H$
 
 \hspace{4.25cm}
 \textcolor{C0}{column space} $\perp$ \textcolor{C4}{left null space}
 \hspace{0.75cm}
 \textcolor{C2}{row space} $\perp$ \textcolor{C1}{null space}
 
-$\cdot$ Square matrix $\bm{A}$, \quad $M$ rows $=$ $N$ columns, \quad rank deficient ($r<M=N$), \quad pseudo-inverse $\bm{A}^\dagger = \bm{V} \Sigma^\dagger \bm{U}^H$
+$\cdot$ Square matrix $\bm{A}$, \quad $M$ rows $=$ $N$ columns, \quad rank deficient ($r<M=N$)
 \begin{center}
 $
 \def\M{1}
@@ -549,7 +802,7 @@ $
 \drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}^H
 $
 \end{center}
-$\cdot$ Flat / fat matrix $\bm{A}$, \quad $M$ rows $<$ $N$ columns, \quad rank deficient ($r<M$), \quad pseudo-inverse $\bm{A}^\dagger = \bm{V} \Sigma^\dagger \bm{U}^H$
+$\cdot$ Flat / fat matrix $\bm{A}$, \quad $M$ rows $<$ $N$ columns, \quad rank deficient ($r<M$)
 \begin{center}
 $
 \def\M{1}
@@ -561,7 +814,7 @@ $
 \drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\M]{V}_\mathtt{N \times N}^H
 $
 \end{center}
-$\cdot$ Tall / thin matrix $\bm{A}$, \quad $M$ rows $>$ $N$ columns, \quad rank deficient ($r<N$), \quad pseudo-inverse $\bm{A}^\dagger = \bm{V} \Sigma^\dagger \bm{U}^H$
+$\cdot$ Tall / thin matrix $\bm{A}$, \quad $M$ rows $>$ $N$ columns, \quad rank deficient ($r<N$)
 \begin{center}
 $
 \def\M{1.4}
@@ -589,20 +842,6 @@ sketches of the 4 subspaces for these 4 cases help to get the essence how a matr
 \end{frame}
 
 
-\begin{frame}{SVD Basics}
-due to $\bm{V}^\mathrm{H}\bm{V}=\bm{I}$ we can re-arrange
-$$\bm{A} = \bm{U} \bm{\Sigma} \bm{V}^\mathrm{H} \rightarrow
-\bm{A} \bm{V} = \bm{U} \bm{\Sigma}$$
-rank $r$ matrix $\bm{A}$ acting on row space $\bm{v}$ maps to corresponding column space $\bm{u}$ weighted by corresponding singular value
-$$\bm{A} \bm{v}_{1:r} = \sigma_{1:r} \bm{u}_{1:r}$$
-matrix acting on null space $\bm{v}$ maps to zero vector $\bm{0}_{M \times 1}$
-$$\bm{A} \bm{v}_{r+1:N} = \bm{0}$$
-we should make a sketch to visualisze this
-
-\centering
-\includegraphics[width=0.3\textwidth]{four_subspaces.pdf}
-
-\end{frame}
 
 
 
@@ -833,10 +1072,10 @@ TBD...
 
 
 
-\appendix
+%\appendix
 
 \section{Appendix: SVD Example Manual Calculus}
-\begin{frame}{SVD Example Manual Calculus: Problem Definition and First Expectations}
+\begin{frame}[t]{SVD Example Manual Calculus: Problem Definition and First Expectations}
 We should calculate the SVD of the simple $M \times N$ matrix
 $$\bm{X} =
 \begin{bmatrix}
@@ -862,8 +1101,8 @@ in rows and columns.
 
 We immediately see that i) rows are dependent because row2 = 2 row1, ii) columns are dependent because col2 = 3 col1.
 
-Due to rank $r=1$, we expect only one non-zero singular value $\sigma_1$, therefore the dimension
-of row space (which is always equal to the dimension of column space) is $r=1$, i.e. we have $r$
+Due to rank $R=1$, we expect only one non-zero singular value $\sigma_1$, therefore the dimension
+of row space (which is always equal to the dimension of column space) is $R=1$, i.e. we have $R$
 independent vectors that span the row space and $r$ independent vectors that span the column space, so these spaces are lines in both 2D spaces in our example.
 
 The $\bm{U}$ space has vectors in $\mathbb{R}^{M=2}$, the $\bm{V}$ space has vectors in $\mathbb{R}^{N=2}$.
@@ -871,7 +1110,7 @@ The $\bm{U}$ space has vectors in $\mathbb{R}^{M=2}$, the $\bm{V}$ space has vec
 \end{frame}
 
 
-\begin{frame}{SVD Example Manual Calculus: Further Expectations}
+\begin{frame}[t]{SVD Example Manual Calculus: Further Expectations}
 $$\bm{X} =
 \begin{bmatrix}
 1\\2
@@ -908,7 +1147,7 @@ belong to the left null space), are multiples of $[1, 3]^\mathrm{T}$.
 
 
 
-\begin{frame}{SVD Example Manual Calculus: Further Expectations 2}
+\begin{frame}[t]{SVD Example Manual Calculus: Further Expectations 2}
 $$\bm{X} =
 \begin{bmatrix}
 1\\2
@@ -925,11 +1164,14 @@ $$\bm{X} =
 \bm{U}\bm{S}\bm{V}^\mathrm{T}
 $$
 
-As we have $M-r$ vectors that span the left null space, thus here $M=2$ and $r=1$,
-the left nullspace is a line orthogonal to the column space (line).
+As we have $M-R$ vectors that span the left null space, thus here $M=2$ and $R=1$,
+the left nullspace is a line orthogonal to the column space (which is also a line).
 
-As we have $N-r$ vectors that span the null space, thus here $N=2$ and $r=1$,
-the nullspace is a line orthogonal to the row space (line).
+As we have $N-R$ vectors that span the null space, thus here $N=2$ and $R=1$,
+the nullspace is a line orthogonal to the row space (which is also a line).
+
+We deal with $\mathbb{R}^{M=2}$ and $\mathbb{R}^{N=2}$ dimensions, so each space
+is 2D, so no more than two independent lines are possible in these spaces.
 
 We should meet these expectations, when calculating the SVD manually.
 
@@ -938,7 +1180,7 @@ We should meet these expectations, when calculating the SVD manually.
 
 
 
-\begin{frame}{SVD Example Manual Calculus: Eigenvalue And -Vector Problem}
+\begin{frame}[t]{SVD Example Manual Calculus: Eigenvalue And -Vector Problem}
 $$\bm{X} =
 \begin{bmatrix}
 1 & 3\\
@@ -991,6 +1233,7 @@ $\begin{bmatrix}
 15
 \end{bmatrix}
 $
+
 2nd column of $\bm{X}^\mathrm{T} \bm{X}$
 comes from the linear combination
 $\begin{bmatrix}
@@ -1027,7 +1270,7 @@ has dependent rows and columns, hence, rank 1
 \end{frame}
 
 
-\begin{frame}{SVD Example Manual Calculus: Eigenvalue And -Vector Problem}
+\begin{frame}[t]{SVD Example Manual Calculus: Eigenvalue And -Vector Problem}
 $$\bm{X}^\mathrm{T} \bm{X} =
 \bm{V}\bm{S}^\mathrm{T}\bm{S}\bm{V}^\mathrm{T} =
 \begin{bmatrix}
@@ -1058,7 +1301,7 @@ $$\lambda_1 = 50\quad \lambda_2 = 0$$
 
 
 
-\begin{frame}{SVD Example Manual Calculus: Eigenvalue And -Vector Problem}
+\begin{frame}[t]{SVD Example Manual Calculus: Eigenvalue And -Vector Problem}
 For
 $$\lambda_1 = 50\quad \lambda_2 = 0$$
 we shall find the corresponding eigenvectors
@@ -1075,7 +1318,7 @@ $$
 5-50 & 15\\
 15 & 45-50
 \end{bmatrix}
-\bm{v_1}
+\bm{v}_1
 =
 \begin{bmatrix}
 0 \\0
@@ -1084,7 +1327,7 @@ $$
 5-0 & 15\\
 15 & 45-0
 \end{bmatrix}
-\bm{v_2}
+\bm{v}_2
 =
 \begin{bmatrix}
 0 \\0
@@ -1117,7 +1360,7 @@ $$
 $$
 \end{frame}
 
-\begin{frame}{SVD Example Manual Calculus: Singular Value And Right Singular Vectors}
+\begin{frame}[t]{SVD Example Manual Calculus: Singular Value And Right Singular Vectors}
 
 Let us normalize all eigenvectors to unit length vectors
 $
@@ -1134,33 +1377,33 @@ $
 \end{bmatrix}
 $
 
-We got only one non-zero eigenvalue $\lambda_{i=1} = 50$ and the corresponding
+We got only one non-zero eigenvalue $\lambda_{r=1} = 50$ and the corresponding
 eigenvector
-$$\bm{v}_{i=1} =
+$$\bm{v}_{r=1} =
 \frac{1}{\sqrt{10}}
 \begin{bmatrix}
 1 \\3
 \end{bmatrix}$$
 
-We sort the $i=1...r$ eigenvalues (and keep it linked to their
-corresponding eigenvectors) in decreasing order, i.e. $\lambda_1 > \lambda_2 >... >\lambda_r \neq 0$.
+We sort the $r=1...R$ eigenvalues (and keep it linked to their
+corresponding eigenvectors) in decreasing order, i.e. $\lambda_1 > \lambda_2 >... >\lambda_R \neq 0$.
 
 The sorted! eigenvectors of $\bm{X}^\mathrm{T} \bm{X}$ are the sorted (unit length)
 right singular vectors $\bm{v}_i$ of $\bm{X}$, these span the row space. In our example
 the spanned row space is $\bm{v}_{1}$, i.e. a line in 2D.
 
-The sorted! (non-zero) eigenvalues $\lambda_i$ become the sorted! singular values $\sigma_i = \sqrt{\lambda_i}$, these are used by the matrix to map row space stuff to column space or vice versa.
+The sorted! (non-zero) eigenvalues $\lambda_r$ become the sorted! singular values $\sigma_r = \sqrt{\lambda_r}$, these are used by the matrix to map row space stuff to column space and vice versa.
 
 Now, we use the SVD property
-$\bm{X} \bm{v}_{i=1...r} = \sigma_{i=1...r} \bm{u}_{i=1...r}$
-to find the corresponding $i$-th unit vector in column space $\bm{u}_i$, simply by
-$\bm{X} \bm{v}_{i} \frac{1}{\sigma} = \bm{u}_{i}$ (textbook approach, real algorithms don't do this, numerical linear algebra is tough science!)
+$\bm{X} \bm{v}_{r=1...R} = \sigma_{r=1...R} \bm{u}_{r=1...R}$
+to find the corresponding $r$-th unit vector $\bm{u}_r$ in the column space, simply by
+$\bm{X} \bm{v}_{r} \frac{1}{\sigma_r} = \bm{u}_{r}$ (this is the textbook approach, real algorithms don't do this, numerical linear algebra is tough science!)
 
 \end{frame}
 
-\begin{frame}{SVD Example Manual Calculus: Towards Left Singular Vectors}
+\begin{frame}[t]{SVD Example Manual Calculus: Towards Left Singular Vectors}
 
-So, with $\sigma_1 = \sqrt{\lambda_1} = \sqrt{50}$ and $\bm{v}_{i=1} =
+So, with $\sigma_1 = \sqrt{\lambda_1} = \sqrt{50}$ and $\bm{v}_{r=1=R} =
 \frac{1}{\sqrt{10}}
 \begin{bmatrix}
 1 \\3
@@ -1197,7 +1440,7 @@ $$\bm{u}_{1} = \begin{bmatrix}
 $$
 which is already a unit length vector. As we only have one non-zero singular value, $\bm{u}_{1}$ completely spans the column space, which is a line in 2D space.
 
-What we got so far? We might want to check that $\bm{X} \bm{v}_1 = \sigma_1 \bm{u}_1$ with the found solutions
+What we got so far? We might want to check that $\bm{X} \bm{v}_1 = \sigma_1 \bm{u}_1$ holds with the found solutions
 
 $$
 \sigma_1 = \sqrt{50}\qquad
@@ -1213,7 +1456,7 @@ $$
 2
 \end{bmatrix}
 $$
-As we have only one non-zero singular value, the full rank matrix approximation (just this one outer product)
+As we have only one non-zero singular value, the full rank matrix approximation (just this one outer product from the general SVD equation $\bm{X} = \sum_{r=1}^{R} \sigma_r  \bm{u}_r \bm{v}^\mathrm{T}_r$)
 $$\sigma_1  \bm{u}_1 \bm{v}^\mathrm{T}_1
 = \sqrt{50} \frac{1}{\sqrt{5}}
 \begin{bmatrix}
@@ -1238,12 +1481,12 @@ $$\sigma_1  \bm{u}_1 \bm{v}^\mathrm{T}_1
 2 & 6
 \end{bmatrix}=\bm{X}
 $$
-yields exactly $\bm{X}$ where we started from. We, however need to finish the SVD...
+already yields exactly $\bm{X}$ where we started from. We, however need to finish the SVD...
 \end{frame}
 
 
 
-\begin{frame}{SVD Example Manual Calculus: Nullspace}
+\begin{frame}[t]{SVD Example Manual Calculus: Nullspace}
 The null space is spanned by all these vectors from our above eigenwert problem,
 which belong to a zero eigenvalue. By definition they are all orthogonal.
 We calculated one unit length vector for the null space
@@ -1307,16 +1550,16 @@ $$
 $$
 \end{frame}
 
-\begin{frame}{SVD Example Manual Calculus: Left Nullspace}
-We obviously cannot follow $\bm{X} \bm{v}_i = \sigma_i \bm{u}_i$ to find
-$\bm{u}_i$ that correspond to a $\sigma_i=0$, dividing by zero is not a good idea.
+\begin{frame}[t]{SVD Example Manual Calculus: Left Nullspace}
+We obviously cannot follow $\bm{X} \bm{v} = \sigma \bm{u}$ to find missing
+$\bm{u}_2$, because there is no corresponding $\sigma$ that acts as meaningful mapping.
 
 Instead, we could solve the dedicated eigenwert problem
 $$\bm{X} \bm{X}^\mathrm{T} \bm{u}_1 = \lambda_1 \bm{u}_1\quad
 \bm{X} \bm{X}^\mathrm{T} \bm{u}_2 = \lambda_2 \bm{u}_2$$
 to find out that again $\lambda_1 = 50$, $\lambda_2=0$.
 
-Furthermore, already known $\bm{u}_1$ is spaning the column space, as this has the singular value $\sigma_1 = \sqrt{\lambda_1}$, which is linked to $\bm{v}_1$ spanning the row space.
+Furthermore, the already known $\bm{u}_1$ is spaning the column space, as this has the singular value $\sigma_1 = \sqrt{\lambda_1}$, which is linked to $\bm{v}_1$ spanning the row space.
 
 $\bm{u}_2$ corresponds to $\lambda_2=0$, so certainly no column space stuff, it then must be left null space.
 
@@ -1358,7 +1601,7 @@ $$
 
 \end{frame}
 
-\begin{frame}{SVD Example Manual Calculus: Left Nullspace}
+\begin{frame}[t]{SVD Example Manual Calculus: Final Result}
 We make this a unit length vector as required for the SVD
 $$
 \bm{u}_2 = \frac{1}{\sqrt{5}}\begin{bmatrix}2\\-1\end{bmatrix}
@@ -1381,7 +1624,7 @@ $$
 \end{bmatrix}
 $$
 
-So, if there are no typos (statistics tells us there should be :-))
+So, if there are no typos (statistics tells us there should be ;-))
 we end up in
 $$
 \bm{X}
