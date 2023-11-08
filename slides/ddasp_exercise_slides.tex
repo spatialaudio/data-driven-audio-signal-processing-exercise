@@ -49,7 +49,7 @@
 
 % ===== titlepage info =====
 \title[DDASP \#24512 - Tutorial]%
-{Selected Topics in Audio Signal Processing (Data-Driven Methods in Signal Processing) \#24512}
+{Selected Topics in Audio Signal Processing\\(Data-Driven Methods in Signal Processing) \#24512}
 
 \author[Schultz, Spors]{%
     \underline{\href{https://orcid.org/0000-0002-3010-0294}{Frank Schultz}}, \href{https://orcid.org/0000-0001-7225-9992}{Sascha Spors}}
@@ -209,13 +209,13 @@ Objectives
 
 \begin{frame}{We Can Do Machine Learning with a Linear Model}
 linear algebra\footnote{we should do ourselves a favour and read at least one of the linear algebra textbooks by Gilbert Strang}
-is THE tool to model linear models
+is THE tool to handle linear models
 \begin{center}
 $
 \def\Mic{3}
 \def\LS{1}
 \drawmatrix[fill=none, height=\Mic, width=0]y_\mathtt{M \times 1} =
-\drawmatrix[fill=none, height=\Mic, width=\LS]F_\mathtt{M \times N}
+\drawmatrix[fill=none, height=\Mic, width=\LS]X_\mathtt{M \times N}
 \drawmatrix[fill=none, height=\LS, width=0]\theta_\mathtt{M \times 1} +
 \drawmatrix[fill=none, height=\Mic, width=0]n_\mathtt{M \times 1}
 $
@@ -227,7 +227,7 @@ $
 
 $\bm{y}$ output data
 
-$\bm{F}$ features as columns in a feature matrix
+$\bm{X}$ features as columns in a feature matrix
 
 $\bm{\theta}$ model parameters (which we want to learn)
 
@@ -238,15 +238,13 @@ $\bm{n}$ noise (included in the measured output data)
 
 \begin{frame}{Audio Toy Example for Linear Regression and SVD}
 Consider the following linear combinations
-$$\bm{X} \bm{\beta} + \bm{n} = \bm{y}\qquad
-\bm{X} \bm{\theta} + \bm{n} = \bm{y}\qquad
-\bm{X} \bm{w} + \bm{n} = \bm{y}$$
-where $\bm{\beta}=\bm{\theta} = \bm{w}$ are typical variables for the model parameter vector. Let us use $\bm{\beta}=[\beta_0, \beta_1, \beta_2, ..., \beta_{N-1}]^\mathrm{T}$ here, the lecture will rather utilize $\bm{\theta}$.
+$$\bm{X} \bm{\theta} + \bm{n} = \bm{y}$$
+where $\bm{\theta}=[\theta_0, \theta_1, \theta_2, ..., \theta_{N-1}]^\mathrm{T}$ are typical variables for the model parameter vector.
 %
 \begin{itemize}
 \item $\bm{X}_{M \times N}$ matrix with $M$ audio samples for each column, $n$-th column represents the $n$-th audiotrack
-\item $\bm{\beta}_{N \times 1}$ column vector of scalar values that represent a dedicated gain for each audiotrack
-\item $\bm{n}_{M \times 1}$ column vector that represents a $M$-sample long noise signal added to the mixdown $\bm{X} \bm{\beta}$
+\item $\bm{\theta}_{N \times 1}$ column vector of scalar values that represent a dedicated gain for each audiotrack
+\item $\bm{n}_{M \times 1}$ column vector that represents an $M$-sample long noise signal added to the mixdown $\bm{X} \bm{\theta}$
 \item $\bm{y}_{M \times 1}$ audio signal with $M$ samples as a result of the linear combination plus noise
 \end{itemize}
 %
@@ -255,12 +253,14 @@ Let us assume that i) we know $\bm{X}$ (i.e. the individual audio tracks) and $\
 \end{frame}
 
 
-\section{Ex02: SVD / 4 Subspaces}
+\section{Section I: SVD / 4 Subspaces / Pseudo-Inverse}
 
-\begin{frame}{Ex02: SVD / 4 Subspaces}
+\begin{frame}{Ex02 / Ex03: SVD and 4 Subspaces of a Matrix}
 Objectives
 \begin{itemize}
-\item important matrix factorizations
+\item recall important matrix factorizations
+\item recall eigenvalues/eigenvectors
+\item spectral theorem
 \item SVD and 4 subspaces within orthonormal bases V, U
 \item rank-1 matrix superposition
 \end{itemize}
@@ -395,7 +395,7 @@ $
 \drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}^H
 $
 \end{center}
-Under-Determined (flat/fat or short/wide matrix $\bm{A}$)
+Under-Determined (flat/fat aka short/wide matrix $\bm{A}$)
 \begin{center}
 $
 \def\M{1}
@@ -440,7 +440,7 @@ $
 $
 \end{center}
 
-$$\bm{A} = \bm{U} \bm{\Sigma} \bm{V}^\mathrm{H}\qquad \qquad \bm{U}\bm{U}^H = \bm{U}^H\bm{U} = \bm{I} \qquad \qquad \bm{V}\bm{V}^H = \bm{V}^H\bm{V} = \bm{I}$$
+$$\bm{A} = \bm{U} \bm{\Sigma} \bm{V}^\mathrm{H}\qquad \qquad \bm{U}\bm{U}^H = \bm{U}^H\bm{U} = \bm{I}_{M \times M} \qquad \qquad \bm{V}\bm{V}^H = \bm{V}^H\bm{V} = \bm{I}_{N \times N}$$
 
 
 left singular vectors\quad$\bm{U} = \mathrm{eigvec}(\bm{A}\bm{A}^\mathrm{H})$
@@ -566,7 +566,71 @@ singular value matrix $\bm{\Sigma}$
 \end{footnotesize}
 \end{frame}
 
-\againframe{SVD1}
+
+
+
+
+\begin{frame}{Singular Value Decomposition (SVD)}
+
+\begin{flushleft}
+$
+\def\M{1.4}
+\def\N{1}
+\def\rank{0.4}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\N]U_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}
+\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}^H
+$
+\end{flushleft}
+
+\begin{flushleft}
+$
+\def\M{1}
+\def\N{1.4}
+\def\rank{0.7}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\M]U_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\M, width=\rank\M]\Sigma_\mathtt{M \times N}
+\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\M]{V}_\mathtt{N \times N}^H
+$
+\end{flushleft}
+
+\vspace{0.75cm}
+
+$$\bm{A}
+\begin{bmatrix}
+a \textcolor{C2}{\bm{v}_1} & b \textcolor{C2}{\bm{v}_2} & c \textcolor{C2}{\bm{v}_R} & \dots & y \textcolor{C1}{\bm{v}_{N-1}} & z \textcolor{C1}{\bm{v}_N}
+\end{bmatrix}
+=
+\begin{bmatrix}
+a \sigma_1 \textcolor{C0}{\bm{u}_1} & b \sigma_2 \textcolor{C0}{\bm{u}_2} & c \sigma_R \textcolor{C0}{\bm{u}_R} & \dots & \bm{0} & \bm{0}
+\end{bmatrix}
+\rightarrow
+\bm{A} \bm{V} = \bm{\Sigma} \bm{U}
+$$
+$$\bm{A}
+\begin{bmatrix}
+a \textcolor{C2}{\bm{v}_1} + b \textcolor{C2}{\bm{v}_2} + c \textcolor{C2}{\bm{v}_R} + \dots + y \textcolor{C1}{\bm{v}_{N-1}} + z \textcolor{C1}{\bm{v}_N}
+\end{bmatrix}
+=
+[a \sigma_1 \textcolor{C0}{\bm{u}_1} + b \sigma_2 \textcolor{C0}{\bm{u}_2} + c \sigma_R \textcolor{C0}{\bm{u}_R} + \dots + \bm{0} + \bm{0}]
+$$
+
+\vspace{0.75cm}
+
+left singular vectors\quad$\bm{U} = \mathrm{eigvec}(\bm{A}\bm{A}^\mathrm{H})$
+\begin{footnotesize}, order must match to the corresponding singular values\end{footnotesize}
+
+right singular vectors $\bm{V} = \mathrm{eigvec}(\bm{A}^\mathrm{H}\bm{A})$
+\begin{footnotesize}, order must match to the corresponding singular values\end{footnotesize}
+
+singular value matrix $\bm{\Sigma}$
+\begin{footnotesize}, $\text{min}(M,N)$ singular values on \underline{diagonal} descending order, $R$ of them non-zero
+\end{footnotesize}
+\end{frame}
+
+%\againframe{SVD1}
 
 
 
@@ -597,9 +661,58 @@ matrix rank of $\bm{A}$ is $R\leq \text{min}(M,N)$ == dimension of column space 
 \end{frame}
 
 
-\begin{frame}[t]{Simple Example For Subspaces}
 
-matrix factorization column space times row space
+\begin{frame}[t]{SVD and the 4 Subspaces of a Matrix}
+%
+\begin{flushleft}
+$
+\def\M{2}
+\def\N{1}
+\def\rank{0.15}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\N]U_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}
+\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}^H
+$
+\end{flushleft}
+
+What is the rank of $\bm{A}_1$?
+
+What is
+the \textcolor{C0}{column space},
+the \textcolor{C4}{null space},
+the \textcolor{C2}{row space} and
+the \textcolor{C1}{left null space}
+of $\bm{A}_1$?
+
+
+\begin{center}
+$
+\def\M{2}
+\def\N{1}
+\def\rank{0.9999}
+\drawmatrix[fill=none, height=\M, width=\N]{A_1}_\mathtt{M \times N}
+=
+\sigma_1 \cdot
+\drawmatrix[fill=none, height=\M, width=0]{u_1}_\mathtt{M \times 1}
+\drawmatrix[fill=none, height=0, width=\N]{v_1^H}_\mathtt{1 \times N} \approx
+\drawmatrix[fill=none, height=\M, width=\N]{A}_\mathtt{M \times N}
+$
+\end{center}
+
+
+\end{frame}
+
+
+
+
+
+
+
+
+\begin{frame}[t]{Simple Numerical Example for the 4 Subspaces}
+
+matrix factorization in terms of column space $\times$ row space
 $$
 \bm{C} =
 \begin{bmatrix}
@@ -640,9 +753,10 @@ $$
 \end{bmatrix}
 \right)^H
 $$
-rank of matrix $\bm{A}$?
 
-subspaces of matrix $\bm{A}$? equations and sketch...
+What is the rank of $\bm{A}$?
+
+What are the four subspaces of $\bm{A}$? Give them as equations and as a sketch...
 
 \end{frame}
 
@@ -661,9 +775,9 @@ due to $\bm{V}^\mathrm{H}\bm{V}=\bm{I}$ we can re-arrange
 $$\bm{A} = \bm{U} \bm{\Sigma} \bm{V}^\mathrm{H} \rightarrow
 \bm{A} \bm{V} = \bm{U} \bm{\Sigma}$$
 rank $R$ matrix $\bm{A}$ acting on \textcolor{C2}{row space} $\bm{v}$ maps to corresponding \textcolor{C0}{column space / range / image} $\bm{u}$ weighted by corresponding singular value $\sigma$
-$$\bm{A} \bm{v}_{1...R} = \sigma_{1...R} \bm{u}_{1...R}$$
+$$\bm{A} \textcolor{C2}{\bm{v}_{1...R}} = \sigma_{1...R} \textcolor{C0}{\bm{u}_{1...R}}$$
 rank $R$ matrix $\bm{A}$ matrix acting on \textcolor{C1}{null space / kernel} $\bm{v}$ maps to zero vector $\bm{0}_{M \times 1}$
-$$\bm{A} \bm{v}_{R+1...N} = \bm{0}$$
+$$\bm{A} \textcolor{C1}{\bm{v}_{R+1...N}} = \bm{0}$$
 
 
 \end{frame}
@@ -699,7 +813,7 @@ left singular vectors in $\bm{U}$
 
 
 
-\begin{frame}[label=SubspacesForSketch]{4 Subspaces of a Matrix - Examples for Special Matrix Characteristics}
+\begin{frame}[label=SubspacesForSketch, t]{4 Subspaces of a Matrix - Examples for Special Matrix Characteristics}
 
 \hspace{-0.5cm}
 \textcolor{C2}{row space} $\perp$ \textcolor{C1}{null space}
@@ -716,18 +830,11 @@ right singular vectors in $\bm{V}$
 left singular vectors in $\bm{U}$
 
 \end{frame}
+
 \againframe{SubspacesForSketch}
 \againframe{SubspacesForSketch}
 \againframe{SubspacesForSketch}
 
-
-
-
-
-
-%
-%
-%
 \begin{frame}{Singular Value Decomposition (SVD), full rank cases}
 
 $\cdot$ Sum of rank-1 matrices\qquad
@@ -750,7 +857,8 @@ $
 \drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}^H
 $
 \end{center}
-$\cdot$ Flat / fat matrix $\bm{A}$, \quad $M$ rows $<$ $N$ columns, \quad full row rank ($r=M$), \quad right inverse $\bm{A}^\dagger = \bm{A}^H (\bm{A} \bm{A}^H )^{-1}$
+$\cdot$ Flat / fat matrix $\bm{A}$, \quad $M$ rows $<$ $N$ columns, \quad full row rank ($r=M$), \quad right inverse $\bm{A}^{\dagger_r} = \bm{A}^H (\bm{A} \bm{A}^H )^{-1}$
+such that $\bm{A} \bm{A}^{\dagger_r} = \bm{I}$ (i.e. projection to row space)
 \begin{center}
 $
 \def\M{1}
@@ -762,7 +870,7 @@ $
 \drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\M]{V}_\mathtt{N \times N}^H
 $
 \end{center}
-$\cdot$ Tall / thin matrix $\bm{A}$, \quad $M$ rows $>$ $N$ columns, \quad full column rank ($r=N$), \quad left inverse $\bm{A}^\dagger = (\bm{A}^H \bm{A})^{-1} \bm{A}^H$
+$\cdot$ Tall / thin matrix $\bm{A}$, \quad $M$ rows $>$ $N$ columns, \quad full column rank ($r=N$), \quad left inverse $\bm{A}^{\dagger_l} = (\bm{A}^H \bm{A})^{-1} \bm{A}^H$ such that $\bm{A}^{\dagger_l} \bm{A} = \bm{I}$ (i.e. projection to row space)
 \begin{center}
 $
 \def\M{1.4}
@@ -778,19 +886,19 @@ $
 %
 %
 %
-\begin{frame}{Singular Value Decomposition (SVD), rank-deficient cases}
+\begin{frame}{Singular Value Decomposition (SVD), not full-rank cases}
 
 $\cdot$ Sum of rank-1 matrices\qquad
 $\bm{A} = \bm{U} \bm{\Sigma} \bm{V}^H =  \sum\limits_{r=1}^{R} \sigma_r \quad \textcolor{C0}{\bm{u}}_r \quad \textcolor{C2}{\bm{v}}^H_r$
 
-$\cdot$ Rank-deficient cases always need pseudo-inverse $\bm{A}^\dagger = \bm{V} \Sigma^\dagger \bm{U}^H$
+$\cdot$ not full-rank cases need (general) pseudo-inverse $\bm{A}^\dagger = \bm{V} \Sigma^\dagger \bm{U}^H$
 
 \hspace{4.25cm}
 \textcolor{C0}{column space} $\perp$ \textcolor{C4}{left null space}
 \hspace{0.75cm}
 \textcolor{C2}{row space} $\perp$ \textcolor{C1}{null space}
 
-$\cdot$ Square matrix $\bm{A}$, \quad $M$ rows $=$ $N$ columns, \quad rank deficient ($r<M=N$)
+$\cdot$ Square matrix $\bm{A}$, \quad $M$ rows $=$ $N$ columns, \quad not full-rank ($r<M=N$)
 \begin{center}
 $
 \def\M{1}
@@ -802,7 +910,7 @@ $
 \drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}^H
 $
 \end{center}
-$\cdot$ Flat / fat matrix $\bm{A}$, \quad $M$ rows $<$ $N$ columns, \quad rank deficient ($r<M$)
+$\cdot$ Flat / fat matrix $\bm{A}$, \quad $M$ rows $<$ $N$ columns, \quad not full-rank ($r<M$)
 \begin{center}
 $
 \def\M{1}
@@ -814,7 +922,7 @@ $
 \drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\M]{V}_\mathtt{N \times N}^H
 $
 \end{center}
-$\cdot$ Tall / thin matrix $\bm{A}$, \quad $M$ rows $>$ $N$ columns, \quad rank deficient ($r<N$)
+$\cdot$ Tall / thin matrix $\bm{A}$, \quad $M$ rows $>$ $N$ columns, \quad not full-rank ($r<N$)
 \begin{center}
 $
 \def\M{1.4}
@@ -828,17 +936,193 @@ $
 \end{center}
 \end{frame}
 
-\begin{frame}{Subspace Properties and Characteristics of Inverse Problem}
+% \begin{frame}{Subspace Properties and Characteristics of Inverse Problem}
+% %
+% sketches of the 4 subspaces for these 4 cases help to get the essence how a matrix maps things forward and (potentially) backward
+% %
+% \begin{itemize}
+% \item full rank, no nullspace, no left null space = square matrix = exactly solvable, typically learned in basic linear algebra course
+% \item full column rank, no nullspace, potentially large left nullspace = tall/thin matrix, over determined system of equations, we need the left inverse, many practical problems, statistical model fitting, least squares error solution
+% \item full row rank, potentially large nullspace, no left nullspace = flat/fat matrix, under-determined system of equations, we need the right inverse, solution in the sense of least squares magnitude for unknown vector
+% \item rank deficient, potentially large nullspace, potentially large left nullspace, meaningful information of the matrix is not stored in optimum way $\rightarrow$ data-driven learning...but before doing this stuff, we should at least learn full column rank cases properly
+% \end{itemize}
+% %
+% \end{frame}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{frame}[t]{Ex04: Solving an Inverse Problem == Finding Model Parameters}
+feature matrix $\bm{X}$ as full column rank with rank $R=2$ (2 independent columns = 2 independent rows = 2 non-zero singular values)
+$$
+\bm{X} =
+\begin{bmatrix}
+3 & 0 \\ 0 & 8 \\ 0 & 0
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 & 1 & 0 \\
+1 & 0 & 0 \\
+0 & 0 & 1
+\end{bmatrix}
 %
-sketches of the 4 subspaces for these 4 cases help to get the essence how a matrix maps things forward and (potentially) backward
+\begin{bmatrix}
+8 & 0\\
+0 & 3\\
+0 & 0
+\end{bmatrix}
 %
-\begin{itemize}
-\item full rank, no nullspace, no left null space = square matrix = exactly solvable, typically learned in basic linear algebra course
-\item full column rank, no nullspace, potentially large left nullspace = tall/thin matrix, over determined system of equations, we need the left inverse, many practical problems, statistical model fitting, least squares error solution
-\item full row rank, potentially large nullspace, no left nullspace = flat/fat matrix, under-determined system of equations, we need the right inverse, solution in the sense of least squares magnitude for unknown vector
-\item rank deficient, potentially large nullspace, potentially large left nullspace, meaningful information of the matrix is not stored in optimum way $\rightarrow$ data-driven learning...but before doing this stuff, we should at least learn full column rank cases properly
-\end{itemize}
+\left(
+\begin{bmatrix}
+0 & 1\\
+1 & 0
+\end{bmatrix}
+\right)^H=
+\bm{U} \bm{\Sigma} \bm{V}^H
+$$
+
+Can we solve for the model parameter vector $\bm{\theta}$ given the feature matrix $\bm{X}$ and the output data vector $\bm{y}$?
 %
+If no, why? If yes, how?
+$$
+\bm{X} \bm{\theta} = \bm{y}
+\quad \rightarrow \quad
+\begin{bmatrix}
+3 & 0 \\ 0 & 8 \\ 0 & 0
+\end{bmatrix}
+\begin{bmatrix}
+\bm{\theta} \\ |
+\end{bmatrix}=
+\begin{bmatrix}
+-3 \\ 4 \\ 2
+\end{bmatrix}
+$$
+
+\end{frame}
+
+
+
+
+\begin{frame}[t]{Finding Model Parameters with Subspace Fundamentals}
+
+Can we solve for the model parameter vector $\bm{\theta}$ given the feature matrix $\bm{X}$ and the output data vector $\bm{y}$?
+%
+If no, why? If yes, how?
+$$
+\begin{bmatrix}
+3 & 0 \\ 0 & 8 \\ 0 & 0
+\end{bmatrix}
+\begin{bmatrix}
+\bm{\theta} \\ |
+\end{bmatrix}=
+\begin{bmatrix}
+-3 \\ 4 \\ 2
+\end{bmatrix}
+%
+\qquad\qquad
+\bm{X} =
+\begin{bmatrix}
+3 & 0 \\ 0 & 8 \\ 0 & 0
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 & 1 & 0 \\
+1 & 0 & 0 \\
+0 & 0 & 1
+\end{bmatrix}
+%
+\begin{bmatrix}
+8 & 0\\
+0 & 3\\
+0 & 0
+\end{bmatrix}
+%
+\left(
+\begin{bmatrix}
+0 & 1\\
+1 & 0
+\end{bmatrix}
+\right)^H=
+\bm{U} \bm{\Sigma} \bm{V}^H
+$$
+
+\begin{center}
+\includegraphics[width=0.7\textwidth]{least_squares_error.pdf}
+\end{center}
+
+
+\end{frame}
+
+
+
+\againframe{SubspacesForSketch}
+
+
+
+\begin{frame}[t]{Finding Model Parameters with Subspace Fundamentals / Left Inverse}
+%
+\begin{center}
+\textcolor{C0}{column space} $\perp$ \textcolor{C4}{left null space}\\
+\includegraphics[width=0.5\textwidth]{least_squares_error.pdf}
+\end{center}
+%
+$$\bm{X} \hat{\bm{\theta}} + \bm{e} = \bm{y} \qquad \rightarrow \qquad \bm{e} = \bm{y} - \bm{X} \hat{\bm{\theta}}$$
+%
+shortest path of $\bm{e}$ to column space means that $\bm{e}$ is orthogonal to column space
+
+hence, $\bm{e}$ must live purely in left null space, i.e. $\bm{X}^H \bm{e} = \bm{0}$ holds, this yields
+%
+$$\bm{X}^H (\bm{y} - \bm{X} \hat{\bm{\theta}}) = \bm{0} \quad \rightarrow \quad \bm{X}^H \bm{y} = \bm{X}^H \bm{X} \hat{\bm{\theta}} \quad \rightarrow \quad
+(\bm{X}^H \bm{X})^{-1} \bm{X}^H \bm{y} = \hat{\bm{\theta}}
+$$
+
+middle equation: normal equations, right equation: least squares error solution using left inverse $\bm{X}^{\dagger_l} = (\bm{X}^H \bm{X})^{-1} \bm{X}^H$ such that
+$\bm{X}^{\dagger_l} \bm{X} = \bm{I}$
+
+
 \end{frame}
 
 
@@ -875,20 +1159,158 @@ sketches of the 4 subspaces for these 4 cases help to get the essence how a matr
 
 
 
-\section{Ex03: SVD and Left Inverse Brings us to OLS Linear Regression}
 
-\begin{frame}{Ex03: SVD and Left Inverse Brings us to OLS Linear Regression}
-Objectives
-\begin{itemize}
-\item linear regression with least squares error teaser
-\item subspaces example on simple matrix
-\item nice SVD properties and essence
-\item projecting vectors onto $\bm{U}$ and $\bm{V}$ spaces
-\item for full column rank matrix $\bm{X}_{M \times N}$ we can try to bring a $\bm{y}\in \mathbb{R}^M$ back to $\bm{\beta}\in \mathbb{R}^N$ solving the inverse problem for $\bm{X} \bm{\beta} + \bm{n} = \bm{y}$...we should do this by understanding the SVD
-\item we then re-invented the so called left inverse of a matrix
-\item this can be used to solve an inverse problem in ordinary least squares (OLS) sense
-\item we check this with geometrical considerations rather than calculus
-\end{itemize}
+
+\begin{frame}[t]{Left Inverse for Least Squares Error Solution}
+$\bm{X}$ as full column rank with $R=2$ (2 independent columns = 2 independent rows = 2 non-zero singular values)
+$$
+\bm{X} =
+\begin{bmatrix}
+3 & 0 \\ 0 & 8 \\ 0 & 0
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 & 1 & 0 \\
+1 & 0 & 0 \\
+0 & 0 & 1
+\end{bmatrix}
+%
+\begin{bmatrix}
+8 & 0\\
+0 & 3\\
+0 & 0
+\end{bmatrix}
+%
+\left(
+\begin{bmatrix}
+0 & 1\\
+1 & 0
+\end{bmatrix}
+\right)^H=
+\bm{U} \bm{\Sigma} \bm{V}^H
+$$
+Find left-inverse $\bm{X}^{\dagger_l}$ of $\bm{X}$ such that $\bm{X}^{\dagger_l} \bm{X} = \bm{I}_{2 \times 2}$
+%
+$$
+\bm{X}^{\dagger_l} =
+\begin{bmatrix}
+\frac{1}{3} & 0 & 0\\ 0 & \frac{1}{8} & 0
+\end{bmatrix}
+=
+\underbrace{
+\begin{bmatrix}
+0 & 1\\
+1 & 0
+\end{bmatrix}
+%
+\begin{bmatrix}
+\frac{1}{8} & 0 & 0\\
+0 & \frac{1}{3} & 0
+\end{bmatrix}
+%
+\left(
+\begin{bmatrix}
+0 & 1 & 0 \\
+1 & 0 & 0 \\
+0 & 0 & 1
+\end{bmatrix}
+\right)^H}_{\text{this is not the SVD of } \bm{X}^{\dagger_l} \text{, why?, check the SVD of } \bm{X}^{\dagger_l}}
+=
+\bm{V} \bm{\Sigma}^{\dagger_l} \bm{U}^H =
+\bm{V} \left[(\bm{\Sigma}^H \bm{\Sigma})^{-1} \bm{\Sigma}^H\right] \bm{U}^H
+$$
+%
+We can solve for optimum $\hat{\bm{\theta}}$ in sense of least squares error, i.e. $\lVert \bm{e} \rVert_2^2 = \lVert \bm{y} - \bm{X} \hat{\bm{\theta}} \rVert_2^2\rightarrow \text{min}$:
+$$
+\begin{bmatrix}
+3 & 0 \\ 0 & 8 \\ 0 & 0
+\end{bmatrix}
+\begin{bmatrix}
+\hat{\bm{\theta}} \\ |
+\end{bmatrix}=
+\begin{bmatrix}
+-3 \\ 4 \\ 2
+\end{bmatrix}
+\quad
+\rightarrow
+\quad
+\hat{\bm{\theta}} =
+\bm{X}^{\dagger_l}
+\begin{bmatrix}
+-3 \\ 4 \\ 2
+\end{bmatrix}
+=
+\begin{bmatrix}
+-1 \\ \frac{1}{2}
+\end{bmatrix}
+$$
+
+
+
+\end{frame}
+
+
+
+\begin{frame}[t]{Finding Model Parameters with Calculus}
+%
+$$
+\begin{bmatrix}
+3 & 0 \\ 0 & 8 \\ 0 & 0
+\end{bmatrix}
+\begin{bmatrix}
+\hat{\bm{\theta}} \\ |
+\end{bmatrix}=
+\begin{bmatrix}
+-3 \\ 4 \\ 2
+\end{bmatrix}
+$$
+%
+optimization problem in least squares sense: $\min_{\text{wrt }\bm{\theta}} ||\bm{y} - \bm{X} \bm{\theta}||_2^2$
+%
+\begin{align*}
+||\bm{y} - \bm{X} \bm{\theta}||_2  &= \sqrt{(-3 - 3\theta_1)^2 + (4-8\theta_2)^2 + (0-2)^2}\\
+J(\theta_1, \theta_2) = ||\bm{y} - \bm{X} \bm{\theta}||_2^2 &= (-3 - 3\theta_1)^2 + (4-8\theta_2)^2 + (0-2)^2
+\end{align*}
+%
+$$
+\nabla J(\theta_1, \theta_2) =
+\begin{bmatrix}
+\frac{\partial J}{\partial \theta_1}\\
+\frac{\partial J}{\partial \theta_2}
+\end{bmatrix}
+=
+\begin{bmatrix}
+2 (-3) (-3 - 3\theta_1)
+\\
+2 (-8) (4-8\theta_2)
+\end{bmatrix}
+=
+\begin{bmatrix}
+18 (1 + \theta_1)
+\\
+128 (-\frac{1}{2}+\theta_2)
+\end{bmatrix}
+$$
+%
+minimum at $\nabla J(\theta_1, \theta_2) = \bm{0}$, hence
+%
+$$
+\hat{\bm{\theta}}
+=
+\begin{bmatrix}
+\hat{\theta_1}
+\\
+\hat{\theta_2}
+\end{bmatrix}
+=
+\begin{bmatrix}
+-1
+\\
+\frac{1}{2}
+\end{bmatrix}
+$$
+
+
 \end{frame}
 
 
@@ -896,86 +1318,230 @@ Objectives
 
 
 
+\begin{frame}[t]{Left Inverse in SVD Mindset I}
 
-\begin{frame}{Projection into V}
-\begin{itemize}
-\item
-tall, thin and full column rank matrix $\bm{X}_{M \times N}$ with rank $r=N$ and SVD $\bm{X} = \bm{U} \bm{S} \bm{V}^\mathrm{H}$
-\item
-we assume a made up vector $\bm{\beta} = 1.234 \bm{v}_1 + 5.678 \bm{v}_r$
-\item
-we should project $\bm{\beta}$ onto the $\bm{v}$ vectors, which needs $(\bm{v}_{1:r}^\mathrm{H} \bm{\beta}) \bm{v}_{1:r} = ?$
-\item
-we get $\bm{v}_{1}^\mathrm{H} \bm{\beta} = 1.234$, $\bm{v}_{2:r-1}^\mathrm{H} \bm{\beta} = 0$, $\bm{v}_{r}^\mathrm{H} \bm{\beta} = 5.678$ for the weights of the $\bm{v}$
-space vectors, not suprisingly due to orthonormality of the $\bm{V}$ matrix
-\item
-linear combination $(\bm{v}_{1}^\mathrm{H} \bm{\beta})\bm{v}_1 + 0 + ... + 0 + (\bm{v}_{r}^\mathrm{H} \bm{\beta})\bm{v}_r = \bm{\beta}$ yields precisely the made up vector $\bm{\beta}$ that we started with
-\item
-a made up vector $\bm{\alpha}$ might have non-zero weights for all $\bm{v}$ vectors, i.e. all $\bm{v}$ vectors really contribute to the spanning job...
-\item
-we should start to think always in linear combinations of SVD's $\bm{V}$ and $\bm{U}$ spaces
-\item
-as always a simple sketch is helping to understand
-\item
-all projections at once is written as $\bm{V}^\mathrm{H} \bm{\beta}$, cf. $\bm{X}\bm{\beta} = \bm{U} \bm{S} \bm{V}^\mathrm{H}\bm{\beta}$
-\end{itemize}
-\end{frame}
+we meanwhile know that for left inverse characteristics $$\bm{X}^{\dagger_l} \bm{X} = \bm{I}$$
 
+this is a projection matrix into the row space of $\bm{X}$, because $\bm{X}^{\dagger_l} \bm{X} \bm{\theta} = \bm{I} \bm{\theta}$
 
-\begin{frame}{Left Inverse Via SVD}
-we want to solve for ${\bm{\beta}}$, full column rank $\bm{X}_{M \times N}$, rank $r=N$
-$$\bm{X} {\bm{\beta}} = \bm{y}$$
-apply SVD
-$$\bm{U} \bm{S} \bm{V}^\mathrm{H} {\bm{\beta}} = \bm{y}$$
-get weights of U space projection
-$$\bm{U}^\mathrm{H} \bm{U} \bm{S} \bm{V}^\mathrm{H} {\bm{\beta}} = \bm{U}^\mathrm{H}\bm{y}$$
-invert all singular values and setup $\bm{S}^\dagger_{N \times M} = [\mathrm{diag}(1/\sigma_i) \quad \bm{0}]$ such that
-$\bm{S}^\dagger\bm{S} = \bm{I}_{N \times N}$, apply
-$$\bm{S}^\dagger\bm{S} \bm{V}^\mathrm{H} {\bm{\beta}} = \bm{S}^\dagger\bm{U}^\mathrm{H}\bm{y}$$
-let matrix $\bm{V}$ act on this vector, i.e. map as linear combination into row space in $\bm{V}$
-$$\bm{V} \bm{V}^\mathrm{H} {\bm{\beta}} = \bm{V} \bm{S}^\dagger\bm{U}^\mathrm{H}\bm{y}
-\rightarrow \text{this yields our estimator } \hat{\bm{\beta}} = \bm{V} \bm{S}^\dagger\bm{U}^\mathrm{H}\bm{y} = \bm{X}^\dagger \bm{y}$$
-we might want to show that the left inverse $\bm{X}^\dagger$ can be written equivalently as
-$$\bm{V} \bm{S}^\dagger\bm{U}^\mathrm{H} = (\bm{X}^\mathrm{H}\bm{X})^{-1} \bm{X}^\mathrm{H} = \bm{X}^\dagger$$
+factor this with SVD
+
+$$\bm{V} \,\,\bm{?}\,\, \bm{U}^H \bm{U} \bm{\Sigma} \bm{V}^H = \bm{I}$$
+
+\begin{center}
+$
+\def\M{1.8}
+\def\N{1}
+\def\rank{0.999999}
+\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}
+\drawmatrix[fill=none, height=\N, width=\M]?_\mathtt{N \times M}
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\N]U^H_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\N]U_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}
+\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}^H=
+\drawmatrix[diag]I_\mathtt{N \times N}
+$
+\end{center}
+
 \end{frame}
 
 
 
-\begin{frame}{Left Inverse Via SVD}
-full column rank $\bm{X}_{M \times N}$, rank $r=N$, singular values $\sigma_1 > \sigma_2 > \sigma_i > \sigma_r > 0$
 
-forward problem: map (row space+null space) to column space with $\bm{X} \bm{\beta} = \bm{y}$
+
+\begin{frame}[t]{Left Inverse in SVD Mindset II}
+
+we meanwhile know that for left inverse characteristics $$\bm{X}^{\dagger_l} \bm{X} = \bm{I}$$
+
+this is a projection matrix into the row space of $\bm{X}$, because $\bm{X}^{\dagger_l} \bm{X} \bm{\theta} = \bm{I} \bm{\theta}$
+
+factor this with SVD
+
+$$\bm{V} \,\,\bm{?}\,\, \bm{\Sigma} \bm{V}^H = \bm{I}$$
+
+\begin{center}
+$
+\def\M{1.8}
+\def\N{1}
+\def\rank{0.999999}
+\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}
+\drawmatrix[fill=none, height=\N, width=\M]?_\mathtt{N \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}
+\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}^H=
+\drawmatrix[diag]I_\mathtt{N \times N}
+$
+\end{center}
+
+\end{frame}
+
+
+
+
+\begin{frame}[t]{Left Inverse in SVD Mindset III}
+
+we meanwhile know that for left inverse characteristics $$\bm{X}^{\dagger_l} \bm{X} = \bm{I}$$
+
+this is a projection matrix into the row space of $\bm{X}$, because $\bm{X}^{\dagger_l} \bm{X} \bm{\theta} = \bm{I} \bm{\theta}$
+
+factor this with SVD
+
+$$\bm{?}\,\, \bm{\Sigma} = \bm{I}$$
+
+\begin{center}
+$
+\def\M{1.8}
+\def\N{1}
+\def\rank{0.999999}
+\drawmatrix[fill=none, height=\N, width=\M]?_\mathtt{N \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}=
+\drawmatrix[diag]I_\mathtt{N \times N}
+$
+\end{center}
+
+\end{frame}
+
+
+
+
+\begin{frame}[t]{Left Inverse in SVD Mindset IV}
+
+we meanwhile know that for left inverse characteristics $$\bm{X}^{\dagger_l} \bm{X} = \bm{I}$$
+
+this is a projection matrix into the row space of $\bm{X}$, because $\bm{X}^{\dagger_l} \bm{X} \bm{\theta} = \bm{I} \bm{\theta}$
+
+factor this with SVD
+
+$$\bm{\Sigma}^{\dagger_l} \bm{\Sigma} = \bm{I}$$
+
+\begin{center}
+$
+\def\M{1.8}
+\def\N{1}
+\def\rank{0.999999}
+\drawmatrix[fill=none, height=\N, width=\M]{\Sigma^{\dagger_l}}_\mathtt{N \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}=
+\drawmatrix[diag]I_\mathtt{N \times N}
+$
+\end{center}
+
+\end{frame}
+
+
+
+
+\begin{frame}[t]{Left Inverse in SVD Mindset V}
+
+$$\bm{\Sigma}^{\dagger_l} \bm{\Sigma} = \bm{I}$$
+
+\begin{center}
+$
+\def\M{1.8}
+\def\N{1}
+\def\rank{0.999999}
+\drawmatrix[fill=none, height=\N, width=\M]{\Sigma^{\dagger_l}}_\mathtt{N \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}=
+\drawmatrix[diag]I_\mathtt{N \times N}
+$
+\end{center}
+
+\begin{center}
+$
+\def\M{1.8}
+\def\N{1}
+\def\rank{0.999999}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\N, bbox width=\M, fill=white, height=\rank\N, width=\rank\N]{\Sigma^H}_\mathtt{N \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}
+=
+\drawmatrix[fill=none, height=\N, width=\N]?_\mathtt{N \times N}
+$
+\end{center}
+\end{frame}
+
+
+
+\begin{frame}[t]{Left Inverse in SVD Mindset VI}
+
+$$\bm{\Sigma}^{\dagger_l} \bm{\Sigma} = \bm{I}$$
+
+\begin{center}
+$
+\def\M{1.8}
+\def\N{1}
+\def\rank{0.999999}
+\drawmatrix[fill=none, height=\N, width=\M]{\Sigma^{\dagger_l}}_\mathtt{N \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}=
+\drawmatrix[diag]I_\mathtt{N \times N}
+$
+\end{center}
+
+\begin{center}
+$
+\def\M{1.8}
+\def\N{1}
+\def\rank{0.999999}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\N, bbox width=\M, fill=white, height=\rank\N, width=\rank\N]{\Sigma^H}_\mathtt{N \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}
+=
+\drawmatrix[diag]{\sigma^2}_\mathtt{N \times N}
+$
+\end{center}
+
+\begin{center}
+$
+\def\M{1.8}
+\def\N{1}
+\def\rank{0.999999}
+\drawmatrix[diag]{1/\sigma^2}_\mathtt{N \times N}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\N, bbox width=\M, fill=white, height=\rank\N, width=\rank\N]{\Sigma^H}_\mathtt{N \times M} =
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\N, bbox width=\M, fill=white, height=\rank\N, width=\rank\N]{\Sigma^{\dagger_l}}_\mathtt{N \times M}
+$
+\end{center}
+
+$$\bm{\Sigma}^{\dagger_l} = (\bm{\Sigma}^H \bm{\Sigma})^{-1} \bm{\Sigma}^H$$
+
+$$\bm{X}^{\dagger_l} = \bm{V} \bm{\Sigma}^{\dagger_l} \bm{U}^H =
+\bm{V} \left[(\bm{\Sigma}^H \bm{\Sigma})^{-1} \bm{\Sigma}^H\right] \bm{U}^H$$
+
+
+\end{frame}
+
+
+
+\begin{frame}{Summary for Left Inverse's SVD Mindset}
+full column rank $\bm{X}_{M \times N}$, rank $R=N$
+
+forward problem: map row space to column space (+ null space to zero vector) with $\bm{X} \bm{\theta} = \bm{y}$
 $$
 \bm{X}_{M \times N}
 =
 \bm{U}_{M \times M}\quad
-\bm{S}_{M \times N}\quad
+\bm{\Sigma}_{M \times N}\quad
 (\bm{V}_{N \times N})^\mathrm{H}=
 \bm{U}
 \begin{bmatrix}
 \sigma_1  & 0  & 0 & 0\\
 0 & \sigma_2 & 0 & 0\\
 0 & 0 & \sigma_i & 0\\
-0 & 0 & 0 & \sigma_r\\
+0 & 0 & 0 & \sigma_R\\
 0 & 0 & 0 & 0\\
 0 & 0 & 0 & 0
 \end{bmatrix}
 \bm{V}^\mathrm{H}
 $$
-inverse problem: map (column space+left null space) to row space with left inverse $\bm{X}^\dagger \bm{y} = \bm{\beta}$
+inverse problem: map column space to row space (+ left null space to zero vector) with left inverse $\bm{X}^{\dagger_l} \bm{y} = \bm{\theta}$
 $$
-\bm{X}^\dagger_{N \times M}
+\bm{X}^{\dagger_l}_{N \times M}
 =
 \bm{V}_{N \times N}\quad
-\bm{S}^\dagger_{N \times M}\quad
+\bm{\Sigma}^{\dagger_l}_{N \times M}\quad
 (\bm{U}_{M \times M})^\mathrm{H}
 =
 \bm{V}
 \begin{bmatrix}
-\frac{1}{\sigma_1} & 0 & 0 & 0 & 0 & 0\\
-0 & \frac{1}{\sigma_2} & 0 & 0 & 0 & 0\\
-0 & 0 & \frac{1}{\sigma_i} & 0 & 0 & 0\\
-0 & 0 & 0 & \frac{1}{\sigma_r} & 0 & 0\\
+\frac{\sigma_1}{\sigma_1^2} & 0 & 0 & 0 & 0 & 0\\
+0 & \frac{\sigma_2}{\sigma_2^2} & 0 & 0 & 0 & 0\\
+0 & 0 & \frac{\sigma_i}{\sigma_i^2} & 0 & 0 & 0\\
+0 & 0 & 0 & \frac{\sigma_R}{\sigma_R^2} & 0 & 0\\
 \end{bmatrix}
 \bm{U}^\mathrm{H}
 $$
@@ -991,64 +1557,65 @@ $$
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{frame}{Another Treatment for Left Inverse Via SVD}
+we want to solve for ${\bm{\theta}}$, full column rank $\bm{X}_{M \times N}$, rank $R=N$
+$$\bm{X} {\bm{\theta}} = \bm{y}$$
+apply SVD:
+$$\bm{U} \bm{\Sigma} \bm{V}^\mathrm{H} {\bm{\theta}} = \bm{y}$$
+get the weights for U space projection:
+$$\bm{U}^\mathrm{H} \bm{U} \bm{\Sigma} \bm{V}^\mathrm{H} {\bm{\theta}} = \bm{U}^\mathrm{H}\bm{y}$$
+invert all singular values and set up $\bm{\Sigma}^{\dagger_l}_{N \times M} = [\mathrm{diag}(1/\sigma_i) \quad \bm{0}]$ such that
+$\bm{\Sigma}^{\dagger_l}\bm{\Sigma} = \bm{I}_{N \times N}$
+
+apply $\bm{\Sigma}^{\dagger_l}$ left:
+$$\bm{\Sigma}^{\dagger_l}\bm{\Sigma} \bm{V}^\mathrm{H} {\bm{\theta}} = \bm{\Sigma}^{\dagger_l}\bm{U}^\mathrm{H}\bm{y}$$
+let matrix $\bm{V}$ act on this vector, i.e. map as linear combination into row space in $\bm{V}$
+$$\bm{V} \bm{V}^\mathrm{H} {\bm{\theta}} = \bm{V} \bm{\Sigma}^{\dagger_l}\bm{U}^\mathrm{H}\bm{y}
+\rightarrow \text{this yields our estimator } \hat{\bm{\theta}} = \bm{V} \bm{\Sigma}^{\dagger_l}\bm{U}^\mathrm{H}\bm{y} = \bm{X}^{\dagger_l} \bm{y}$$
+we might want to show that the left inverse $\bm{X}^{\dagger_l}$ can be written equivalently as
+$$\bm{X}^{\dagger_l} = \bm{V} \bm{\Sigma}^{\dagger_l}\bm{U}^\mathrm{H} = (\bm{X}^\mathrm{H}\bm{X})^{-1} \bm{X}^\mathrm{H}$$
+\end{frame}
+
 \begin{frame}{Projection Matrices Based on Left Inverse}
-For full column rank $\bm{X}_{M \times N}$, rank $r=N$ we got the left inverse
-$$\bm{V} \bm{S}^\dagger\bm{U}^\mathrm{H} = (\bm{X}^\mathrm{H}\bm{X})^{-1} \bm{X}^\mathrm{H} = \bm{X}^\dagger_{N \times M}$$
-from which we can create four projection matrices into the four subspaces
+For full column rank $\bm{X}_{M \times N}$, rank $R=N$ the left inverse is
+$$\bm{X}^{\dagger_l} = \bm{V} \bm{\Sigma}^{\dagger_l}\bm{U}^\mathrm{H} = (\bm{X}^\mathrm{H}\bm{X})^{-1} \bm{X}^\mathrm{H}$$
+from which we can create \underline{four projection matrices} into the \underline{four subspaces}
 \begin{itemize}
-\item into row space $\bm{P}_\text{row} = \bm{X}^\dagger \bm{X} = \bm{I}_{N \times N}$ \begin{footnotesize}(i.e. the concept of a left inverse)\end{footnotesize}
-\item into null space $\bm{P}_\text{null} = \bm{I} - \bm{P}_\text{row} = \bm{0}_{N \times N}$ \begin{footnotesize}(because no null space when full column rank)\end{footnotesize}
-\item into column space $\bm{P}_\text{column} = (\bm{X} \bm{X}^\dagger)_{M \times M}$ \begin{footnotesize}(very often called hat matrix)\end{footnotesize}
-\item into left nullspace $\bm{P}_\text{left null} = \bm{I}_{M \times M} - \bm{P}_\text{column}$
+\item[-] into \textcolor{C2}{row space} $\bm{P}_\text{row} = \bm{X}^{\dagger_l} \bm{X} = \bm{I}_{N \times N}$ \begin{footnotesize}(i.e. the concept of a left inverse)\end{footnotesize}
+\item[-] into \textcolor{C1}{null space} $\bm{P}_\text{null} = \bm{I} - \bm{P}_\text{row} = \bm{0}_{N \times N}$ \begin{footnotesize}(because no null space when full column rank)\end{footnotesize}
+\item[-] into \textcolor{C0}{column space} $\bm{P}_\text{column} = (\bm{X} \bm{X}^{\dagger_l})_{M \times M}$ \begin{footnotesize}(very often called hat matrix)\end{footnotesize}
+\item[-] into \textcolor{C4}{left nullspace} $\bm{P}_\text{left null} = \bm{I}_{M \times M} - \bm{P}_\text{column}$
 \end{itemize}
 
-So the estimator $\hat{\bm{\beta}}$ from solving the inverse problem yields a vector living in the column space
-$$\bm{X} \hat{\bm{\beta}} = \bm{X} (\bm{X}^\dagger \bm{y}) = \bm{P}_\text{column} \bm{y} = \hat{\bm{y}}$$
-This means that there is a remaining part (typical called residual) $\bm{e}$ from measured $\bm{y}$
+Estimator $\hat{\bm{\theta}}$ from solving the inverse problem yields a vector $\hat{\bm{y}}$ living in the column space
+$$\bm{X} \hat{\bm{\theta}} = \bm{X} (\bm{X}^{\dagger_l} \bm{y}) = \bm{P}_\text{column} \bm{y} = \hat{\bm{y}}$$
+This means that there is a remaining part (typically called residual) $\bm{e}$ from measured $\bm{y}$
 $$\bm{e} = \bm{y} - \hat{\bm{y}} = \bm{y} - \bm{P}_\text{column} \bm{y} = (\bm{I}_{M \times M} - \bm{P}_\text{column}) \bm{y}=
 \bm{P}_\text{left null} \bm{y} = \bm{e}$$
-which lives in the left null space. Due to the orthogonal subspaces, we know that $\hat{\bm{y}} \perp \bm{e}$
-
-\end{frame}
-
-\begin{frame}{Least Squares Sense Solution: Calculus vs. Graphical}
-Calculus way: As usually assuming full column rank, we can consider an optimization problem, where we want to minimize
-squared distance, hence the name least squares
-$$\min_{\text{wrt }\bm{\beta}} ||\bm{y} - \bm{X} \bm{\beta}||_2^2$$
-which needs 1st / 2nd derivatives, yielding the already found solution using the left inverse
-$$\hat{\bm{\beta}} = (\bm{X}^\mathrm{H}\bm{X})^{-1} \bm{X}^\mathrm{H} \bm{y}$$
-Graphical way: the shortest path to get $\bm{y}$ into the column space is by orthogonal projection, we get again $\hat{\bm{y}} \perp \bm{e}$...that's why the subspace
-stuff is so nice...the $\hat{\bm{y}}$ can be mapped back to row space yielding $\hat{\bm{\beta}}$
-\begin{center}
-\includegraphics[width=0.23\textwidth]{figures_web/Theodoridis_ML_2nd_Fig4.3.png}
-\end{center}
-\begin{footnotesize}consider Fig. 4.3 from S. Theodoridis, Machine Learning, 2nd ed. Academic Press, 2020\end{footnotesize}
-\end{frame}
-
-\section{Ex04: Audio Example, Linear Regression, SVD}
-\begin{frame}{Ex04: SVD Factorization of Multitrack Audio}
-Objectives: understanding the essence of SVD vs. utilizing SVD on real data
-%we can listen to audio or view images, so we should bring memorizable examples that feature these senses
-
-\begin{itemize}
-\item given a $M \times N$ matrix $\bm{X}$ with full column rank $r=N$ containing $M$ audio samples on $N$ channels, this might be a studio recording of a song, e.g. 1st channel is bassdrum, 2nd is bass guitar, $N$-th channel is a synth line
-\item perform an economy size SVD on this multitrack audio data (a normal SVD would need way too much RAM to store left nullspace in $\bm{U}$)
-$$\bm{X} = \bm{U} \bm{S} \bm{V}^\mathrm{H}$$
-\item we can listen to and plot the weighted left singular vectors that span the column space
-$$\mathbf{H}_{M \times r} =  \mathbf{U}_{M \times r} \mathbf{S}_{r \times r}$$
-\item we could analyze polarity / level of the mixing weights $\mathbf{V}^\mathrm{H} \mathbf{g}$ of the mixdown
-$$\mathbf{y} = \mathbf{X}\mathbf{g} = \mathbf{H} \cdot \mathbf{V}^\mathrm{H} \mathbf{g}$$
-\item we could listen to the mixdown using the best rank $q<=r$ approximation
-$$\mathbf{y} =\bm{U} \bm{S}_q \bm{V}^\mathrm{H}\mathbf{g}$$
-\end{itemize}
-
-\end{frame}
-
-\section{Ex05: Audio Example}
-\begin{frame}{Ex05: Audio Example}
-Objectives
-%\begin{itemize}
-%\end{itemize}
+which lives in the left null space. Due to the orthogonal subspaces, we know that $\hat{\bm{y}} \perp \bm{e}$.
 \end{frame}
 
 
@@ -1056,10 +1623,42 @@ Objectives
 
 
 
-\section{Exxx: TBD}
-\begin{frame}{Audio Toy Example for Music Genre Classification}
-TBD...
-\end{frame}
+
+
+
+% \section{Ex04: Audio Example, Linear Regression, SVD}
+% \begin{frame}{Ex04: SVD Factorization of Multitrack Audio}
+% Objectives: understanding the essence of SVD vs. utilizing SVD on real data
+% %we can listen to audio or view images, so we should bring memorizable examples that feature these senses
+%
+% \begin{itemize}
+% \item given a $M \times N$ matrix $\bm{X}$ with full column rank $r=N$ containing $M$ audio samples on $N$ channels, this might be a studio recording of a song, e.g. 1st channel is bassdrum, 2nd is bass guitar, $N$-th channel is a synth line
+% \item perform an economy size SVD on this multitrack audio data (a normal SVD would need way too much RAM to store left nullspace in $\bm{U}$)
+% $$\bm{X} = \bm{U} \bm{S} \bm{V}^\mathrm{H}$$
+% \item we can listen to and plot the weighted left singular vectors that span the column space
+% $$\mathbf{H}_{M \times r} =  \mathbf{U}_{M \times r} \mathbf{S}_{r \times r}$$
+% \item we could analyze polarity / level of the mixing weights $\mathbf{V}^\mathrm{H} \mathbf{g}$ of the mixdown
+% $$\mathbf{y} = \mathbf{X}\mathbf{g} = \mathbf{H} \cdot \mathbf{V}^\mathrm{H} \mathbf{g}$$
+% \item we could listen to the mixdown using the best rank $q<=r$ approximation
+% $$\mathbf{y} =\bm{U} \bm{S}_q \bm{V}^\mathrm{H}\mathbf{g}$$
+% \end{itemize}
+%
+% \end{frame}
+%
+% \section{Ex05: Audio Example}
+% \begin{frame}{Ex05: Audio Example}
+% Objectives
+% %\begin{itemize}
+% %\end{itemize}
+% \end{frame}
+%
+%
+%
+% \section{Section xxx: TBD}
+%
+% \begin{frame}{Audio Toy Example for Music Genre Classification}
+% TBD...
+% \end{frame}
 
 
 % \section{Ex0x: Topic}
