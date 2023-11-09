@@ -1,4 +1,4 @@
-\iffalse
+\iftrue
   \documentclass[mathserif, aspectratio=1610]{intbeamer}
 \else
   \documentclass[aspectratio=1610]{beamer}
@@ -950,47 +950,25 @@ $
 % \end{frame}
 
 
+\begin{frame}[t]{Ex04: Recap 4 Subspaces of a Matrix}
 
+\hspace{-0.5cm}
+\textcolor{C2}{row space} $\perp$ \textcolor{C1}{null space}
+\hspace{0.5cm}
+\textcolor{C0}{column space} $\perp$ \textcolor{C4}{left null space}
+\hspace{0.5cm}
+Projection:
 
+\begin{flushleft}
+\includegraphics[width=0.5\textwidth]{four_subspaces.pdf}
+\end{flushleft}
 
+\hspace{-0.5cm}
+right singular vectors in $\bm{V}$
+\hspace{0.5cm}
+left singular vectors in $\bm{U}$
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+\end{frame}
 
 
 
@@ -1098,7 +1076,7 @@ $$
 
 
 
-\againframe{SubspacesForSketch}
+
 
 
 
@@ -1127,130 +1105,6 @@ $\bm{X}^{\dagger_l} \bm{X} = \bm{I}$
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\begin{frame}[t]{Left Inverse for Least Squares Error Solution}
-$\bm{X}$ as full column rank with $R=2$ (2 independent columns = 2 independent rows = 2 non-zero singular values)
-$$
-\bm{X} =
-\begin{bmatrix}
-3 & 0 \\ 0 & 8 \\ 0 & 0
-\end{bmatrix}
-=
-\begin{bmatrix}
-0 & 1 & 0 \\
-1 & 0 & 0 \\
-0 & 0 & 1
-\end{bmatrix}
-%
-\begin{bmatrix}
-8 & 0\\
-0 & 3\\
-0 & 0
-\end{bmatrix}
-%
-\left(
-\begin{bmatrix}
-0 & 1\\
-1 & 0
-\end{bmatrix}
-\right)^H=
-\bm{U} \bm{\Sigma} \bm{V}^H
-$$
-Find left-inverse $\bm{X}^{\dagger_l}$ of $\bm{X}$ such that $\bm{X}^{\dagger_l} \bm{X} = \bm{I}_{2 \times 2}$
-%
-$$
-\bm{X}^{\dagger_l} =
-\begin{bmatrix}
-\frac{1}{3} & 0 & 0\\ 0 & \frac{1}{8} & 0
-\end{bmatrix}
-=
-\underbrace{
-\begin{bmatrix}
-0 & 1\\
-1 & 0
-\end{bmatrix}
-%
-\begin{bmatrix}
-\frac{1}{8} & 0 & 0\\
-0 & \frac{1}{3} & 0
-\end{bmatrix}
-%
-\left(
-\begin{bmatrix}
-0 & 1 & 0 \\
-1 & 0 & 0 \\
-0 & 0 & 1
-\end{bmatrix}
-\right)^H}_{\text{this is not the SVD of } \bm{X}^{\dagger_l} \text{, why?, check the SVD of } \bm{X}^{\dagger_l}}
-=
-\bm{V} \bm{\Sigma}^{\dagger_l} \bm{U}^H =
-\bm{V} \left[(\bm{\Sigma}^H \bm{\Sigma})^{-1} \bm{\Sigma}^H\right] \bm{U}^H
-$$
-%
-We can solve for optimum $\hat{\bm{\theta}}$ in sense of least squares error, i.e. $\lVert \bm{e} \rVert_2^2 = \lVert \bm{y} - \bm{X} \hat{\bm{\theta}} \rVert_2^2\rightarrow \text{min}$:
-$$
-\begin{bmatrix}
-3 & 0 \\ 0 & 8 \\ 0 & 0
-\end{bmatrix}
-\begin{bmatrix}
-\hat{\bm{\theta}} \\ |
-\end{bmatrix}=
-\begin{bmatrix}
--3 \\ 4 \\ 2
-\end{bmatrix}
-\quad
-\rightarrow
-\quad
-\hat{\bm{\theta}} =
-\bm{X}^{\dagger_l}
-\begin{bmatrix}
--3 \\ 4 \\ 2
-\end{bmatrix}
-=
-\begin{bmatrix}
--1 \\ \frac{1}{2}
-\end{bmatrix}
-$$
-
-
-
-\end{frame}
-
-
-
 \begin{frame}[t]{Finding Model Parameters with Calculus}
 %
 $$
@@ -1265,8 +1119,10 @@ $$
 \end{bmatrix}
 $$
 %
-optimization problem in least squares sense: $\min_{\text{wrt }\bm{\theta}} ||\bm{y} - \bm{X} \bm{\theta}||_2^2$
+optimization problem in least squares sense: $\min_{\text{wrt }\bm{\theta}} ||\bm{e}||_2^2 = \min_{\text{wrt }\bm{\theta}} ||\bm{y} - \bm{X} \bm{\theta}||_2^2$
 %
+
+recall that $||\bm{y} - \bm{X} \bm{\theta}||_2^2 = (\bm{y} - \bm{X} \bm{\theta})^H (\bm{y} - \bm{X} \bm{\theta})$
 \begin{align*}
 ||\bm{y} - \bm{X} \bm{\theta}||_2  &= \sqrt{(-3 - 3\theta_1)^2 + (4-8\theta_2)^2 + (0-2)^2}\\
 J(\theta_1, \theta_2) = ||\bm{y} - \bm{X} \bm{\theta}||_2^2 &= (-3 - 3\theta_1)^2 + (4-8\theta_2)^2 + (0-2)^2
@@ -1573,6 +1429,93 @@ $$
 
 
 
+\begin{frame}[t]{Left Inverse for Least Squares Error Solution}
+$\bm{X}$ as full column rank with $R=2$ (2 independent columns = 2 independent rows = 2 non-zero singular values)
+$$
+\bm{X} =
+\begin{bmatrix}
+3 & 0 \\ 0 & 8 \\ 0 & 0
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 & 1 & 0 \\
+1 & 0 & 0 \\
+0 & 0 & 1
+\end{bmatrix}
+%
+\begin{bmatrix}
+8 & 0\\
+0 & 3\\
+0 & 0
+\end{bmatrix}
+%
+\left(
+\begin{bmatrix}
+0 & 1\\
+1 & 0
+\end{bmatrix}
+\right)^H=
+\bm{U} \bm{\Sigma} \bm{V}^H
+$$
+Find left-inverse $\bm{X}^{\dagger_l}$ of $\bm{X}$ such that $\bm{X}^{\dagger_l} \bm{X} = \bm{I}_{2 \times 2}$
+%
+$$
+\bm{X}^{\dagger_l} =
+\begin{bmatrix}
+\frac{1}{3} & 0 & 0\\ 0 & \frac{1}{8} & 0
+\end{bmatrix}
+=
+\underbrace{
+\begin{bmatrix}
+0 & 1\\
+1 & 0
+\end{bmatrix}
+%
+\begin{bmatrix}
+\frac{1}{8} & 0 & 0\\
+0 & \frac{1}{3} & 0
+\end{bmatrix}
+%
+\left(
+\begin{bmatrix}
+0 & 1 & 0 \\
+1 & 0 & 0 \\
+0 & 0 & 1
+\end{bmatrix}
+\right)^H}_{\text{this is not the SVD of } \bm{X}^{\dagger_l} \text{, why?, check the SVD of } \bm{X}^{\dagger_l}}
+=
+\bm{V} \bm{\Sigma}^{\dagger_l} \bm{U}^H =
+\bm{V} \left[(\bm{\Sigma}^H \bm{\Sigma})^{-1} \bm{\Sigma}^H\right] \bm{U}^H
+$$
+%
+We can solve for optimum $\hat{\bm{\theta}}$ in sense of least squares error, i.e. $\lVert \bm{e} \rVert_2^2 = \lVert \bm{y} - \bm{X} \hat{\bm{\theta}} \rVert_2^2\rightarrow \text{min}$:
+$$
+\begin{bmatrix}
+3 & 0 \\ 0 & 8 \\ 0 & 0
+\end{bmatrix}
+\begin{bmatrix}
+\hat{\bm{\theta}} \\ |
+\end{bmatrix}=
+\begin{bmatrix}
+-3 \\ 4 \\ 2
+\end{bmatrix}
+\quad
+\rightarrow
+\quad
+\hat{\bm{\theta}} =
+\bm{X}^{\dagger_l}
+\begin{bmatrix}
+-3 \\ 4 \\ 2
+\end{bmatrix}
+=
+\begin{bmatrix}
+-1 \\ \frac{1}{2}
+\end{bmatrix}
+$$
+
+
+
+\end{frame}
 
 
 
