@@ -1,0 +1,49 @@
+\documentclass[crop,tikz]{standalone}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fouriernc}
+\usepackage[T1]{fontenc}
+\usepackage{bm}
+\usepackage{amsmath}
+\usepackage{trfsigns}
+\usepackage{xcolor}
+\usetikzlibrary{arrows.meta}
+
+%matplotlib colors:
+\definecolor{C0}{HTML}{1f77b4}
+\definecolor{C1}{HTML}{ff7f0e}
+\definecolor{C2}{HTML}{2ca02c}
+\definecolor{C3}{HTML}{d62728}
+\definecolor{C4}{HTML}{9467bd}
+\definecolor{C5}{HTML}{8c564b}
+\definecolor{C6}{HTML}{e377c2}
+\definecolor{C7}{HTML}{7f7f7f}
+\definecolor{C8}{HTML}{bcbd22}
+\definecolor{C9}{HTML}{17becf}
+
+\begin{document}
+\begin{tikzpicture}
+
+\draw[-{Latex[length=1mm]}, thin] (0,0) -- (5,0) node[above]{$x_\text{u-space}$};
+\draw[-{Latex[length=1mm]}, thin] (0,0) -- (1.7677669529663688,1.7677669529663688) node[above]{$y_\text{u-space}$};
+\draw[-{Latex[length=1mm]}, thin] (0,0) -- (0,5) node[above]{$z_\text{u-space}$};
+
+\draw[-{Latex[length=2mm]}, ultra thick, C0] (0,0) -- (1,0) node[below]{$\bm{u}_2$};
+\draw[-{Latex[length=2mm]}, thick] (0,0) -- (-3,0) node[left]{$-1 \cdot \sigma_2 \bm{u}_2 = -3\bm{u}_2$};
+
+\draw[-{Latex[length=2mm]}, ultra thick, C0] (0,0) -- (0.35355339,0.35355339) node[right]{$\bm{u}_1$};
+\draw[-{Latex[length=2mm]}, thick] (0,0) -- (1.414213562373095,1.414213562373095) node[right]{$4 \bm{u}_1 = +\frac{1}{2} \cdot \sigma_1 \bm{u}_1$};
+
+\draw[-{Latex[length=2mm]}, ultra thick, C4] (0,0) -- (0,1) node[right]{$\bm{u}_3$};
+\draw[-{Latex[length=2mm]}, thick] (0,0) -- (0,2) node[right]{$2\bm{u}_3$};
+
+\draw[-, dashed] (1.414213562373095,1.414213562373095) -- (-1.5858,1.414213562373095);
+\draw[-, dashed] (-3,0) -- (-1.5858,1.414213562373095);
+\draw[-, dashed] (-1.5858,1.414213562373095) -- (-1.5858,3.414213562373095);
+
+\draw[-, dashed] (0,0) -- (-1.5858,1.414213562373095);
+
+\draw[-{Latex[length=2mm]}, thick] (0,0) -- (-1.5858,3.414213562373095) node[left]{$\begin{bmatrix}-3\\4\\2\end{bmatrix} = \bm{y}$};
+
+\end{tikzpicture}
+\end{document}
