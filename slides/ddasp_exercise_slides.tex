@@ -43,7 +43,7 @@
 \definecolor{C8}{HTML}{bcbd22}
 \definecolor{C9}{HTML}{17becf}
 
-
+\usepackage{pgfplots}
 
 %\newcommand{\tw}{0.73}
 
@@ -1023,6 +1023,82 @@ $$
 
 
 
+\begin{frame}[t]{Finding Model Parameters with Calculus}
+%
+$$
+\begin{bmatrix}
+3 & 0 \\ 0 & 8 \\ 0 & 0
+\end{bmatrix}
+\begin{bmatrix}
+\hat{\bm{\theta}} \\ |
+\end{bmatrix}=
+\begin{bmatrix}
+-3 \\ 4 \\ 2
+\end{bmatrix}
+$$
+%
+optimization problem in least squares sense: $\min_{\text{wrt }\bm{\theta}} \lVert\bm{e}\rVert_2^2 = \min_{\text{wrt }\bm{\theta}} \lVert\bm{y} - \bm{X} \bm{\theta}\rVert_2^2$
+%
+
+recall that $\lVert\bm{y} - \bm{X} \bm{\theta}\rVert_2^2 = (\bm{y} - \bm{X} \bm{\theta})^H (\bm{y} - \bm{X} \bm{\theta})$
+\begin{align*}
+\lVert \bm{y} - \bm{X} \bm{\theta}\rVert_2  &= \sqrt{(-3 - 3\theta_1)^2 + (4-8\theta_2)^2 + (0-2)^2}\\
+J(\theta_1, \theta_2) = \lVert\bm{y} - \bm{X} \bm{\theta}\rVert_2^2 &= (-3 - 3\theta_1)^2 + (4-8\theta_2)^2 + (0-2)^2
+\end{align*}
+%
+$$
+\nabla J(\theta_1, \theta_2) =
+\begin{bmatrix}
+\frac{\partial J}{\partial \theta_1}\\
+\frac{\partial J}{\partial \theta_2}
+\end{bmatrix}
+=
+\begin{bmatrix}
+2 (-3) (-3 - 3\theta_1)
+\\
+2 (-8) (4-8\theta_2)
+\end{bmatrix}
+=
+\begin{bmatrix}
+18 (1 + \theta_1)
+\\
+128 (-\frac{1}{2}+\theta_2)
+\end{bmatrix}
+$$
+%
+minimum at $\nabla J(\theta_1, \theta_2) = \bm{0}$, hence
+%
+$$
+\hat{\bm{\theta}}
+=
+\begin{bmatrix}
+\hat{\theta_1}
+\\
+\hat{\theta_2}
+\end{bmatrix}
+=
+\begin{bmatrix}
+-1
+\\
+\frac{1}{2}
+\end{bmatrix}
+$$
+
+
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \begin{frame}[t]{Finding Model Parameters with Subspace Fundamentals}
 
@@ -1104,70 +1180,30 @@ $\bm{X}^{\dagger_l} \bm{X} = \bm{I}$
 \end{frame}
 
 
+\begin{frame}{Left Inverse Via SVD Mindset}
+we want to solve for ${\bm{\theta}}$, full column rank $\bm{X}_{M \times N}$, rank $R=N$
+$$\bm{X} {\bm{\theta}} = \bm{y}$$
+apply SVD:
+$$\bm{U} \bm{\Sigma} \bm{V}^\mathrm{H} {\bm{\theta}} = \bm{y}$$
+get the weights for U space projection:
+$$\bm{U}^\mathrm{H} \bm{U} \bm{\Sigma} \bm{V}^\mathrm{H} {\bm{\theta}} = \bm{U}^\mathrm{H}\bm{y}$$
+invert all singular values and set up $\bm{\Sigma}^{\dagger_l}_{N \times M} = [\mathrm{diag}(1/\sigma_i) \quad \bm{0}]$ such that
+$\bm{\Sigma}^{\dagger_l}\bm{\Sigma} = \bm{I}_{N \times N}$
 
-\begin{frame}[t]{Finding Model Parameters with Calculus}
-%
-$$
-\begin{bmatrix}
-3 & 0 \\ 0 & 8 \\ 0 & 0
-\end{bmatrix}
-\begin{bmatrix}
-\hat{\bm{\theta}} \\ |
-\end{bmatrix}=
-\begin{bmatrix}
--3 \\ 4 \\ 2
-\end{bmatrix}
-$$
-%
-optimization problem in least squares sense: $\min_{\text{wrt }\bm{\theta}} ||\bm{e}||_2^2 = \min_{\text{wrt }\bm{\theta}} ||\bm{y} - \bm{X} \bm{\theta}||_2^2$
-%
-
-recall that $||\bm{y} - \bm{X} \bm{\theta}||_2^2 = (\bm{y} - \bm{X} \bm{\theta})^H (\bm{y} - \bm{X} \bm{\theta})$
-\begin{align*}
-||\bm{y} - \bm{X} \bm{\theta}||_2  &= \sqrt{(-3 - 3\theta_1)^2 + (4-8\theta_2)^2 + (0-2)^2}\\
-J(\theta_1, \theta_2) = ||\bm{y} - \bm{X} \bm{\theta}||_2^2 &= (-3 - 3\theta_1)^2 + (4-8\theta_2)^2 + (0-2)^2
-\end{align*}
-%
-$$
-\nabla J(\theta_1, \theta_2) =
-\begin{bmatrix}
-\frac{\partial J}{\partial \theta_1}\\
-\frac{\partial J}{\partial \theta_2}
-\end{bmatrix}
-=
-\begin{bmatrix}
-2 (-3) (-3 - 3\theta_1)
-\\
-2 (-8) (4-8\theta_2)
-\end{bmatrix}
-=
-\begin{bmatrix}
-18 (1 + \theta_1)
-\\
-128 (-\frac{1}{2}+\theta_2)
-\end{bmatrix}
-$$
-%
-minimum at $\nabla J(\theta_1, \theta_2) = \bm{0}$, hence
-%
-$$
-\hat{\bm{\theta}}
-=
-\begin{bmatrix}
-\hat{\theta_1}
-\\
-\hat{\theta_2}
-\end{bmatrix}
-=
-\begin{bmatrix}
--1
-\\
-\frac{1}{2}
-\end{bmatrix}
-$$
-
-
+apply $\bm{\Sigma}^{\dagger_l}$ left:
+$$\bm{\Sigma}^{\dagger_l}\bm{\Sigma} \bm{V}^\mathrm{H} {\bm{\theta}} = \bm{\Sigma}^{\dagger_l}\bm{U}^\mathrm{H}\bm{y}$$
+let matrix $\bm{V}$ act on this vector, i.e. map as linear combination into row space in $\bm{V}$
+$$\bm{V} \bm{V}^\mathrm{H} {\bm{\theta}} = \bm{V} \bm{\Sigma}^{\dagger_l}\bm{U}^\mathrm{H}\bm{y}
+\rightarrow \text{this yields our estimator } \hat{\bm{\theta}} = \bm{V} \bm{\Sigma}^{\dagger_l}\bm{U}^\mathrm{H}\bm{y} = \bm{X}^{\dagger_l} \bm{y}$$
+we might want to show that the left inverse $\bm{X}^{\dagger_l}$ can be written equivalently as
+$$\bm{X}^{\dagger_l} = \bm{V} \bm{\Sigma}^{\dagger_l}\bm{U}^\mathrm{H} = (\bm{X}^\mathrm{H}\bm{X})^{-1} \bm{X}^\mathrm{H}$$
 \end{frame}
+
+
+
+
+
+
 
 
 
@@ -1523,24 +1559,32 @@ $$
 
 
 
-\begin{frame}{Another Treatment for Left Inverse Via SVD}
-we want to solve for ${\bm{\theta}}$, full column rank $\bm{X}_{M \times N}$, rank $R=N$
-$$\bm{X} {\bm{\theta}} = \bm{y}$$
-apply SVD:
-$$\bm{U} \bm{\Sigma} \bm{V}^\mathrm{H} {\bm{\theta}} = \bm{y}$$
-get the weights for U space projection:
-$$\bm{U}^\mathrm{H} \bm{U} \bm{\Sigma} \bm{V}^\mathrm{H} {\bm{\theta}} = \bm{U}^\mathrm{H}\bm{y}$$
-invert all singular values and set up $\bm{\Sigma}^{\dagger_l}_{N \times M} = [\mathrm{diag}(1/\sigma_i) \quad \bm{0}]$ such that
-$\bm{\Sigma}^{\dagger_l}\bm{\Sigma} = \bm{I}_{N \times N}$
 
-apply $\bm{\Sigma}^{\dagger_l}$ left:
-$$\bm{\Sigma}^{\dagger_l}\bm{\Sigma} \bm{V}^\mathrm{H} {\bm{\theta}} = \bm{\Sigma}^{\dagger_l}\bm{U}^\mathrm{H}\bm{y}$$
-let matrix $\bm{V}$ act on this vector, i.e. map as linear combination into row space in $\bm{V}$
-$$\bm{V} \bm{V}^\mathrm{H} {\bm{\theta}} = \bm{V} \bm{\Sigma}^{\dagger_l}\bm{U}^\mathrm{H}\bm{y}
-\rightarrow \text{this yields our estimator } \hat{\bm{\theta}} = \bm{V} \bm{\Sigma}^{\dagger_l}\bm{U}^\mathrm{H}\bm{y} = \bm{X}^{\dagger_l} \bm{y}$$
-we might want to show that the left inverse $\bm{X}^{\dagger_l}$ can be written equivalently as
-$$\bm{X}^{\dagger_l} = \bm{V} \bm{\Sigma}^{\dagger_l}\bm{U}^\mathrm{H} = (\bm{X}^\mathrm{H}\bm{X})^{-1} \bm{X}^\mathrm{H}$$
+
+
+\begin{frame}[t]{4 Subspaces -> 4 Projection Matrices}
+
+pseudo-inverse maps columns space to row space
+
+we can derive 4 matrices from the pseudo-inverse that project into the 4 subspaces
+
+\hspace{0.75cm}
+in $\bm{V}$: \textcolor{C2}{row space} $\perp$ \textcolor{C1}{null space}
+\hspace{2cm}
+in $\bm{U}$: \textcolor{C0}{column space} $\perp$ \textcolor{C4}{left null space}
+
+\centering
+\includegraphics[width=0.5\textwidth]{four_subspaces.pdf}
+
+\hspace{0.75cm}
+right singular vectors in $\bm{V}$
+\hspace{4.5cm}
+left singular vectors in $\bm{U}$
+
 \end{frame}
+
+
+
 
 \begin{frame}{Projection Matrices Based on Left Inverse}
 For full column rank $\bm{X}_{M \times N}$, rank $R=N$ the left inverse is
@@ -1561,6 +1605,110 @@ $$\bm{e} = \bm{y} - \hat{\bm{y}} = \bm{y} - \bm{P}_\text{column} \bm{y} = (\bm{I
 which lives in the left null space. Due to the orthogonal subspaces, we know that $\hat{\bm{y}} \perp \bm{e}$.
 \end{frame}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{frame}[t]{Ex05: Regularization of the LS-Problem}
+$\cdot$ full column rank inverse problem $\rightarrow$ solve with left inverse $\bm{X}^{\dagger_l} \bm{y} = \bm{\theta}$
+$$
+\bm{X}^{\dagger_l}_{N \times M}
+=
+\bm{V}_{N \times N}\quad
+\bm{\Sigma}^{\dagger_l}_{N \times M}\quad
+(\bm{U}_{M \times M})^\mathrm{H}
+=
+\bm{V}
+\begin{bmatrix}
+\frac{\sigma_1}{\sigma_1^2} & 0 & 0 & 0 & 0 & 0\\
+0 & \frac{\sigma_2}{\sigma_2^2} & 0 & 0 & 0 & 0\\
+0 & 0 & \frac{\sigma_i}{\sigma_i^2} & 0 & 0 & 0\\
+0 & 0 & 0 & \frac{\sigma_R}{\sigma_R^2} & 0 & 0
+\end{bmatrix}
+\bm{U}^\mathrm{H}
+$$
+
+$\cdot$ if condition number $\kappa(\bm{X}) = \frac{\sigma_\text{max}}{\sigma_\text{min}}$ is very large, regularization yields more robust solutions
+
+$\cdot$ \textcolor{C0}{Tikhonov} regularization aka \textcolor{C0}{ridge regression} applies following modification
+
+$$
+\bm{\Sigma}^{\dagger_l} = (\bm{\Sigma}^H \bm{\Sigma})^{-1} \bm{\Sigma}^H \longrightarrow
+\bm{\Sigma}^{\dagger_\text{ridge}} = (\bm{\Sigma}^H \bm{\Sigma} + \textcolor{C0}{\lambda \bm{I})}^{-1} \bm{\Sigma}^H
+$$
+
+$$
+\bm{\Sigma}^{\dagger_\text{ridge}} =
+\begin{bmatrix}
+\frac{\sigma_1}{\sigma_1^2 + \textcolor{C0}{\lambda}} & 0 & 0 & 0 & 0 & 0\\
+0 & \frac{\sigma_2}{\sigma_2^2 + \textcolor{C0}{\lambda}} & 0 & 0 & 0 & 0\\
+0 & 0 & \frac{\sigma_i}{\sigma_i^2 + \textcolor{C0}{\lambda}} & 0 & 0 & 0\\
+0 & 0 & 0 & \frac{\sigma_R}{\sigma_R^2 + \textcolor{C0}{\lambda}} & 0 & 0
+\end{bmatrix}
+$$
+\end{frame}
+
+\begin{frame}[t]{Ridge Regression as Regularization of the LS-Problem}
+%\begin{center}
+$
+\bm{\Sigma}^{\dagger_\text{ridge}} =
+\begin{bmatrix}
+\frac{\sigma_1}{\sigma_1^2 + \textcolor{C0}{\lambda}} & 0 & 0 & 0 & 0 & 0\\
+0 & \frac{\sigma_2}{\sigma_2^2 + \textcolor{C0}{\lambda}} & 0 & 0 & 0 & 0\\
+0 & 0 & \frac{\sigma_i}{\sigma_i^2 + \textcolor{C0}{\lambda}} & 0 & 0 & 0\\
+0 & 0 & 0 & \frac{\sigma_R}{\sigma_R^2 + \textcolor{C0}{\lambda}} & 0 & 0
+\end{bmatrix}
+$
+\begin{tikzpicture}[scale=0.8]
+\begin{loglogaxis}
+[xmin=1e-2, xmax=1e2, domain=1e-2:1e2,
+log ticks with fixed point,
+xlabel={$\sigma$},
+ylabel={$\frac{\sigma}{\sigma^2 + \lambda}$},
+title={regularized singular value inversion}]
+\addplot[color=black, mark=o] {x / (x*x)};
+\addlegendentry{$\lambda=0$}
+\addplot[color=C0, mark=o] {x / (x*x + 4)};
+\addlegendentry{$\lambda=4$}
+\end{loglogaxis}
+\end{tikzpicture}
+%\end{center}
+\end{frame}
+
+
+\begin{frame}[t]{Linear Regression}
+Both,
+
+$\cdot$ the Least Squares Error Problem with Tikhonov Regularization (aka Ridge Regression)
+$$
+J(\bm{\theta}) = \min_{\text{wrt }\bm{\theta}} \left(\lVert\bm{y} - \bm{X} \bm{\theta}\rVert_2^2 + \textcolor{C0}{\lambda} \lVert \bm{\theta} \rVert_2^2\right)
+$$
+
+$\cdot$ and the plain Least Squares Error Problem (i.e. for $\textcolor{C0}{\lambda}=0$)
+$$
+J(\bm{\theta}) = \min_{\text{wrt }\bm{\theta}} \lVert\bm{y} - \bm{X} \bm{\theta}\rVert_2^2
+$$
+
+have the closed form solution using the left inverse of $\bm{X}$:
+$$
+\hat{\bm{\theta}} \quad=\quad
+\left[\bm{V} (\bm{\Sigma}^\mathrm{H} \bm{\Sigma} + \textcolor{C0}{\lambda \bm{I})}^{-1} \bm{\Sigma}^\mathrm{H} \bm{U}^\mathrm{H}\right] \bm{y} \quad=\quad
+\left[(\bm{X}^\mathrm{H}\bm{X} + \textcolor{C0}{\lambda \bm{I}})^{-1} \bm{X}^\mathrm{H}\right] \bm{y}
+$$
+
+Such a model has $N$ model parameters $\bm{\theta} = [\theta_1, \theta_2 \dots \theta_N]^T$ and one hyper parameter $\lambda$ to be learned from the data $\bm{y}$ and the feature matrix $\bm{X}$.
+
+\end{frame}
 
 
 
