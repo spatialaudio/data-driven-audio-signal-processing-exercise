@@ -1180,7 +1180,7 @@ $\bm{X}^{\dagger_l} \bm{X} = \bm{I}$
 \end{frame}
 
 
-\begin{frame}{Left Inverse Via SVD Mindset}
+\begin{frame}{Left Inverse via SVD Mindset}
 we want to solve for ${\bm{\theta}}$, full column rank $\bm{X}_{M \times N}$, rank $R=N$
 $$\bm{X} {\bm{\theta}} = \bm{y}$$
 apply SVD:
@@ -1210,7 +1210,7 @@ $$\bm{X}^{\dagger_l} = \bm{V} \bm{\Sigma}^{\dagger_l}\bm{U}^\mathrm{H} = (\bm{X}
 
 
 
-\begin{frame}[t]{Left Inverse in SVD Mindset I}
+\begin{frame}[t]{Left Inverse via another SVD Mindset I}
 
 we meanwhile know that for left inverse characteristics $$\bm{X}^{\dagger_l} \bm{X} = \bm{I}$$
 
@@ -1241,7 +1241,7 @@ $
 
 
 
-\begin{frame}[t]{Left Inverse in SVD Mindset II}
+\begin{frame}[t]{Left Inverse via another SVD Mindset II}
 
 we meanwhile know that for left inverse characteristics $$\bm{X}^{\dagger_l} \bm{X} = \bm{I}$$
 
@@ -1269,7 +1269,7 @@ $
 
 
 
-\begin{frame}[t]{Left Inverse in SVD Mindset III}
+\begin{frame}[t]{Left Inverse via another SVD Mindset III}
 
 we meanwhile know that for left inverse characteristics $$\bm{X}^{\dagger_l} \bm{X} = \bm{I}$$
 
@@ -1295,7 +1295,7 @@ $
 
 
 
-\begin{frame}[t]{Left Inverse in SVD Mindset IV}
+\begin{frame}[t]{Left Inverse via another SVD Mindset IV}
 
 we meanwhile know that for left inverse characteristics $$\bm{X}^{\dagger_l} \bm{X} = \bm{I}$$
 
@@ -1321,7 +1321,7 @@ $
 
 
 
-\begin{frame}[t]{Left Inverse in SVD Mindset V}
+\begin{frame}[t]{Left Inverse via another SVD Mindset V}
 
 $$\bm{\Sigma}^{\dagger_l} \bm{\Sigma} = \bm{I}$$
 
@@ -1351,7 +1351,7 @@ $
 
 
 
-\begin{frame}[t]{Left Inverse in SVD Mindset VI}
+\begin{frame}[t]{Left Inverse via another SVD Mindset VI}
 
 $$\bm{\Sigma}^{\dagger_l} \bm{\Sigma} = \bm{I}$$
 
@@ -1564,9 +1564,9 @@ $$
 
 \begin{frame}[t]{4 Subspaces -> 4 Projection Matrices}
 
-pseudo-inverse maps columns space to row space
+pseudo-inverse maps the columns space to the row space
 
-we can derive 4 matrices from the pseudo-inverse that project into the 4 subspaces
+we can derive 4 matrices from the pseudo-inverse which project into the 4 subspaces
 
 \hspace{0.75cm}
 in $\bm{V}$: \textcolor{C2}{row space} $\perp$ \textcolor{C1}{null space}
@@ -1608,7 +1608,80 @@ which lives in the left null space. Due to the orthogonal subspaces, we know tha
 
 
 
+\begin{frame}[t]{Ex05: Matrix with Large Condition Number}
+%Square matrix, full rank, thus invertible
+$$
+\bm{X}
+=
+\begin{bmatrix}
+\sqrt{2} & \sqrt{2}\\
++\frac{\sqrt{2}}{100} & -\frac{\sqrt{2}}{100}
+\end{bmatrix}
+=
+\bm{U} \bm{\Sigma} \bm{V}^H
+=
+\begin{bmatrix}
+1 & 0\\
+0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+\textcolor{C0}{2} & 0\\
+0 & \textcolor{C1}{\frac{2}{100}}
+\end{bmatrix}
+\left(
+\begin{bmatrix}
+\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\
+\frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}}
+\end{bmatrix}
+\right)^H
+$$
+\pause
+%
+Pseudo-inverse / Left-inverse / here actually the Exact-inverse requires
+$$\hat{\bm{\theta}} = \frac{\bm{u}_1^H \bm{y}}{\textcolor{C0}{\sigma_1}}\bm{v}_1 + \frac{\bm{u}_2^H \bm{y}}{\textcolor{C1}{\sigma_2}}\bm{v}_2$$
+\pause
+%
+for $\bm{y}=[1,1]^T$ we get
+$$\hat{\bm{\theta}} = \frac{1}{\textcolor{C0}{2}}\bm{v}_1 + \frac{1}{\textcolor{C1}{\frac{2}{100}}}\bm{v}_2 =
+\frac{1}{\textcolor{C0}{2}}
+\begin{bmatrix}
+\frac{1}{\sqrt{2}}\\
+\frac{1}{\sqrt{2}}
+\end{bmatrix}
+ + 50
+\begin{bmatrix}
+\frac{1}{\sqrt{2}}\\
+\frac{1}{-\sqrt{2}}
+\end{bmatrix}
+\approx
+\begin{bmatrix}
+35.7089\\
+-35.0018
+\end{bmatrix}
+$$
+\pause
+%
+for $\bm{y}=[1 \pm \epsilon_1, 1 \pm \epsilon_2]^T$ we get
+$$\hat{\bm{\theta}} =
+\frac{1 \pm \epsilon_1}{\textcolor{C0}{2}}\bm{v}_1 +
+\frac{1 \pm \epsilon_2}{\textcolor{C1}{\frac{2}{100}}}\bm{v}_2 =
+\frac{1 \pm \epsilon_1}{\textcolor{C0}{2}}
+\begin{bmatrix}
+\frac{1}{\sqrt{2}}\\
+\frac{1}{\sqrt{2}}
+\end{bmatrix}
++ \textcolor{C3}{50} (1 \pm \textcolor{C3}{\epsilon_2})
+\frac{}{}
+\begin{bmatrix}
+\frac{1}{\sqrt{2}}\\
+\frac{1}{-\sqrt{2}}
+\end{bmatrix}
+$$
 
+
+
+
+\end{frame}
 
 
 
@@ -1686,6 +1759,48 @@ title={regularized singular value inversion}]
 \end{frame}
 
 
+
+
+
+
+
+\begin{frame}[t]{L-Curve to Find Optimum Regularization Parameter $\lambda$}
+$$
+\hat{\bm{\theta}}(\textcolor{C0}{\lambda}) \quad=\quad
+\left[\bm{V} (\bm{\Sigma}^\mathrm{H} \bm{\Sigma} + \textcolor{C0}{\lambda \bm{I})}^{-1} \bm{\Sigma}^\mathrm{H} \bm{U}^\mathrm{H}\right] \bm{y} \quad=\quad
+\left[(\bm{X}^\mathrm{H}\bm{X} + \textcolor{C0}{\lambda \bm{I}})^{-1} \bm{X}^\mathrm{H}\right] \bm{y}
+$$
+\begin{center}
+\begin{tikzpicture}[scale=1]
+\begin{axis}
+[xmin=0.25, xmax=2.25, domain=0.5:2,
+xticklabels={,,},
+yticklabels={,,},
+xlabel={$\log(\lVert \bm{y} - \bm{X}\hat{\bm{\theta}}\rVert_2^2)$},
+ylabel={$\log(\lVert \hat{\bm{\theta}}\rVert_2^2)$}]
+\addplot[color=black, mark=o] {exp(-(x-2)^3)};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \begin{frame}[t]{Linear Regression}
 Both,
 
@@ -1706,7 +1821,7 @@ $$
 \left[(\bm{X}^\mathrm{H}\bm{X} + \textcolor{C0}{\lambda \bm{I}})^{-1} \bm{X}^\mathrm{H}\right] \bm{y}
 $$
 
-Such a model has $N$ model parameters $\bm{\theta} = [\theta_1, \theta_2 \dots \theta_N]^T$ and one hyper parameter $\lambda$ to be learned from the data $\bm{y}$ and the feature matrix $\bm{X}$.
+Such a model has $N$ \underline{model parameters} $\bm{\theta} = [\theta_1, \theta_2 \dots \theta_N]^T$ and one \underline{hyper parameter} $\lambda$ to be learned from the data $\bm{y}$ and the feature matrix $\bm{X}$.
 
 \end{frame}
 
