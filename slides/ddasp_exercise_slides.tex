@@ -1637,7 +1637,7 @@ $$
 $$
 \pause
 %
-Pseudo-inverse / Left-inverse / here actually the Exact-inverse requires
+Left-inverse / here actually the Exact-inverse requires
 $$\hat{\bm{\theta}} = \frac{\bm{u}_1^H \bm{y}}{\textcolor{C0}{\sigma_1}}\bm{v}_1 + \frac{\bm{u}_2^H \bm{y}}{\textcolor{C1}{\sigma_2}}\bm{v}_2$$
 \pause
 %
@@ -1717,7 +1717,7 @@ $\cdot$ \textcolor{C0}{Tikhonov} regularization aka \textcolor{C0}{ridge regress
 
 $$
 \bm{\Sigma}^{\dagger_l} = (\bm{\Sigma}^H \bm{\Sigma})^{-1} \bm{\Sigma}^H \longrightarrow
-\bm{\Sigma}^{\dagger_\text{ridge}} = (\bm{\Sigma}^H \bm{\Sigma} + \textcolor{C0}{\lambda \bm{I})}^{-1} \bm{\Sigma}^H
+\bm{\Sigma}^{\dagger_\text{ridge}} = (\bm{\Sigma}^H \bm{\Sigma} + \textcolor{C0}{\lambda \bm{I}})^{-1} \bm{\Sigma}^H
 $$
 
 $$
@@ -1815,26 +1815,29 @@ coordinates {(2.11880930574847,0.6506404078438874)};
 
 
 \begin{frame}[t]{Linear Regression}
-Both,
+Both optimization problems,
 
 $\cdot$ the Least Squares Error Problem with Tikhonov Regularization (aka Ridge Regression)
 $$
-J(\bm{\theta}) = \min_{\text{wrt }\bm{\theta}} \left(\lVert\bm{y} - \bm{X} \bm{\theta}\rVert_2^2 + \textcolor{C0}{\lambda} \lVert \bm{\theta} \rVert_2^2\right)
+\min_{\text{wrt }\bm{\theta}} J(\bm{\theta}) \quad\text{with cost function}\quad
+J(\bm{\theta}) =
+\lVert\bm{y} - \bm{X} \bm{\theta}\rVert_2^2 + \textcolor{C0}{\lambda} \lVert \bm{\theta} \rVert_2^2
 $$
 
 $\cdot$ and the plain Least Squares Error Problem (i.e. for $\textcolor{C0}{\lambda}=0$)
 $$
-J(\bm{\theta}) = \min_{\text{wrt }\bm{\theta}} \lVert\bm{y} - \bm{X} \bm{\theta}\rVert_2^2
+\min_{\text{wrt }\bm{\theta}} J(\bm{\theta}) \quad\text{with cost function}\quad
+J(\bm{\theta}) =  \lVert\bm{y} - \bm{X} \bm{\theta}\rVert_2^2
 $$
 
-have the closed form solution using the left inverse of $\bm{X}$:
+have the closed form solution using the (regularized) left inverse of $\bm{X} = \bm{U}\bm{\Sigma}\bm{V}^H$:
 $$
 \hat{\bm{\theta}} \quad=\quad
 \left[\bm{V} (\bm{\Sigma}^\mathrm{H} \bm{\Sigma} + \textcolor{C0}{\lambda \bm{I})}^{-1} \bm{\Sigma}^\mathrm{H} \bm{U}^\mathrm{H}\right] \bm{y} \quad=\quad
 \left[(\bm{X}^\mathrm{H}\bm{X} + \textcolor{C0}{\lambda \bm{I}})^{-1} \bm{X}^\mathrm{H}\right] \bm{y}
 $$
 
-Such a model has $N$ \underline{model parameters} $\bm{\theta} = [\theta_1, \theta_2 \dots \theta_N]^T$ and one \underline{hyper parameter} $\lambda$ to be learned from the data $\bm{y}$ and the feature matrix $\bm{X}$.
+Such a model has $N$ \underline{model parameters} $\bm{\theta} = [\theta_1, \theta_2 \dots \theta_N]^T$ and one \underline{hyper parameter} $\textcolor{C0}{\lambda}$ to be learned from the data $\bm{y}_{M \times 1}$ and the feature matrix $\bm{X}_{M \times N}$ with full column rank $R=N$.
 
 \end{frame}
 
