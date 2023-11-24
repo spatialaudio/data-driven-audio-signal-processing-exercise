@@ -1844,6 +1844,44 @@ Such a model has $N$ \underline{model parameters} $\bm{\theta} = [\theta_1, \the
 
 
 
+\begin{frame}[t]{Ex06: Audio Toy Example for Linear Regression and SVD}
+\begin{center}
+$
+\def\L{0.5}
+\def\F{1}
+\def\N{3}
+\def\rank{0.999999}
+\drawmatrix[fill=none, height=\N, width=0]{y}_\mathtt{N \times 1} =
+\drawmatrix[fill=none, height=\N, width=\F]{X}_\mathtt{N \times F}
+\drawmatrix[fill=none, height=\F, width=0]\theta_\mathtt{F \times 1}+
+\drawmatrix[fill=none, height=\N, width=0]{\nu}_\mathtt{N \times 1}
+=
+\drawmatrix[bbox style={fill=C4}, bbox height=\N, bbox width=\N, fill=C0, height=\N, width=\rank\F]U_\mathtt{N \times N}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\N, bbox width=\F, fill=white, height=\rank\F, width=\rank\F]\Sigma_\mathtt{N \times F}
+\drawmatrix[bbox style={fill=C1}, bbox height=\F, bbox width=\F, fill=C2, height=\F, width=\rank\F]{V}_\mathtt{F \times F}^H
+\drawmatrix[fill=none, height=\F, width=0]\theta_\mathtt{F \times 1}+
+\drawmatrix[fill=none, height=\N, width=0]{\nu}_\mathtt{N \times 1}
+$
+\end{center}
+\end{frame}
+
+
+
+\begin{frame}{Ex06: Audio Toy Example for Linear Regression and SVD}
+Consider the following linear combinations
+$$\bm{X} \bm{\theta} + \bm{\nu} = \bm{y}$$
+where $\bm{\theta}=[\theta_1, \theta_2, \theta_3, ..., \theta_{F}]^\mathrm{T}$ are typical variables for the model parameter vector.
+%
+\begin{itemize}
+\item $\bm{X}_{N \times F}$ matrix with $N$ audio samples for each column, $f$-th column represents the $f$-th audiotrack / feature
+\item $\bm{\theta}_{F \times 1}$ column vector of scalar values that represent a dedicated gain for each audiotrack
+\item $\bm{\nu}_{N \times 1}$ column vector that represents an $N$-sample long noise signal added to the mixdown $\bm{X} \bm{\theta}$
+\item $\bm{y}_{N \times 1}$ audio signal with $N$ samples as a result of the linear model's linear combination plus noise
+\end{itemize}
+%
+Let us assume that a) we know $\bm{X}$ (i.e. the individual audio tracks) and $\bm{y}$ (i.e. the noise-corrupted final mixdown), b) that we do not know the noise $\bm{n}$ and c) that we want to estimate the 'real world' mixing gains $\bm{\theta}$
+\end{frame}
+
 
 
 
