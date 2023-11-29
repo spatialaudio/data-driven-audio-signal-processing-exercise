@@ -130,7 +130,7 @@ axis square
 xlabel('\sigma_1 U[:,1] = A V[:,1]')
 ylabel('\sigma_2 U[:,2] = A V[:,2]')
 zlabel('\sigma_3 U[:,3] = A V[:,3]')
-title('Data in Weighted U Space == Data Projected onto V')
+title('Data in Weighted U Space')
 grid on
 
 subplot(1, 4, 3)

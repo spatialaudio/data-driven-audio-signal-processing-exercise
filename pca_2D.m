@@ -108,9 +108,9 @@ hold off
 xlim([-xmax, xmax])
 ylim([-xmax, xmax])
 axis square
-xlabel('Feature 1')
-ylabel('Feature 2')
-title('original data')
+xlabel('Original Feature 1 A[:,1]')
+ylabel('Original Feature 2 A[:,2]')
+title('Original Data A')
 grid on
 
 ax_pc_space = subplot(1, 4, 2);
@@ -124,9 +124,9 @@ hold off
 xlim([-xmax, xmax])
 ylim([-xmax, xmax])
 axis square
-xlabel('\sigma_0 U[0]')
-ylabel('\sigma_1 U[1]')
-title('data in U space')
+xlabel('\sigma_1 U[:,1] = A V[:,1]')
+ylabel('\sigma_2 U[:,2] = A V[:,2]')
+title('Data in Weighted U Space')
 grid on
 
 subplot(1, 4, 3)
@@ -139,7 +139,7 @@ ylim([-xmax, xmax])
 axis square
 xlabel('New Feature 1')
 ylabel('New Feature 2')
-title('rank reduced to rank 1, basically a truncated SVD')
+title('A reduced to rank 1, basically a truncated SVD')
 grid on
 
 subplot(1, 4, 4)
@@ -150,9 +150,9 @@ hold off
 xlim([-xmax, xmax])
 ylim([-xmax, xmax])
 axis square
-xlabel('\sigma_0 U[0]')
-ylabel('\sigma_1 U[1]')
-title('U space dimensionality reduced, U[1]=0 and/or \sigma_1=0')
+xlabel('\sigma_1 U[:,1]')
+ylabel('\sigma_2 U[:,2]')
+title('U space dimensionality reduced, U[:,2]=0 and/or \sigma_2=0')
 grid on
 
 
