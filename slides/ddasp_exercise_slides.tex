@@ -1884,6 +1884,204 @@ Let us assume that a) we know $\bm{X}$ (i.e. the individual audio tracks) and $\
 
 
 
+\section{Section II: Feature Design}
+
+\begin{frame}{Ex07: Audio Features}
+\end{frame}
+
+
+\begin{frame}[t]{Ex08: Principal Component Analysis (PCA)}
+$\cdot$ for a $N \times F$ full-column rank matrix $\bm{X}$ we ensure that each column is mean-free by
+$$\bm{X}_{N \times F} \leftarrow \bm{X}_{N \times F} - \frac{1}{N} \bm{1}_{1 \times N} \bm{X}_{N \times F}$$
+
+$\cdot$ for a $F \times N$ full-row rank matrix $\bm{X}$ we ensure that each row is mean-free by
+$$\bm{X}_{F \times N} \leftarrow \bm{X}_{F \times N} - \frac{1}{N} \bm{X}_{F \times N} \bm{1}_{N \times 1}$$
+
+
+\end{frame}
+
+
+
+\begin{frame}[t]{Ex08: Principal Component Analysis (PCA) with SVD}
+
+$\cdot$ for $\bm{X}_c \in\mathbb{R}$, $\bm{X}_c = \bm{X}_r^\mathrm{T}$, $\bm{F}_c = \bm{F}_r^\mathrm{T}$, SVD matrices $\bm{U} \bm{\Sigma} \bm{V}^\mathrm{T}$ for $\bm{X}_c$
+
+$\cdot$ PC Scores are ortho\underline{gonal} and variance-sorted, PC Loadings are ortho\underline{normal}
+
+\vspace{0.5em}
+\begin{minipage}[t]{0.49\textwidth}
+full column rank, mean-free columns
+\begin{center}
+$
+\def\F{0.5}
+\def\N{2}
+\drawmatrix[fill=none, height=\N, width=\F]{X_{c}}_\mathtt{N \times F}
+=
+\drawmatrix[fill=C0, height=\N, width=\F]{F_{c}}_\mathtt{N \times F}
+\drawmatrix[fill=C2, height=\F, width=\F]{L}_\mathtt{F \times F}^\mathrm{T}
+$
+\end{center}
+\end{minipage}
+%
+\begin{minipage}[t]{0.49\textwidth}
+full row rank, mean-free rows
+\begin{center}
+$
+\def\F{0.5}
+\def\N{2}
+\drawmatrix[fill=none, height=\F, width=\N]{X_{r}}_\mathtt{F \times N}
+=
+\drawmatrix[fill=C0, height=\F, width=\F]{L}_\mathtt{F \times F}
+\drawmatrix[fill=C2, height=\F, width=\N]{F_{r}}_\mathtt{F \times N}
+$
+\end{center}
+\end{minipage}
+
+\begin{minipage}[t]{0.49\textwidth}
+$$\bm{X}_c= \bm{U} \bm{\Sigma} \bm{V}^\mathrm{T} = \bm{F}_c \bm{L}^\mathrm{T}$$
+
+PC Scores $\bm{F}_c =
+\begin{bmatrix}
+| & | & |\\
+\bm{f}_1 & \bm{f}_: & \bm{f}_F\\
+| & | & |\\
+\end{bmatrix}
+= \bm{U} \bm{\Sigma}$
+
+PC Loadings $$\bm{L} = \bm{V}$$
+
+Mapping $\bm{X}_c \bm{L} = \bm{X}_c \bm{V} = \bm{U} \bm{\Sigma} = \bm{F}_c$
+\end{minipage}
+%
+\begin{minipage}[t]{0.49\textwidth}
+$$\bm{X}_r = \bm{V} \bm{\Sigma} \bm{U}^\mathrm{T} = \bm{L} \bm{F}_r$$
+
+PC Scores $\bm{F}_r =
+\begin{bmatrix}
+- \bm{f}_1 -\\
+- \bm{f}_: -\\
+- \bm{f}_F -
+\end{bmatrix}
+=
+\bm{\Sigma} \bm{U}^\mathrm{T}$
+
+PC Loadings $$\bm{L} = \bm{V} $$
+
+Mapping $\bm{L}^\mathrm{T} \bm{X}_r = \bm{V}^\mathrm{T} \bm{X}_r = \bm{\Sigma} \bm{U}^\mathrm{T} = \bm{F}_r$
+
+\end{minipage}
+
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}[t]{Ex08: Principal Component Analysis (PCA) via Covariance}
+
+$\cdot$ for $\bm{X}_c \in\mathbb{R}$, $\bm{X}_c = \bm{X}_r^\mathrm{T}$, $\bm{F}_c = \bm{F}_r^\mathrm{T}$, SVD matrices $\bm{U} \bm{\Sigma} \bm{V}^\mathrm{T}$ for $\bm{X}_c$
+
+$\cdot$ PC Scores are ortho\underline{gonal} and variance-sorted, PC Loadings are ortho\underline{normal}
+
+\vspace{0.5em}
+\begin{minipage}[t]{0.49\textwidth}
+full column rank, mean-free columns
+\begin{center}
+$
+\def\F{0.5}
+\def\N{2}
+\drawmatrix[fill=none, height=\N, width=\F]{X_{c}}_\mathtt{N \times F}
+=
+\drawmatrix[fill=C0, height=\N, width=\F]{F_{c}}_\mathtt{N \times F}
+\drawmatrix[fill=C2, height=\F, width=\F]{L}_\mathtt{F \times F}^\mathrm{T}
+$
+\end{center}
+\end{minipage}
+%
+\begin{minipage}[t]{0.49\textwidth}
+full row rank, mean-free rows
+\begin{center}
+$
+\def\F{0.5}
+\def\N{2}
+\drawmatrix[fill=none, height=\F, width=\N]{X_{r}}_\mathtt{F \times N}
+=
+\drawmatrix[fill=C0, height=\F, width=\F]{L}_\mathtt{F \times F}
+\drawmatrix[fill=C2, height=\F, width=\N]{F_{r}}_\mathtt{F \times N}
+$
+\end{center}
+\end{minipage}
+
+\vspace{0.5em}
+
+\begin{minipage}[t]{0.49\textwidth}
+covariance matrix $\bm{C}_X = \frac{1}{N-1}\bm{X}_c^\mathrm{T}\bm{X}_c$
+
+diagonalization (with SVD) $\bm{C}_X = \bm{V} \bm{\Lambda} \bm{V}^\mathrm{T}$
+
+PC Scores $\bm{F}_c = \bm{X}_c \bm{V}$
+
+PC Loadings $\bm{L} = \bm{V}$
+
+\end{minipage}
+%
+\begin{minipage}[t]{0.49\textwidth}
+covariance matrix $\bm{C}_X = \frac{1}{N-1}\bm{X}_r\bm{X}_r^\mathrm{T}$
+
+diagonalization (with SVD) $\bm{C}_X = \bm{V} \bm{\Lambda} \bm{V}^\mathrm{T}$
+
+PC Scores $\bm{F}_r = \bm{V}^\mathrm{T} \bm{X}_r$
+
+PC Loadings $\bm{L} = \bm{V}$
+
+\end{minipage}
+
+\vspace{0.5em}
+
+%\small
+$\cdot$ SVD-based diagonalization inherently sorts the eigenvalues in $\bm{\Lambda}$, making the PC Scores \underline{variance-sorted} (covariance matrix of $\bm{F}$ is a sorted diagonal matrix)
+
+$\cdot$ vectors in $\bm{V}$ might exhibit reflections compared to $\bm{V}$ from SVD-based approach
+
+$\cdot$ SVD / covariance approaches are consistent by itself as calculation of $\bm{F}$ and $\bm{L}$ are linked
+
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 % \section{Ex04: Audio Example, Linear Regression, SVD}
