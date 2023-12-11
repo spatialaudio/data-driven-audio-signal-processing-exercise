@@ -1891,26 +1891,34 @@ Let us assume that a) we know $\bm{X}$ (i.e. the individual audio tracks) and $\
 
 
 \begin{frame}[t]{Ex08: Principal Component Analysis (PCA)}
-$\cdot$ for a $N \times F$ full-column rank matrix $\bm{X}$ we ensure that each column is mean-free by
-$$\bm{X}_{N \times F} \leftarrow \bm{X}_{N \times F} - \frac{1}{N} \bm{1}_{1 \times N} \bm{X}_{N \times F}$$
 
-$\cdot$ for a $F \times N$ full-row rank matrix $\bm{X}$ we ensure that each row is mean-free by
-$$\bm{X}_{F \times N} \leftarrow \bm{X}_{F \times N} - \frac{1}{N} \bm{X}_{F \times N} \bm{1}_{N \times 1}$$
+PCA is typically applied on mean-free data
 
+$\cdot$ for an $N \times F$ full-column rank matrix $\bm{X}$ we ensure that each column is mean-free by
+$$\bm{X}_{N \times F} \leftarrow \bm{X}_{N \times F} - \frac{1}{N} \bm{1}_{N \times N} \bm{X}_{N \times F}$$
+
+$\cdot$ for an $F \times N$ full-row rank matrix $\bm{X}$ we ensure that each row is mean-free by
+$$\bm{X}_{F \times N} \leftarrow \bm{X}_{F \times N} - \frac{1}{N} \bm{X}_{F \times N} \bm{1}_{N \times N}$$
+
+PCA is often additionally performed on unit-variance preprocessed data, cf. function zscore()
+
+this then yields a total variance of $$\mathrm{trace}(\mathrm{cov}(\mathrm{zscore}(\bm{X})))= F$$
+
+which the PCA spreads over the principal component (PC) scores
 
 \end{frame}
 
 
 
-\begin{frame}[t]{Ex08: Principal Component Analysis (PCA) with SVD}
+\begin{frame}[t]{Ex08: Principal Component Analysis (PCA) via SVD}
 
 $\cdot$ for $\bm{X}_c \in\mathbb{R}$, $\bm{X}_c = \bm{X}_r^\mathrm{T}$, $\bm{F}_c = \bm{F}_r^\mathrm{T}$, SVD matrices $\bm{U} \bm{\Sigma} \bm{V}^\mathrm{T}$ for $\bm{X}_c$
 
-$\cdot$ PC Scores are ortho\underline{gonal} and variance-sorted, PC Loadings are ortho\underline{normal}
+$\cdot$ PC scores are ortho\underline{gonal} and variance-sorted, PC loadings are ortho\underline{normal}
 
 \vspace{0.5em}
 \begin{minipage}[t]{0.49\textwidth}
-full column rank, mean-free columns
+full-column rank, mean-free columns
 \begin{center}
 $
 \def\F{0.5}
@@ -1924,7 +1932,7 @@ $
 \end{minipage}
 %
 \begin{minipage}[t]{0.49\textwidth}
-full row rank, mean-free rows
+full-row rank, mean-free rows
 \begin{center}
 $
 \def\F{0.5}
@@ -1938,36 +1946,47 @@ $
 \end{minipage}
 
 \begin{minipage}[t]{0.49\textwidth}
-$$\bm{X}_c= \bm{U} \bm{\Sigma} \bm{V}^\mathrm{T} = \bm{F}_c \bm{L}^\mathrm{T}$$
 
-PC Scores $\bm{F}_c =
+Mapping
+
+$\bm{X}_c= \bm{U} \bm{\Sigma} \bm{V}^\mathrm{T} = \bm{F}_c \bm{L}^\mathrm{T}$
+
+$\bm{F}_c = \bm{X}_c \bm{L} = \bm{X}_c \bm{V} = \bm{U} \bm{\Sigma}$
+
+PC scores $\bm{F}_c =
 \begin{bmatrix}
-| & | & |\\
-\bm{f}_1 & \bm{f}_: & \bm{f}_F\\
-| & | & |\\
+| & | & | & |\\
+\bm{f}_1 & \bm{f}_2 & : & \bm{f}_F\\
+| & | & | & |\\
 \end{bmatrix}
 = \bm{U} \bm{\Sigma}$
 
-PC Loadings $$\bm{L} = \bm{V}$$
+PC loadings $\bm{L} = \bm{V}$
 
-Mapping $\bm{X}_c \bm{L} = \bm{X}_c \bm{V} = \bm{U} \bm{\Sigma} = \bm{F}_c$
+
 \end{minipage}
 %
 \begin{minipage}[t]{0.49\textwidth}
-$$\bm{X}_r = \bm{V} \bm{\Sigma} \bm{U}^\mathrm{T} = \bm{L} \bm{F}_r$$
 
-PC Scores $\bm{F}_r =
+Mapping
+
+$\bm{X}_r = \bm{V} \bm{\Sigma} \bm{U}^\mathrm{T} = \bm{L} \bm{F}_r$
+
+$\bm{F}_r = \bm{L}^\mathrm{T} \bm{X}_r = \bm{V}^\mathrm{T} \bm{X}_r = \bm{\Sigma} \bm{U}^\mathrm{T}$
+
+PC scores $\bm{F}_r =
 \begin{bmatrix}
 - \bm{f}_1 -\\
-- \bm{f}_: -\\
+- \bm{f}_2 -\\
+- : -\\
 - \bm{f}_F -
 \end{bmatrix}
 =
 \bm{\Sigma} \bm{U}^\mathrm{T}$
 
-PC Loadings $$\bm{L} = \bm{V} $$
+PC loadings $\bm{L} = \bm{V} $
 
-Mapping $\bm{L}^\mathrm{T} \bm{X}_r = \bm{V}^\mathrm{T} \bm{X}_r = \bm{\Sigma} \bm{U}^\mathrm{T} = \bm{F}_r$
+
 
 \end{minipage}
 
@@ -1983,11 +2002,11 @@ Mapping $\bm{L}^\mathrm{T} \bm{X}_r = \bm{V}^\mathrm{T} \bm{X}_r = \bm{\Sigma} \
 
 $\cdot$ for $\bm{X}_c \in\mathbb{R}$, $\bm{X}_c = \bm{X}_r^\mathrm{T}$, $\bm{F}_c = \bm{F}_r^\mathrm{T}$, SVD matrices $\bm{U} \bm{\Sigma} \bm{V}^\mathrm{T}$ for $\bm{X}_c$
 
-$\cdot$ PC Scores are ortho\underline{gonal} and variance-sorted, PC Loadings are ortho\underline{normal}
+$\cdot$ PC scores are ortho\underline{gonal} and variance-sorted, PC loadings are ortho\underline{normal}
 
 \vspace{0.5em}
 \begin{minipage}[t]{0.49\textwidth}
-full column rank, mean-free columns
+full-column rank, mean-free columns
 \begin{center}
 $
 \def\F{0.5}
@@ -2001,7 +2020,7 @@ $
 \end{minipage}
 %
 \begin{minipage}[t]{0.49\textwidth}
-full row rank, mean-free rows
+full-row rank, mean-free rows
 \begin{center}
 $
 \def\F{0.5}
@@ -2021,9 +2040,9 @@ covariance matrix $\bm{C}_X = \frac{1}{N-1}\bm{X}_c^\mathrm{T}\bm{X}_c$
 
 diagonalization (with SVD) $\bm{C}_X = \bm{V} \bm{\Lambda} \bm{V}^\mathrm{T}$
 
-PC Scores $\bm{F}_c = \bm{X}_c \bm{V}$
+PC scores $\bm{F}_c = \bm{X}_c \bm{V}$
 
-PC Loadings $\bm{L} = \bm{V}$
+PC loadings $\bm{L} = \bm{V}$
 
 \end{minipage}
 %
@@ -2032,23 +2051,216 @@ covariance matrix $\bm{C}_X = \frac{1}{N-1}\bm{X}_r\bm{X}_r^\mathrm{T}$
 
 diagonalization (with SVD) $\bm{C}_X = \bm{V} \bm{\Lambda} \bm{V}^\mathrm{T}$
 
-PC Scores $\bm{F}_r = \bm{V}^\mathrm{T} \bm{X}_r$
+PC scores $\bm{F}_r = \bm{V}^\mathrm{T} \bm{X}_r$
 
-PC Loadings $\bm{L} = \bm{V}$
+PC loadings $\bm{L} = \bm{V}$
 
 \end{minipage}
 
 \vspace{0.5em}
 
 %\small
-$\cdot$ SVD-based diagonalization inherently sorts the eigenvalues in $\bm{\Lambda}$, making the PC Scores \underline{variance-sorted} (covariance matrix of $\bm{F}$ is a sorted diagonal matrix)
+$\cdot$ an SVD-based diagonalization inherently sorts the eigenvalues in $\bm{\Lambda}$, making the orthogonal PC scores \underline{variance-sorted} (i.e. covariance matrix of $\bm{F}$ is a sorted diagonal matrix)
 
-$\cdot$ vectors in $\bm{V}$ might exhibit reflections compared to $\bm{V}$ from SVD-based approach
+$\cdot$ $\bm{V} / \bm{F}$ might exhibit reflections compared to $\bm{V} / \bm{F}$ from SVD-based approach
 
-$\cdot$ SVD / covariance approaches are consistent by itself as calculation of $\bm{F}$ and $\bm{L}$ are linked
+$\cdot$ SVD / covariance approaches are consistent by itself as calculation of $\bm{F}$ and $\bm{L}$ is linked
 
 \end{frame}
 
+
+
+\begin{frame}[t]{Ex08: Principal Component Analysis (PCA) Feature Representation}
+
+$\cdot$ for $\bm{X}_c \in\mathbb{R}$, $\bm{X}_c = \bm{X}_r^\mathrm{T}$, $\bm{F}_c = \bm{F}_r^\mathrm{T}$, SVD matrices $\bm{U} \bm{\Sigma} \bm{V}^\mathrm{T}$ for $\bm{X}_c$
+
+\begin{minipage}[t]{0.49\textwidth}
+full-column rank, mean-free columns
+
+$\bm{X}_{c,N \times F}$
+
+PC scores $\bm{F}_c = \bm{X}_c \bm{V}$
+
+PC loadings $\bm{L} = \bm{V}$
+
+\end{minipage}
+%
+\begin{minipage}[t]{0.49\textwidth}
+full-row rank, mean-free rows
+
+$\bm{X}_{r,F \times N}$
+
+PC scores $\bm{F}_r = \bm{V}^\mathrm{T} \bm{X}_r$
+
+PC loadings $\bm{L} = \bm{V}$
+
+\end{minipage}
+
+\vspace{1em}
+
+Reduced PC loading matrix
+$\bm{V}_K =
+\begin{bmatrix}
+| & | & |\\
+\bm{v}_1 & : & \bm{v}_{K \leq F}\\
+| & | & |\\
+\end{bmatrix}
+$
+allows for the following techniques
+
+\vspace{1em}
+
+$\cdot$ Low-Rank Approximation / Truncated SVD (yields a matrix with lower rank $K$)
+
+\begin{minipage}[t]{0.49\textwidth}
+
+$\tilde{\bm{X}}_{c,N \times F} = (\bm{X}_c \bm{V}_K) \bm{V}_K^\mathrm{T} = \sum_{i=1}^{K} \sigma_i \bm{u}_i \bm{v}_i^\mathrm{T}$
+
+\end{minipage}
+%
+\begin{minipage}[t]{0.49\textwidth}
+
+$\tilde{\bm{X}}_{r,F \times N} = \bm{V}_K (\bm{V}_K^\mathrm{T} \bm{X}_r) = \sum_{i=1}^{K} \sigma_i \bm{v}_i \bm{u}_i^\mathrm{T}$
+
+\end{minipage}
+
+\vspace{1em}
+
+$\cdot$ Linear Dimensionality Reduction (yields a matrix with smaller dimension $K$)
+
+\begin{minipage}[t]{0.49\textwidth}
+$\tilde{\bm{X}}_{c,N \times K} = \bm{X}_c \bm{V}_K =
+\begin{bmatrix}
+| & | & |\\
+\bm{f}_1 & : & \bm{f}_{K}\\
+| & | & |\\
+\end{bmatrix}
+$
+
+i.e. take only first $K$ columns of $\bm{F}_c$
+\end{minipage}
+%
+\begin{minipage}[t]{0.49\textwidth}
+$\tilde{\bm{X}}_{r,K \times N} = \bm{V}_K^\mathrm{T} \bm{X}_r
+=
+\begin{bmatrix}
+- \bm{f}_1 -\\
+- : -\\
+- \bm{f}_K -
+\end{bmatrix}
+$
+
+i.e. take only first $K$ rows of $\bm{F}_r$
+\end{minipage}
+
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[t]{Ex08: Principal Component Analysis (PCA) 2D-Data Example}
+\begin{minipage}[t]{0.49\textwidth}
+\includegraphics[width=\textwidth]{pca_2d_original_data.pdf}
+\end{minipage}
+%
+\begin{minipage}[t]{0.49\textwidth}
+\includegraphics[width=\textwidth]{pca_2d_original_data_with_pcdir.pdf}
+\end{minipage}
+\end{frame}
+%%
+\begin{frame}[t]{Ex08: Principal Component Analysis (PCA) 2D-Data Example}
+\begin{minipage}[t]{0.49\textwidth}
+\includegraphics[width=\textwidth]{pca_2d_pc_data.pdf}
+\end{minipage}
+%
+\begin{minipage}[t]{0.49\textwidth}
+\includegraphics[width=\textwidth]{pca_2d_original_data_with_pcdir.pdf}
+\end{minipage}
+\end{frame}
+%%
+\begin{frame}[t]{Ex08: Principal Component Analysis (PCA) 2D-Data Example}
+\begin{minipage}[t]{0.49\textwidth}
+\includegraphics[width=\textwidth]{pca_2d_truncated_svd.pdf}
+\end{minipage}
+%
+\begin{minipage}[t]{0.49\textwidth}
+\includegraphics[width=\textwidth]{pca_2d_original_data_with_pcdir.pdf}
+\end{minipage}
+\end{frame}
+%%
+\begin{frame}[t]{Ex08: Principal Component Analysis (PCA) 2D-Data Example}
+\begin{minipage}[t]{0.49\textwidth}
+\includegraphics[width=\textwidth]{pca_2d_pc_data.pdf}
+\end{minipage}
+%
+\begin{minipage}[t]{0.49\textwidth}
+\includegraphics[width=\textwidth]{pca_2d_dim_red.pdf}
+\end{minipage}
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}[t]{Ex08: Principal Component Analysis (PCA) 3D-Data Example}
+\begin{minipage}[t]{0.49\textwidth}
+original data cloud in 3D space
+
+\includegraphics[width=\textwidth]{pca_3d_original_data.pdf}
+\end{minipage}
+%
+\begin{minipage}[t]{0.49\textwidth}
+original data cloud in 3D space
+
+\includegraphics[width=\textwidth]{pca_3d_original_data_with_pcdir.pdf}
+\end{minipage}
+\end{frame}
+%%
+\begin{frame}[t]{Ex08: Principal Component Analysis (PCA) 3D-Data Example}
+\begin{minipage}[t]{0.49\textwidth}
+PC data cloud in 3D  space
+
+\includegraphics[width=\textwidth]{pca_3d_pc_data.pdf}
+\end{minipage}
+%
+\begin{minipage}[t]{0.49\textwidth}
+original data cloud in 3D space
+
+\includegraphics[width=\textwidth]{pca_3d_original_data_with_pcdir.pdf}
+\end{minipage}
+\end{frame}
+%%
+\begin{frame}[t]{Ex08: Principal Component Analysis (PCA) 3D-Data Example}
+\begin{minipage}[t]{0.49\textwidth}
+data \underline{plane} in 3D space
+
+\includegraphics[width=\textwidth]{pca_3d_truncated_svd.pdf}
+\end{minipage}
+%
+\begin{minipage}[t]{0.49\textwidth}
+data cloud in 3D space
+
+\includegraphics[width=\textwidth]{pca_3d_original_data_with_pcdir.pdf}
+\end{minipage}
+\end{frame}
+%%
+\begin{frame}[t]{Ex08: Principal Component Analysis (PCA) 3D-Data Example}
+\begin{minipage}[t]{0.49\textwidth}
+data cloud in 3D space
+
+\includegraphics[width=\textwidth]{pca_3d_pc_data.pdf}
+\end{minipage}
+%
+\begin{minipage}[t]{0.49\textwidth}
+data \underline{plane} in 2D space (PC3 not used)
+
+\includegraphics[width=\textwidth]{pca_3d_dim_red.pdf}
+\end{minipage}
+\end{frame}
 
 
 
