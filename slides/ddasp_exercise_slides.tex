@@ -44,6 +44,7 @@
 \definecolor{C9}{HTML}{17becf}
 
 \usepackage{pgfplots}
+\pgfplotsset{compat=newest}
 
 %\newcommand{\tw}{0.73}
 
@@ -171,7 +172,7 @@ University of Rostock, Rostock, Germany}
 
 
 
-
+\begin{comment}
 \section{Ex01: Introduction}
 \begin{frame}{Ex01: Introduction}
 Objectives
@@ -2263,6 +2264,830 @@ data \underline{plane} in 2D space (PC3 not used)
 \end{frame}
 
 
+\end{comment}
+
+
+
+\section{Section III: Train Models}
+\begin{frame}[t]{Ex 09: Bias-Variance Trade Off}
+no slides so far
+\end{frame}
+
+
+\begin{frame}[t]{Ex 10: Bias-Variance Trade Off}
+no slides so far
+\end{frame}
+
+
+\section{Section IV: Model Architectures}
+\begin{frame}[t]{Output Layer for Regression Model}
+
+$\cdot$ Output layer exhibits $l=1 \dots L$ perceptrons
+
+$\cdot$ Activation function $\sigma(\cdot)$ for $l\text{-th}$ perceptron: \underline{linear}
+
+$$\sigma(z_l) = z_l$$
+
+$\cdot$ Derivative
+
+$$\frac{\partial \sigma(z_l)}{\partial z_l} = 1$$
+
+\end{frame}
+
+
+
+\begin{frame}[t]{Output Layer for Binary Classification Model}
+
+$\cdot$ Output layer exhibits two perceptrons with shared input weights, hence acting on same $z$
+
+$\cdot$ Activation functions $\sigma(\cdot)_{1,2}$ for the two perceptrons: \underline{sigmoid} / complementary sigmoid
+
+$$\sigma_1(z) = \frac{1}{1+\e^{-z}} = \frac{\e^{z}}{\e^{z}+1} \qquad\qquad \sigma_2(z) = 1-\sigma_1(z) = \frac{1}{1 + \e^{z}} = \frac{\e^{-z}}{\e^{-z}+1}$$
+
+\begin{center}
+\begin{tikzpicture}[scale=0.5]
+\begin{axis}[
+    axis lines=left,
+    xmin = -6,
+    xmax = 6,
+    ymax = 1,
+    ytick = {0,0.25,0.5,0.75,1},
+    ylabel={perceptron output $\sigma(z)$},
+    xlabel={perceptron input $z$},
+    ]
+    \addplot [domain=-6:6,samples=128, ultra thick, C0] {exp(x)/(exp(x)+1)}
+        node [pos=1, below left] {$\sigma_1(z)$};
+    \addplot [domain=-6:6,samples=128, ultra thick, C3] {exp(-x)/(exp(-x)+1)}
+        node [pos=0, below right] {$\sigma_2(z)$};
+    \node at (0,0.95) {$\sigma_1(z)+\sigma_2(z)=1$};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+$\cdot$ Derivatives
+
+$$\frac{\partial \sigma_1(z)}{\partial z} = \frac{\e^{z}}{(\e^{z}+1)^2} = \sigma_1(z) \cdot (1-\sigma_1(z)) \qquad\qquad \frac{\partial \sigma_2(z)}{\partial z} = - \frac{\partial \sigma_1(z)}{\partial z} $$
+
+\end{frame}
+
+
+
+\begin{frame}[t]{Output Layer for Binary Classification Model}
+
+$\cdot$ Output layer exhibits a single perceptron
+
+$\cdot$ Activation function $\sigma(\cdot)$ for this single output perceptron: \underline{sigmoid}
+
+$$\sigma(z) = \frac{1}{1+\e^{-z}} = \frac{\e^{z}}{\e^{z}+1}$$
+
+\begin{center}
+\begin{tikzpicture}[scale=0.33]
+\begin{axis}[
+    axis lines=left,
+    xmin = -6,
+    xmax = 6,
+    ymax = 1,
+    ytick = {0,0.25,0.5,0.75,1},
+    xlabel={perceptron input $z$},
+    ylabel={perceptron output $\sigma(z)$},
+    ]
+    \addplot [domain=-6:6,samples=128, ultra thick, C0] {exp(x)/(exp(x)+1)}
+        node [pos=1, below left] {$\sigma(z)$};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+$\cdot$ Derivative
+
+$$\frac{\partial \sigma(z)}{\partial z} = \frac{\e^{z}}{(\e^{z}+1)^2} = \sigma(z) \cdot (1-\sigma(z))$$
+
+$\cdot$ Well known as \underline{binary logistic regression} for a model with the output layer only, but no other (non-linear, hidden) layers $\rightarrow$ cf. textbooks on generalized linear models (GLMs)
+
+\end{frame}
+
+
+
+\begin{frame}[t]{Output Layer for Multiclass Classification Model}
+
+$\cdot$ Output layer exhibits $l=1 \dots L$ perceptrons for $L$ classes
+
+$\cdot$ Activation function $\sigma(\cdot)$ for $l\text{-th}$ perceptron: \underline{softmax}
+
+$$\sigma(z_l) = \frac{\e^{z_l}}{\sum\limits_{l'=1}^{L} \e^{z_{l'}}} \qquad \text{hence, }\sum\limits_{l=1}^{L} \sigma(z_l) = 1$$
+
+$\cdot$ Derivatives to set up the Jacobian matrix
+
+$$\frac{\partial \sigma(z_l)}{\partial z_l} = \frac{\e^{z_l}}{\left(\sum\limits_{l'=1}^{L} \e^{z_{l'}}\right)^2} \cdot \left(\sum\limits_{l'=1, l' \neq l}^{L} \e^{z_{l'}}\right)=
+\frac{\e^{z_l}}{\left(\sum\limits_{l'=1}^{L} \e^{z_{l'}}\right)} \cdot
+\frac{\left(\sum\limits_{l'=1, l' \neq l}^{L} \e^{z_{l'}}\right)}{\left(\sum\limits_{l'=1}^{L} \e^{z_{l'}}\right)}=
+\sigma(z_l) \cdot(1-\sigma(z_l))
+$$
+
+$$\frac{\partial \sigma(z_l)}{\partial z_j} = - \sigma(z_l) \cdot \sigma(z_j)\qquad l \neq j$$
+
+$\cdot$ Well known as \underline{multinomial logistic regression} for a model with the output layer only, but no other (non-linear, hidden) layers $\rightarrow$ cf. textbooks on generalized linear models (GLMs)
+
+
+\end{frame}
+
+
+\begin{frame}[t]{Typical Loss Functions Used In Numerical Optimization}
+
+Loss is about comparing train/val/test data $\bm{y}, y$ against model prediction data $\hat{\bm{y}}, \hat{y}$
+
+$\cdot$ \textcolor{C0}{Regression} with least squares for predicted data sample $\hat{y}_l = \sigma_\text{\textcolor{C0}{linear}}(z_l)$; $\bm{y}\in\mathbb{R}, \hat{\bm{y}}\in\mathbb{R}$
+
+$$\mathcal{L}(\bm{y}, \hat{\bm{y}}) = \sum\limits_{l=1}^{L} (y_l-\hat{y}_l)^2$$
+
+$\cdot$ \textcolor{C0}{Binary classification} for predicted data sample $\hat{y} = \sigma_\text{\textcolor{C0}{sigmoid}}(z)$; $y \in \{0,1\}, 0 \leq \hat{y} \leq 1$
+
+$$\mathcal{L}(y, \hat{y}) = -\left[y \log_\e(\hat{y}) + (1-y)\log_\e(1-\hat{y})\right]$$
+
+$\cdot$ \textcolor{C0}{Multiclass classification} for predicted data sample $\hat{y}_l = \sigma_\text{\textcolor{C0}{softmax}}(z_l)$; $y_l \in \{0,1\}, 0 \leq \hat{y}_l \leq 1$
+
+note: $L$ mutually exclusive classes
+
+$$\mathcal{L}(\bm{y}, \hat{\bm{y}}) = - \left[\sum\limits_{l=1}^{L} y_l \log_\e(\hat{y}_l)\right]$$
+
+Empirical risk for $N$ data samples
+$$\mathcal{R} = \frac{1}{N} \sum\limits_{n=1}^{N} \mathcal{L}(\bm{y}_n, \hat{\bm{y}}_n)$$
+
+
+\end{frame}
+
+
+
+
+\begin{frame}[t]{Ex11: Linear Model for XOR (...is not working)}
+
+XOR mapping well known as
+\begin{align*}
+\bm{X} =
+\begin{bmatrix}
+0 & 0\\
+0 & 1\\
+1 & 0\\
+1 & 1
+\end{bmatrix}\qquad
+\bm{y} =
+\begin{bmatrix}
+0\\
+1\\
+1\\
+0
+\end{bmatrix}
+\end{align*}
+Simple linear model with least squares error solution
+$$\bm{X} \bm{\theta} = \bm{y} \rightarrow \hat{\bm{\theta}} = (\bm{X}^\mathrm{T} \bm{X})^{-1} \bm{X}^\mathrm{T} \bm{y}
+=
+\frac{1}{3}\cdot
+\begin{bmatrix}
+1\\
+1
+\end{bmatrix}
+$$
+is not a convincing solution, because the model prediction
+\begin{align*}
+\bm{X} \hat{\bm{\theta}} =
+\frac{1}{3}
+\begin{bmatrix}
+0\\
+0\\
+1\\
+1
+\end{bmatrix}
++
+\frac{1}{3}
+\begin{bmatrix}
+0\\
+1\\
+0\\
+1
+\end{bmatrix}
+=
+\frac{1}{3}\cdot
+\begin{bmatrix}
+0\\
+1\\
+1\\
+2
+\end{bmatrix}
+=\hat{\bm{y}}
+\end{align*}
+does not yield XOR. This is because $\bm{y}$ is not in the column space of $\bm{X}$ and
+the resulting column space solution $\hat{\bm{y}}$
+is useless for the intended application
+
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[t]{Try Another Linear Model for XOR (...is not working either)}
+
+Feature matrix with additional typical \underline{intercept} represented by the \underline{first column} in $\bm{X}$
+\begin{align*}
+\bm{X} =
+\begin{bmatrix}
+1 & 0 & 0\\
+1 & 0 & 1\\
+1 & 1 & 0\\
+1 & 1 & 1
+\end{bmatrix}\qquad
+\bm{y} =
+\begin{bmatrix}
+0\\
+1\\
+1\\
+0
+\end{bmatrix}
+\end{align*}
+...but XOR-result $\bm{y}$ is again not in the column space of $\bm{X}$
+
+
+Least squares error solution
+$$\hat{\bm{\theta}} = (\bm{X}^\mathrm{T} \bm{X})^{-1} \bm{X}^\mathrm{T} \bm{y}
+=
+\frac{1}{2}\cdot
+\begin{bmatrix}
+1\\
+0\\
+0
+\end{bmatrix}
+$$
+Prediction
+\begin{align*}
+\bm{X} \hat{\bm{\theta}} =
+\frac{1}{2}
+\begin{bmatrix}
+1\\
+1\\
+1\\
+1
+\end{bmatrix}
++
+0
+\begin{bmatrix}
+0\\
+0\\
+1\\
+1
+\end{bmatrix}
++
+0
+\begin{bmatrix}
+0\\
+1\\
+0\\
+1
+\end{bmatrix}
+=
+\frac{1}{2}\cdot
+\begin{bmatrix}
+1\\
+1\\
+1\\
+1
+\end{bmatrix}
+=\hat{\bm{y}} \neq \bm{y}
+\end{align*}
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}[t]{Non-Linear Model for XOR}
+%
+\begin{center}
+\begin{tikzpicture}[scale=1.25]
+\tikzstyle{iol}=[draw,shape=rectangle,minimum size=0.5cm]
+\tikzstyle{hl}=[draw,shape=circle,minimum size=1cm]
+
+\node[iol](x0d) at (-1.25,+1){$1,1,0,0\rightarrow$};
+\node[iol](x1d) at (-1.25,-1){$1,0,1,0\rightarrow$};
+%
+\node[iol](x0) at (0,+1){$x_1$};
+\node[iol](x1) at (0,-1){$x_2$};
+\node[hl](l1p1) at (2,+1){$P_{\textcolor{C0}{1}}$};
+\node[hl](l1p2) at (2,-1){$P_{\textcolor{C3}{2}}$};
+\node[hl](l2p1) at (5,0){$P_{\textcolor{C1}{3}}$};
+\node[iol](y) at (7,0){$\hat{y}$};
+%
+\node[iol](yd) at (8.1,+0){$\rightarrow 0,1,1,0 \,\,?$};
+%
+\draw[->] (x0) -- (l1p1);
+\draw[->] (x0) -- (l1p2);
+\draw[->] (x1) -- (l1p1);
+\draw[->] (x1) -- (l1p2);
+\draw[->] (l1p1) -- (l2p1)node[midway, above]{$z_1$};
+\draw[->] (l1p2) -- (l2p1)node[midway, below]{$z_2$};
+\draw[->] (l2p1) -- (y);
+%
+\draw [decorate,decoration={brace,amplitude=5pt}] (-0.5,2) -- (0.5,2) node [black,midway,yshift=0.4cm]{input};
+\draw [decorate,decoration={brace,amplitude=5pt}] (1.5,2) -- (2.5,2) node [black,midway,yshift=0.4cm]{layer 1};
+\draw [decorate,decoration={brace,amplitude=5pt}] (4.5,2) -- (5.5,2) node [black,midway,yshift=0.4cm]{layer 2};
+\draw [decorate,decoration={brace,amplitude=5pt}] (6.5,2) -- (7.5,2) node [black,midway,yshift=0.4cm]{output};
+\end{tikzpicture}
+\end{center}
+%
+\end{frame}
+
+
+
+
+
+\begin{frame}[t]{Non-Linear Model for XOR}
+%
+\begin{center}
+\begin{tikzpicture}[scale=1.25]
+\tikzstyle{iol}=[draw,shape=rectangle,minimum size=0.5cm]
+\tikzstyle{hl}=[draw,shape=circle,minimum size=2cm]
+
+\node[iol](x0d) at (-1.25,+1){$1,1,0,0\rightarrow$};
+\node[iol](x1d) at (-1.25,-1){$1,0,1,0\rightarrow$};
+%
+\node[iol](x0) at (0,+1){$x_1$};
+\node[iol](x1) at (0,-1){$x_2$};
+\node[hl](l1p1) at (2,+1){$\sigma_{\textcolor{C0}{1}}\left({\bm{w}_{\textcolor{C0}{1}}^\mathrm{T}\bm{x} + b_{\textcolor{C0}{1}}}\right)$};
+\node[hl](l1p2) at (2,-1){$\sigma_{\textcolor{C3}{2}}\left({\bm{w}_{\textcolor{C3}{2}}^\mathrm{T}\bm{x} + b_{\textcolor{C3}{2}}}\right)$};
+\node[hl](l2p1) at (5,0){$\sigma_{\textcolor{C1}{3}}\left({\bm{w}_{\textcolor{C1}{3}}^\mathrm{T}\bm{z} + b_{\textcolor{C1}{3}}}\right)$};
+\node[iol](y) at (7,0){$\hat{y}$};
+%
+\node[iol](yd) at (8.1,+0){$\rightarrow 0,1,1,0 \,\,?$};
+%
+\draw[->] (x0) -- (l1p1);
+\draw[->] (x0) -- (l1p2);
+\draw[->] (x1) -- (l1p1);
+\draw[->] (x1) -- (l1p2);
+\draw[->] (l1p1) -- (l2p1)node[midway, above]{$z_1$};
+\draw[->] (l1p2) -- (l2p1)node[midway, below]{$z_2$};
+\draw[->] (l2p1) -- (y);
+%
+\draw [decorate,decoration={brace,amplitude=5pt}] (-0.5,2) -- (0.5,2) node [black,midway,yshift=0.4cm]{input};
+\draw [decorate,decoration={brace,amplitude=5pt}] (1.5,2) -- (2.5,2) node [black,midway,yshift=0.4cm]{layer 1};
+\draw [decorate,decoration={brace,amplitude=5pt}] (4.5,2) -- (5.5,2) node [black,midway,yshift=0.4cm]{layer 2};
+\draw [decorate,decoration={brace,amplitude=5pt}] (6.5,2) -- (7.5,2) node [black,midway,yshift=0.4cm]{output};
+\end{tikzpicture}
+\end{center}
+%
+\end{frame}
+
+
+
+
+\begin{frame}[t]{Non-Linear Model for XOR}
+
+$\cdot$ weight matrix and bias vector to represent perceptron \textcolor{C0}{1} and \textcolor{C3}{2}
+$$
+\bm{W}_\text{layer 1} =
+\begin{bmatrix}
+w_{1\textcolor{C0}{1}} & w_{1\textcolor{C3}{2}}\\
+w_{2\textcolor{C0}{1}} & w_{2\textcolor{C3}{2}}
+\end{bmatrix}
+\qquad
+\bm{b}_\text{layer 1}
+=
+\begin{bmatrix}
+b_{\textcolor{C0}{1}}\\
+b_{\textcolor{C3}{2}}
+\end{bmatrix}
+$$
+
+$\cdot$ weight vector and bias scalar to represent perceptron \textcolor{C1}{3}
+$$
+\bm{W}_\text{layer 2} =
+\begin{bmatrix}
+w_{1\textcolor{C1}{3}}\\
+w_{2\textcolor{C1}{3}}
+\end{bmatrix}
+\qquad
+\bm{b}_\text{layer 2}=[b_{\textcolor{C1}{3}}]
+$$
+
+$\cdot$ model prediction for $\bm{x} = [x_1, x_2]^\mathrm{T}$
+
+\begin{align*}
+\bm{z} =
+\begin{bmatrix}
+z_1\\
+z_2
+\end{bmatrix}=
+\mathrm{max}\left\{\bm{0},\,\,\,\bm{W}_\text{layer 1}^\mathrm{T} \bm{x} + \bm{b}_\text{layer 1}\right\}
+&\qquad\text{with ReLU activation}\,\,\,
+\sigma_{1,2}(\cdot) = \mathrm{max}\left\{\bm{0}, \cdot\right\}
+\\
+\hat{y} = \bm{W}_\text{layer 2}^\mathrm{T} \bm{z} + \bm{b}_\text{layer 2}
+&\qquad\text{with linear activation}\,\,\,
+\sigma_{3}(\cdot) = (\cdot)
+\end{align*}
+$\cdot$ model prediction in one line
+\begin{align*}
+\hat{y} = \bm{W}_\text{layer 2}^\mathrm{T}
+\mathrm{max}\left\{\bm{0},\,\,\,\bm{W}_\text{layer 1}^\mathrm{T} \bm{x} + \bm{b}_\text{layer 1}\right\}
++ \bm{b}_\text{layer 2}
+\end{align*}
+
+
+\end{frame}
+
+
+
+\begin{frame}[t]{Non-Linear Model for XOR}
+
+$\cdot$ solution known from book Goodfellow et al. (2016): Deep Learning. MIT Press, Ch. 6.1
+
+$\cdot$ weight matrix and bias vector to represent perceptron \textcolor{C0}{1} and \textcolor{C3}{2}
+$$
+\bm{W}_\text{layer 1} =
+\begin{bmatrix}
+w_{1\textcolor{C0}{1}}=1 & w_{1\textcolor{C3}{2}}=1\\
+w_{2\textcolor{C0}{1}}=1 & w_{2\textcolor{C3}{2}}=1
+\end{bmatrix}
+\qquad
+\bm{b}_\text{layer 1}
+=
+\begin{bmatrix}
+b_{\textcolor{C0}{1}} = 0\\
+b_{\textcolor{C3}{2}} = -1
+\end{bmatrix}
+$$
+
+$\cdot$ weight vector and bias scalar to represent perceptron \textcolor{C1}{3}
+$$
+\bm{W}_\text{layer 2} =
+\begin{bmatrix}
+w_{1\textcolor{C1}{3}} = 1\\
+w_{2\textcolor{C1}{3}} = -2
+\end{bmatrix}
+\qquad
+\bm{b}_\text{layer 2}=[b_{\textcolor{C1}{3}} = 0]
+$$
+
+$\cdot$ predict for $\bm{x} = [1, 0]^\mathrm{T}$ where true XOR-result is $y = 1$
+
+\begin{align*}
+\bm{z} =
+\begin{bmatrix}
+1\\
+0
+\end{bmatrix}=
+\mathrm{max}\left\{
+\begin{bmatrix}
+0\\
+0
+\end{bmatrix}
+,\,\,\,
+\begin{bmatrix}
+1&1\\
+1&1
+\end{bmatrix}
+^\mathrm{T}
+\begin{bmatrix}
+1\\
+0
+\end{bmatrix}
++
+\begin{bmatrix}
+0\\
+-1
+\end{bmatrix}
+\right\}
+&\qquad\text{with ReLU activation}\,\,\,
+\sigma_{1,2}(\cdot) = \mathrm{max}\left\{\bm{0}, \cdot\right\}
+\\
+\hat{y} = \begin{bmatrix}
+1\\
+-2
+\end{bmatrix}^\mathrm{T}
+\begin{bmatrix}
+1\\
+0
+\end{bmatrix}
++ 0 = 1
+&\qquad\text{with linear activation}\,\,\,
+\sigma_{3}(\cdot) = (\cdot)
+\end{align*}
+
+$\cdot$ predict the other three cases...to make sure everything is fine
+
+\end{frame}
+
+\begin{frame}[t]{Non-Linear Model for XOR}
+The model prediction output $\hat{y}$ is a function of the input data sample and the 9 model parameters (6 weights, 3 bias terms)
+$$
+\hat{y}\left(\bm{x},\bm{W}_\text{layer 1}, \bm{b}_\text{layer 1}
+\bm{W}_\text{layer 2}, \bm{b}_\text{layer 2}\right)
+$$
+Hence, definition of an appropriate loss function is required
+$$
+\mathcal{L}\left(y,\quad\hat{y}\left(\bm{x}_n, \bm{W}_\text{layer 1}, \bm{b}_\text{layer 1}
+\bm{W}_\text{layer 2}, \bm{b}_\text{layer 2}\right)\right)
+$$
+
+The above solution was found with the mean squared error (MSE) empirical risk function
+$$\mathcal{R} = \frac{1}{4}\sum_{n=1}^4 \mathcal{L}_n(y, \hat{y}) = \frac{1}{4}\sum_{n=1}^4 (y_n-\hat{y}_n)^2 = \frac{1}{4}\lVert\bm{y} - \hat{\bm{y}}\rVert_2^2$$
+to be minimized by $\operatorname*{argmin}_{\bm{W}_\text{layer 1}, \bm{b}_\text{layer 1}
+\bm{W}_\text{layer 2}, \bm{b}_\text{layer 2}} \mathcal{R}$.
+
+Why is it tricky to solve this MSE risk numerically by gradient descent?
+
+What could be another model architecture and/or loss function for the given problem?
+
+% https://medium.com/@lucaspereira0612/solving-xor-with-a-single-perceptron-34539f395182
+% https://towardsdatascience.com/perceptrons-logical-functions-and-the-xor-problem-37ca5025790a
+
+%9 model parameters (7 non-zero model parameters) vs. 8+4 data samples
+
+\end{frame}
+
+
+
+\begin{frame}[t]{Ex12: Binary Classification / Binary Logistic Regression}
+
+\begin{center}
+\begin{tikzpicture} %[scale=1.25]
+%
+\begin{scope}[scale=1.25]
+\tikzstyle{iol}=[draw,shape=rectangle,minimum size=0.5cm]
+\tikzstyle{hl}=[draw,shape=circle,minimum size=2cm]
+%
+\node[iol](x1) at (0,+2){$x_1$};
+\node[iol](x2) at (0,+1){$x_2$};
+\node[iol](x3) at (0,0){$x_3$};
+\node[iol](xf) at (0,-1){$x_:$};
+\node[iol](xF) at (0,-2){$x_F$};
+
+\node[hl](l1p1) at (2,0){$\sigma\left(\bm{w}^\mathrm{T}\bm{x} + b\right)$};
+\node[iol](y) at (4,0){$\hat{y}$};
+%
+\draw[->] (x1) -- (l1p1);
+\draw[->] (x2) -- (l1p1);
+\draw[->] (x3) -- (l1p1);
+\draw[->] (xf) -- (l1p1);
+\draw[->] (xF) -- (l1p1);
+\draw[->] (l1p1) -- (y);
+%
+\end{scope}
+%
+\begin{scope}[shift={(6,-2)}, scale=0.67]
+\begin{axis}[
+    axis lines=middle,
+    xmin = -6,
+    xmax = 6,
+    ymin = -0.25,
+    ymax = 1.25,
+    xtick = {-5,...,5},
+    ytick = {0,0.5,1},
+    xlabel={perceptron input $z$},
+    ylabel={perceptron output $\sigma(z)$},
+    ]
+    \addplot [domain=-6:6,samples=128, ultra thick, C0] {exp(x)/(exp(x)+1)}
+        node [pos=1, below left] {$\sigma(z)$};
+\end{axis}
+\end{scope}
+\end{tikzpicture}
+\end{center}
+
+$\cdot$ Activation function $\sigma(\cdot)$ for this single output perceptron: \underline{sigmoid}
+
+$$\sigma(z) = \frac{1}{1+\e^{-z}} = \frac{\e^{z}}{\e^{z}+1}\qquad\qquad
+\frac{\partial \sigma(z)}{\partial z} = \frac{\e^{z}}{(\e^{z}+1)^2} = \sigma(z) \cdot (1-\sigma(z))
+$$
+
+\end{frame}
+
+
+\begin{frame}[t]{Loss Function For Binary Logistic Regression / Binary Cross Entropy}
+
+$\cdot$ Loss function for $y\in\{0,1\}$ and predicted output $\textcolor{C0}{\hat{y}} \in\mathbb{R}, \geq 0 \& \leq 1$ / empirial risk
+
+$$\mathcal{L}_n(y, \textcolor{C0}{\hat{y}}) = -\left[y_n \log_\e(\textcolor{C0}{\hat{y}_n}) + (1-y_n) \log_\e(1-\textcolor{C0}{\hat{y}_n})\right]
+\qquad\quad
+\mathcal{R} = \frac{1}{N} \sum\limits_{n=1}^N \mathcal{L}_n(y, \textcolor{C0}{\hat{y}})
+$$
+
+
+\begin{center}
+\begin{tikzpicture} %[scale=1.25]
+%
+\begin{scope}[shift={(0,0)}, scale=0.67]
+\begin{axis}[
+    axis lines=middle,
+    xmin = 0,
+    xmax = 11,
+    ymin = -3,
+    ymax = 3,
+    xtick = {0,...,10},
+    ytick = {-3,...,3},
+    xlabel={$t$},
+    ylabel={},
+    ]
+    \addplot [domain=0:10,samples=256, ultra thick, C7] {ln(x))}
+        node [pos=1, above left] {$+\log_\e(t)$};
+    \addplot [domain=0:10,samples=256, ultra thick, C1] {-ln(x))}
+            node [pos=1, below left] {$-\log_\e(t)$};
+\end{axis}
+\end{scope}
+%
+\begin{scope}[shift={(6,0)}, scale=0.67]
+\begin{axis}[
+    axis lines=middle,
+    xmin = -6,
+    xmax = 6,
+    ymin = -0.25,
+    ymax = 1.25,
+    xtick = {-5,...,5},
+    ytick = {0,0.5,1},
+    xlabel={perceptron input $z$},
+    ylabel={perceptron output $\sigma(z)$},
+    ]
+    \addplot [domain=-6:6,samples=128, ultra thick, C0] {exp(x)/(exp(x)+1)}
+        node [pos=1, below left] {$\hat{y} = \sigma(z)$};
+\end{axis}
+\end{scope}
+\end{tikzpicture}
+\end{center}
+
+\begin{minipage}[t]{0.49\textwidth}
+$\mathcal{L}_n(y=0, \hat{y})
+=
+\textcolor{C1}{-}\left[\textcolor{C1}{\log_\e}(1-\textcolor{C0}{\hat{y}_n})\right]
+$
+
+$\textcolor{C0}{\hat{y}_n} \approx 0 \rightarrow \,?$
+
+$\textcolor{C0}{\hat{y}_n} \approx 1 \rightarrow \,?$
+\end{minipage}
+\begin{minipage}[t]{0.49\textwidth}
+$\mathcal{L}_n(y=1, \hat{y})
+=
+\textcolor{C1}{-}\left[\textcolor{C1}{\log_\e}(\textcolor{C0}{\hat{y}_n})\right]
+$
+
+$\textcolor{C0}{\hat{y}_n} \approx 0 \rightarrow \,?$
+
+$\textcolor{C0}{\hat{y}_n} \approx 1 \rightarrow \,?$
+\end{minipage}
+
+\end{frame}
+
+
+
+
+
+\begin{frame}{Model Training / Solve Minimization Problem by Gradient Descent}
+
+\begin{align*}
+\operatorname*{argmin}_{\bm{w}, b} \mathcal{R} =
+&\operatorname*{argmin}_{\bm{w}, b} \frac{1}{N} \sum\limits_{n=1}^N -\left[y_n \log_\e(\textcolor{C0}{\hat{y}_n}) + (1-y_n) \log_\e(1-\textcolor{C0}{\hat{y}_n})\right]=\\
+&\operatorname*{argmin}_{\bm{w}, b} \frac{1}{N} \sum\limits_{n=1}^N -\left[y_n \log_\e(\textcolor{C0}{\sigma\left(\bm{w}^\mathrm{T}\bm{x}_n + b\right)}) + (1-y_n) \log_\e(1-\textcolor{C0}{\sigma\left(\bm{w}^\mathrm{T}\bm{x}_n + b\right)})\right]
+\end{align*}
+
+%$\cdot$ solve by (full-batch $N$ data samples) gradient descent (GD):
+
+0. randomly init weights $\bm{w}, b$ to be used as actual state
+
+1. prediction $\textcolor{C0}{\sigma\left(\bm{w}^\mathrm{T}\bm{x}_n + b\right)}$ (and store intermediate results for back prop)
+
+2. calc empiral risk $\mathcal{R} = J(\bm{w}, b)$ (and store intermediate results for back prop)
+
+3. evaluate gradient
+$$\left[
+\frac{\partial J}{\partial w_1}\bigg|_{w_1=w_{1,\text{act}}},
+\dots,
+\frac{\partial J}{\partial w_F}\bigg|_{w_F=w_{F,\text{act}}},
+\frac{\partial J}{\partial b  }\bigg|_{b  =b_{  \text{act}}}\right]^\mathrm{T}$$
+
+4. GD update rule with learning rate / step size $\gamma$
+$$w_{:,\text{new act}} = w_{:,\text{act}} - \gamma \frac{\partial J}{\partial w_:}\bigg|_{w_:=w_{:,\text{act}}}
+\qquad
+b_{\text{new act}} = b_{\text{act}} - \gamma \frac{\partial J}{\partial b}\bigg|_{b=b_{\text{act}}}$$
+
+5. repeat steps 1 to 4 until stop criterion fullfilled
+\end{frame}
+
+\begin{frame}[t]{First Derivative of Loss / Empirical Risk}
+
+Loss / Empirial Risk
+$$\mathcal{L}_n(y, \textcolor{C0}{\hat{y}}) = -\left[y_n \log_\e(\textcolor{C0}{\hat{y}_n}) + (1-y_n) \log_\e(1-\textcolor{C0}{\hat{y}_n})\right]
+\qquad\quad
+J(\bm{w},b) = \frac{1}{N} \sum\limits_{n=1}^N \mathcal{L}_n(y, \textcolor{C0}{\hat{y}})
+$$
+%
+First Derivative of Empirial Risk vs. Loss
+$$
+\frac{\partial J(\bm{w},b)}{\partial \bm{w}\cdots\partial b} =
+\frac{\partial \left(\frac{1}{N} \sum\limits_{n=1}^N \mathcal{L}_n(y, \textcolor{C0}{\hat{y}})\right)}{\partial \bm{w}\cdots\partial b}=
+\frac{1}{N} \sum\limits_{n=1}^N \frac{\partial \mathcal{L}_n(y, \textcolor{C0}{\hat{y}})}{\partial \bm{w}\cdots\partial b}
+$$
+%
+We need to calculate these derivatives
+$$
+\frac{\partial \mathcal{L}_n(y, \textcolor{C0}{\hat{y}})}{\partial \bm{w}\cdots\partial b} =
+-\frac{\partial
+\left[y_n \log_\e(\textcolor{C0}{\sigma\left(\bm{w}^\mathrm{T}\bm{x}_n + b\right)}) + (1-y_n) \log_\e(1-\textcolor{C0}{\sigma\left(\bm{w}^\mathrm{T}\bm{x}_n + b\right)})\right]
+}{\partial \bm{w}\cdots\partial b}
+$$
+
+
+\end{frame}
+
+
+
+\begin{frame}[t]{First Derivative of Loss}
+
+Recap that we use sigmoid activation
+$$\sigma(z) = \frac{1}{1+\e^{-z}} = \frac{\e^{z}}{\e^{z}+1}\qquad\qquad
+\frac{\partial \sigma(z)}{\partial z} = \frac{\e^{z}}{(\e^{z}+1)^2} = \sigma(z) \cdot (1-\sigma(z))
+$$
+%
+Check for $w_1$
+\begin{align*}
+&z = \zeta(w_1) = \bm{w}^\mathrm{T}\bm{x} + b\\
+&\textcolor{C0}{\hat{y}} = \sigma(z) = \sigma(\zeta(w_1)) = \sigma\left(\bm{w}^\mathrm{T}\bm{x} + b\right)
+\end{align*}
+%
+$$
+\frac{\partial \mathcal{L}(y, \textcolor{C0}{\hat{y}})}{\partial w_1} =
+\frac{\partial \mathcal{L}}{\partial \textcolor{C0}{\hat{y}}} \cdot
+\frac{\partial \textcolor{C0}{\hat{y}}}{\partial z} \cdot
+\frac{\partial z}{\partial w_1}
+\qquad\qquad
+\frac{\partial \mathcal{L}(y, \textcolor{C0}{\hat{y}})}{\partial w_1} =
+\frac{\partial \mathcal{L}}{\partial \sigma(\zeta(w_1))} \cdot
+\frac{\partial \sigma(\zeta(w_1))}{\partial \zeta(w_1)} \cdot
+\frac{\partial \zeta(w_1)}{\partial w_1}
+$$
+%
+For gradient descent we need
+$$
+\frac{\partial \mathcal{L}(y, \textcolor{C0}{\hat{y}})}{\partial w_1}\bigg|_{w_{1,\text{act}}} =
+\frac{\partial \mathcal{L}}{\partial \textcolor{C0}{\hat{y}}}\bigg|_{\hat{y}(w_{1,\text{act}})} \cdot
+\frac{\partial \textcolor{C0}{\hat{y}}}{\partial z}\bigg|_{z(w_{1,\text{act}})} \cdot
+\frac{\partial z}{\partial w_1}\bigg|_{w_{1,\text{act}}}
+$$
+%
+Analytical expressions
+$$
+\frac{\partial \mathcal{L}}{\partial \textcolor{C0}{\hat{y}}} = -\left[\frac{y}{\textcolor{C0}{\hat{y}}}+(-1)\frac{1-y}{1-\textcolor{C0}{\hat{y}}}\right]
+\qquad\qquad
+\frac{\partial \textcolor{C0}{\hat{y}}}{\partial z} = \textcolor{C0}{\hat{y}} (1-\textcolor{C0}{\hat{y}})
+\qquad\qquad
+\frac{\partial z}{\partial w_1} = x_1
+$$
+
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}[t]{All Partial Derivatives for Loss and Empirial Risk}
+
+For gradient descent we need all partial derivatives, i.e. w.r.t $w_1 \dots w_F$ and $b$
+\begin{align*}
+&\frac{\partial \mathcal{L}(y, \textcolor{C0}{\hat{y}})}{\partial w_:}\bigg|_{w_{:,\text{act}}} =
+\frac{\partial \mathcal{L}}{\partial \textcolor{C0}{\hat{y}}}\bigg|_{\hat{y}(w_{:,\text{act}})} \cdot
+\frac{\partial \textcolor{C0}{\hat{y}}}{\partial z}\bigg|_{z(w_{:,\text{act}})} \cdot
+\frac{\partial z}{\partial w_:}\bigg|_{w_{:,\text{act}}}\\
+&\frac{\partial \mathcal{L}(y, \textcolor{C0}{\hat{y}})}{\partial b}\bigg|_{b_{\text{act}}} =
+\frac{\partial \mathcal{L}}{\partial \textcolor{C0}{\hat{y}}}\bigg|_{\hat{y}(b_{\text{act}})} \cdot
+\frac{\partial \textcolor{C0}{\hat{y}}}{\partial z}\bigg|_{z(b_{\text{act}})} \cdot
+\frac{\partial z}{\partial b}\bigg|_{b_{\text{act}}}
+\end{align*}
+%
+Analytical expressions
+\begin{align*}
+\text{for}\quad w_: \quad &\frac{\partial \mathcal{L}}{\partial \textcolor{C0}{\hat{y}}} = -\left[\frac{y}{\textcolor{C0}{\hat{y}}}+(-1)\frac{1-y}{1-\textcolor{C0}{\hat{y}}}\right]
+\qquad\qquad
+\frac{\partial \textcolor{C0}{\hat{y}}}{\partial z} = \textcolor{C0}{\hat{y}} (1-\textcolor{C0}{\hat{y}})
+\qquad\qquad
+\frac{\partial z}{\partial w_:} = x_:\\
+\text{for}\quad b \quad &\frac{\partial \mathcal{L}}{\partial \textcolor{C0}{\hat{y}}} = -\left[\frac{y}{\textcolor{C0}{\hat{y}}}+(-1)\frac{1-y}{1-\textcolor{C0}{\hat{y}}}\right]
+\qquad\qquad
+\frac{\partial \textcolor{C0}{\hat{y}}}{\partial z} = \textcolor{C0}{\hat{y}} (1-\textcolor{C0}{\hat{y}})
+\qquad\qquad
+\frac{\partial z}{\partial b} = 1
+\end{align*}
+%
+For gradient descent we rather need the empirial risk not only the loss of one data sample
+\begin{align*}
+\frac{\partial J}{\partial w_:}\bigg|_{w_{:,\text{act}}} = \frac{1}{N} \sum\limits_{n=1}^N \frac{\partial \mathcal{L}_n(y, \textcolor{C0}{\hat{y}})}{\partial w_:}\bigg|_{w_{:,\text{act}}}
+\qquad\qquad
+\frac{\partial J}{\partial b}\bigg|_{b_{\text{act}}} = \frac{1}{N} \sum\limits_{n=1}^N\frac{\partial \mathcal{L}_n(y, \textcolor{C0}{\hat{y}})}{\partial b}\bigg|_{b_{\text{act}}}
+\end{align*}
+
+
+
+
+\end{frame}
 
 
 
@@ -2276,6 +3101,51 @@ data \underline{plane} in 2D space (PC3 not used)
 
 
 
+\begin{frame}{Binary Classification with Hidden Layer Model}
+%
+\begin{center}
+\begin{tikzpicture}[scale=1.25]
+\tikzstyle{iol}=[draw,shape=rectangle,minimum size=0.5cm]
+\tikzstyle{hl}=[draw,shape=circle,minimum size=2cm]
+%
+\node[iol](x0) at (0,+1.25){$x_1$};
+\node[iol](x1) at (0,-1.25){$x_2$};
+\node[hl](l1p1) at (2,+1.25){$\sigma_{1}\left(\bm{w}_{11}^\mathrm{T} \bm{x} + b_{11}\right)$};
+\node[hl](l1p2) at (2,-1.25){$\sigma_{1}\left(\bm{w}_{12}^\mathrm{T} \bm{x} + b_{12}\right)$};
+\node[hl](l2p1) at (5,+1.25){$\sigma_{2}\left(\bm{w}_{21}^\mathrm{T} \bm{z}_{1} + b_{21}\right)$};
+\node[hl](l2p2) at (5,-1.25){$\sigma_{2}\left(\bm{w}_{22}^\mathrm{T} \bm{z}_{1} + b_{22}\right)$};
+\node[hl](lop1) at (8,0){$\hat{y} = \sigma_{o}\left({\bm{w}_{o}^\mathrm{T}\bm{z}_{2} + b_{o}}\right)$};
+\node[](y) at (9.75,0){};
+%
+\draw[->] (x0) -- (l1p1);
+\draw[->] (x0) -- (l1p2);
+\draw[->] (x1) -- (l1p1);
+\draw[->] (x1) -- (l1p2);
+%
+\draw[->] (l1p1) -- (l2p1);
+\draw[->] (l1p1) -- (l2p2);
+\draw[->] (l1p2) -- (l2p1);
+\draw[->] (l1p2) -- (l2p2);
+%
+\draw[->] (l2p1) -- (lop1);
+\draw[->] (l2p2) -- (lop1);
+%
+\draw[->] (l1p1) -- (l2p1)node[midway, above]{$z_{11}$};
+\draw[->] (l1p2) -- (l2p2)node[midway, below]{$z_{12}$};
+%
+\draw[->] (l2p1) -- (lop1)node[midway, above]{$z_{21}$};
+\draw[->] (l2p2) -- (lop1)node[midway, below]{$z_{22}$};
+%
+\draw[->] (lop1) -- (y)node[right]{$0,1,1,0 \,\,?$};
+%
+\draw [decorate,decoration={brace,amplitude=5pt}] (-0.5,2.5) -- (0.5,2.5) node [black,midway,yshift=0.4cm]{input layer};
+\draw [decorate,decoration={brace,amplitude=5pt}] (1.5,2.5) -- (2.5,2.5) node [black,midway,yshift=0.4cm]{hidden layer 1};
+\draw [decorate,decoration={brace,amplitude=5pt}] (4.5,2.5) -- (5.5,2.5) node [black,midway,yshift=0.4cm]{hidden layer 2};
+\draw [decorate,decoration={brace,amplitude=5pt}] (7.5,2.5) -- (8.5,2.5) node [black,midway,yshift=0.4cm]{output layer};
+\end{tikzpicture}
+\end{center}
+%
+\end{frame}
 
 
 
