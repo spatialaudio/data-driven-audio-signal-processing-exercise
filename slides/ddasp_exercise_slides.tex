@@ -24,8 +24,9 @@
 \usepackage{xcolor}
 %\usepackage{enumerate}
 \setbeamercovered{invisible}
-%\usepackage{tikz}
-%\usetikzlibrary{calc}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary {arrows.meta}
 \usepackage{comment}
 \usepackage{drawmatrix}
 
@@ -122,7 +123,7 @@ University of Rostock, Rostock, Germany}
 \end{frame}
 
 \begin{frame}{Literature}
-  theory textbooks that inspired me a lot
+  theory textbooks that inspire me a lot
   \begin{itemize}
     \item S. Theodoridis, Machine Learning, 2nd ed. Academic Press, 2020.
     \href{https://www.sciencedirect.com/book/9780128188033/machine-learning}{free ebook}
@@ -2274,7 +2275,7 @@ no slides so far
 \end{frame}
 
 
-\begin{frame}[t]{Ex 10: Bias-Variance Trade Off}
+\begin{frame}[t]{Ex 10: Gradient Descent}
 no slides so far
 \end{frame}
 
@@ -2782,6 +2783,10 @@ The model prediction output $\hat{y}$ is a function of the input data sample and
 $$
 \hat{y}\left(\bm{x},\bm{W}_\text{layer 1}, \bm{b}_\text{layer 1}
 \bm{W}_\text{layer 2}, \bm{b}_\text{layer 2}\right)
+=
+\bm{W}_\text{layer 2}^\mathrm{T}
+\mathrm{max}\left\{\bm{0},\,\,\,\bm{W}_\text{layer 1}^\mathrm{T} \bm{x} + \bm{b}_\text{layer 1}\right\}
++ \bm{b}_\text{layer 2}
 $$
 Hence, definition of an appropriate loss function is required
 $$
@@ -2805,6 +2810,41 @@ What could be another model architecture and/or loss function for the given prob
 
 \end{frame}
 
+
+
+
+
+\begin{frame}{Modeling Non-Linearity with Bias and Activation Function}
+%
+\begin{flushright}
+\begin{tikzpicture}
+  %sig_out = [exp(-1), 0.95]
+  %sig_in = log(sig_out./(1-sig_out))
+  %wx = [3 1]
+  %bias = sig_in - wx
+  %wx + bias
+  %sigmoid(wx + bias) == sig_out
+  %function zo = sigmoid(zi)
+  %    zo = exp(zi) ./ (1+exp(zi));
+  %end
+\coordinate (wx) at (3,1);
+\coordinate (bias) at (-3.54132485461292, 1.94443897916644);
+\coordinate (wxbias) at ($(wx)+(bias)$); % must match the point:
+%\coordinate (sigmoid_in) at (-0.541324854612918,2.94443897916644);
+\coordinate (sigmoid_out) at (0.367879441171442,0.95);
+%
+\draw[-{Latex[length=2mm]}] (-3.75,0) -- (3.75,0)node[right]{$z_1$};
+\draw[-{Latex[length=2mm]}] (0,0) -- (0,3.75)node[above]{$z_2$};
+%
+\draw[-{Latex[length=2mm]}, thick, C2] (0,0) -- (wx)node[below, right]{$\bm{W}^\mathrm{T} \bm{x}$};
+\draw[-{Latex[length=2mm]}, thick, dashed, C7] (wx) -- (wxbias);
+\draw[-{Latex[length=2mm]}, thick, C7] (0,0) -- (bias)node[above, left]{$\bm{b}$};
+\draw[-{Latex[length=2mm]}, thick, dashed, C2] (bias) -- (wxbias);
+\draw[-{Latex[length=2mm]}, thick, C0] (0,0) -- (wxbias)node[left, above]{$\bm{W}^\mathrm{T} \bm{x}+\bm{b}$};
+\draw[-{Latex[length=3mm]}, ultra thick, C3] (0,0) -- (sigmoid_out)node[above, right]{$\sigma(\bm{W}^\mathrm{T} \bm{x}+\bm{b})$};
+\end{tikzpicture}
+\end{flushright}
+\end{frame}
 
 
 \begin{frame}[t]{Ex12: Binary Classification / Binary Logistic Regression}
@@ -2843,8 +2883,8 @@ What could be another model architecture and/or loss function for the given prob
     ymax = 1.25,
     xtick = {-5,...,5},
     ytick = {0,0.5,1},
-    xlabel={perceptron input $z$},
-    ylabel={perceptron output $\sigma(z)$},
+    xlabel={act fcn input $z$},
+    ylabel={act fcn output $\sigma(z)$},
     ]
     \addplot [domain=-6:6,samples=128, ultra thick, C0] {exp(x)/(exp(x)+1)}
         node [pos=1, below left] {$\sigma(z)$};
@@ -2855,7 +2895,7 @@ What could be another model architecture and/or loss function for the given prob
 
 $\cdot$ Activation function $\sigma(\cdot)$ for this single output perceptron: \underline{sigmoid}
 
-$$\sigma(z) = \frac{1}{1+\e^{-z}} = \frac{\e^{z}}{\e^{z}+1}\qquad\qquad
+$$\hat{y} = \sigma(z) = \frac{1}{1+\e^{-z}} = \frac{\e^{z}}{\e^{z}+1}\qquad\qquad
 \frac{\partial \sigma(z)}{\partial z} = \frac{\e^{z}}{(\e^{z}+1)^2} = \sigma(z) \cdot (1-\sigma(z))
 $$
 
@@ -2864,7 +2904,7 @@ $$
 
 \begin{frame}[t]{Loss Function For Binary Logistic Regression / Binary Cross Entropy}
 
-$\cdot$ Loss function for $y\in\{0,1\}$ and predicted output $\textcolor{C0}{\hat{y}} \in\mathbb{R}, \geq 0 \& \leq 1$ / empirial risk
+$\cdot$ Loss function for $y\in\{0,1\}$ and predicted output $\textcolor{C0}{\hat{y}} \in\mathbb{R},\,\,\,0 \leq \textcolor{C0}{\hat{y}} \leq 1$ / empirical risk
 
 $$\mathcal{L}_n(y, \textcolor{C0}{\hat{y}}) = -\left[y_n \log_\e(\textcolor{C0}{\hat{y}_n}) + (1-y_n) \log_\e(1-\textcolor{C0}{\hat{y}_n})\right]
 \qquad\quad
@@ -2903,8 +2943,8 @@ $$
     ymax = 1.25,
     xtick = {-5,...,5},
     ytick = {0,0.5,1},
-    xlabel={perceptron input $z$},
-    ylabel={perceptron output $\sigma(z)$},
+    xlabel={act fcn input $z$},
+    ylabel={act fcn output $\sigma(z)$},
     ]
     \addplot [domain=-6:6,samples=128, ultra thick, C0] {exp(x)/(exp(x)+1)}
         node [pos=1, below left] {$\hat{y} = \sigma(z)$};
@@ -2950,7 +2990,7 @@ $\textcolor{C0}{\hat{y}_n} \approx 1 \rightarrow \,?$
 
 %$\cdot$ solve by (full-batch $N$ data samples) gradient descent (GD):
 
-0. randomly init weights $\bm{w}, b$ to be used as actual state
+$\cdot$ randomly init weights $\bm{w}, b$ to be used as actual state
 
 1. prediction $\textcolor{C0}{\sigma\left(\bm{w}^\mathrm{T}\bm{x}_n + b\right)}$ (and store intermediate results for back prop)
 
@@ -2963,30 +3003,30 @@ $$\left[
 \frac{\partial J}{\partial w_F}\bigg|_{w_F=w_{F,\text{act}}},
 \frac{\partial J}{\partial b  }\bigg|_{b  =b_{  \text{act}}}\right]^\mathrm{T}$$
 
-4. GD update rule with learning rate / step size $\gamma$
+4. gradient descent (GD) update rule with learning rate / step size $\gamma$
 $$w_{:,\text{new act}} = w_{:,\text{act}} - \gamma \frac{\partial J}{\partial w_:}\bigg|_{w_:=w_{:,\text{act}}}
 \qquad
 b_{\text{new act}} = b_{\text{act}} - \gamma \frac{\partial J}{\partial b}\bigg|_{b=b_{\text{act}}}$$
 
-5. repeat steps 1 to 4 until stop criterion fullfilled
+$\cdot$ repeat steps 1 to 4 until a given stop criterion is fullfilled
 \end{frame}
 
 \begin{frame}[t]{First Derivative of Loss / Empirical Risk}
 
-Loss / Empirial Risk
+Loss / empirical risk
 $$\mathcal{L}_n(y, \textcolor{C0}{\hat{y}}) = -\left[y_n \log_\e(\textcolor{C0}{\hat{y}_n}) + (1-y_n) \log_\e(1-\textcolor{C0}{\hat{y}_n})\right]
 \qquad\quad
 J(\bm{w},b) = \frac{1}{N} \sum\limits_{n=1}^N \mathcal{L}_n(y, \textcolor{C0}{\hat{y}})
 $$
 %
-First Derivative of Empirial Risk vs. Loss
+First derivative of empirical risk vs. loss
 $$
 \frac{\partial J(\bm{w},b)}{\partial \bm{w}\cdots\partial b} =
 \frac{\partial \left(\frac{1}{N} \sum\limits_{n=1}^N \mathcal{L}_n(y, \textcolor{C0}{\hat{y}})\right)}{\partial \bm{w}\cdots\partial b}=
 \frac{1}{N} \sum\limits_{n=1}^N \frac{\partial \mathcal{L}_n(y, \textcolor{C0}{\hat{y}})}{\partial \bm{w}\cdots\partial b}
 $$
 %
-We need to calculate these derivatives
+We need to analytically know these derivatives as we will use them in GD
 $$
 \frac{\partial \mathcal{L}_n(y, \textcolor{C0}{\hat{y}})}{\partial \bm{w}\cdots\partial b} =
 -\frac{\partial
@@ -3001,8 +3041,8 @@ $$
 
 \begin{frame}[t]{First Derivative of Loss}
 
-Recap that we use sigmoid activation
-$$\sigma(z) = \frac{1}{1+\e^{-z}} = \frac{\e^{z}}{\e^{z}+1}\qquad\qquad
+Recap that we use the sigmoid activation for binary classification
+$$\textcolor{C0}{\hat{y}} = \sigma(z) = \frac{1}{1+\e^{-z}} = \frac{\e^{z}}{\e^{z}+1}\qquad\qquad
 \frac{\partial \sigma(z)}{\partial z} = \frac{\e^{z}}{(\e^{z}+1)^2} = \sigma(z) \cdot (1-\sigma(z))
 $$
 %
@@ -3024,7 +3064,7 @@ $$
 \frac{\partial \zeta(w_1)}{\partial w_1}
 $$
 %
-For gradient descent we need
+For GD we need
 $$
 \frac{\partial \mathcal{L}(y, \textcolor{C0}{\hat{y}})}{\partial w_1}\bigg|_{w_{1,\text{act}}} =
 \frac{\partial \mathcal{L}}{\partial \textcolor{C0}{\hat{y}}}\bigg|_{\hat{y}(w_{1,\text{act}})} \cdot
@@ -3032,7 +3072,7 @@ $$
 \frac{\partial z}{\partial w_1}\bigg|_{w_{1,\text{act}}}
 $$
 %
-Analytical expressions
+Hence, analytical expressions
 $$
 \frac{\partial \mathcal{L}}{\partial \textcolor{C0}{\hat{y}}} = -\left[\frac{y}{\textcolor{C0}{\hat{y}}}+(-1)\frac{1-y}{1-\textcolor{C0}{\hat{y}}}\right]
 \qquad\qquad
@@ -3049,9 +3089,9 @@ $$
 
 
 
-\begin{frame}[t]{All Partial Derivatives for Loss and Empirial Risk}
+\begin{frame}[t]{All Partial Derivatives for Loss and Empirical Risk}
 
-For gradient descent we need all partial derivatives, i.e. w.r.t $w_1 \dots w_F$ and $b$
+For GD we need all partial derivatives, i.e. w.r.t $w_1 \dots w_F$ and $b$
 \begin{align*}
 &\frac{\partial \mathcal{L}(y, \textcolor{C0}{\hat{y}})}{\partial w_:}\bigg|_{w_{:,\text{act}}} =
 \frac{\partial \mathcal{L}}{\partial \textcolor{C0}{\hat{y}}}\bigg|_{\hat{y}(w_{:,\text{act}})} \cdot
@@ -3077,15 +3117,12 @@ Analytical expressions
 \frac{\partial z}{\partial b} = 1
 \end{align*}
 %
-For gradient descent we rather need the empirial risk not only the loss of one data sample
+For GD we not only use the loss of one data sample, but rather need the empirical risk
 \begin{align*}
 \frac{\partial J}{\partial w_:}\bigg|_{w_{:,\text{act}}} = \frac{1}{N} \sum\limits_{n=1}^N \frac{\partial \mathcal{L}_n(y, \textcolor{C0}{\hat{y}})}{\partial w_:}\bigg|_{w_{:,\text{act}}}
 \qquad\qquad
 \frac{\partial J}{\partial b}\bigg|_{b_{\text{act}}} = \frac{1}{N} \sum\limits_{n=1}^N\frac{\partial \mathcal{L}_n(y, \textcolor{C0}{\hat{y}})}{\partial b}\bigg|_{b_{\text{act}}}
 \end{align*}
-
-
-
 
 \end{frame}
 
@@ -3096,7 +3133,88 @@ For gradient descent we rather need the empirial risk not only the loss of one d
 
 
 
+\begin{frame}{Binary Classification: Numerical Example for GD}
 
+\begin{minipage}[]{0.49\textwidth}
+%
+\begin{align*}
+&\textcolor{C0}{\hat{y}} = \sigma(z) = \frac{1}{1+\e^{-z}}
+\\
+&\frac{\partial \mathcal{L}}{\partial \textcolor{C0}{\hat{y}}} = -\left[\frac{y}{\textcolor{C0}{\hat{y}}}+(-1)\frac{1-y}{1-\textcolor{C0}{\hat{y}}}\right]
+\\
+&\frac{\partial \textcolor{C0}{\hat{y}}}{\partial z} = \textcolor{C0}{\hat{y}} (1-\textcolor{C0}{\hat{y}})
+\\
+&\frac{\partial z}{\partial w_:} = x_:\qquad \frac{\partial z}{\partial b} = 1
+\end{align*}
+%
+actual state:
+  % x = [1; 2; 3];      y = 0;
+  % w = [1/1;1/2; 1/3]; b = 1;
+  % z = w'*x + b
+  % yh = 1 / (1+exp(-z))
+  %
+  % dLdyh = - (y/yh - (1-y)/(1-yh))
+  % dLdyh == 1/(1-yh)
+  % dyhdz = yh * (1-yh)
+  % dzw1 = x(1);
+  % dzw2 = x(2);
+  % dzw3 = x(3);
+  % dzdb = 1;
+  %
+  % dLw1 = dLdyh * dyhdz * dzw1
+  % dLw2 = dLdyh * dyhdz * dzw2
+  % dLw3 = dLdyh * dyhdz * dzw3
+  % dLdb = dLdyh * dyhdz * dzdb
+\begin{align*}
+&\bm{x} =
+\begin{bmatrix}
+x_1\\x_2\\x_3
+\end{bmatrix}
+=
+\begin{bmatrix}
+1\\2\\3
+\end{bmatrix}
+\quad
+y=0\\
+&\bm{w} =
+\begin{bmatrix}
+w_1\\w_2\\w_3
+\end{bmatrix}
+=
+\begin{bmatrix}
+1\\\frac{1}{2}\\\frac{1}{3}
+\end{bmatrix}
+\quad
+b=1
+\end{align*}
+%
+\end{minipage}
+%
+\begin{minipage}[t]{0.49\textwidth}
+%
+\begin{tikzpicture}[scale=1]
+%
+\tikzstyle{iol}=[draw,shape=rectangle,minimum size=0.5cm]
+\tikzstyle{hl}=[draw,shape=circle,minimum size=2cm]
+%
+\node[iol](x1) at (0,+2){$x_1$};
+\node[iol](x2) at (0,+1){$x_2$};
+\node[iol](x3) at (0,0){$x_3$};
+%
+\node[hl](l1p1) at (2,0){$\sigma\left(\bm{w}^\mathrm{T}\bm{x} + b\right)$};
+\node[iol](y) at (4,0){$\hat{y}$};
+%
+\draw[->] (x1) -- (l1p1);
+\draw[->] (x2) -- (l1p1);
+\draw[->] (x3) -- (l1p1);
+\draw[->] (l1p1) -- (y);
+\end{tikzpicture}
+%
+
+new state: ?
+\end{minipage}
+%
+\end{frame}
 
 
 
