@@ -3173,8 +3173,8 @@ Prediction
 \draw[->] (x0) -- (l1p2);
 \draw[->] (x1) -- (l1p1);
 \draw[->] (x1) -- (l1p2);
-\draw[->] (l1p1) -- (l2p1)node[midway, above]{$z_1$};
-\draw[->] (l1p2) -- (l2p1)node[midway, below]{$z_2$};
+\draw[->] (l1p1) -- (l2p1)node[midway, above]{$a_1$};
+\draw[->] (l1p2) -- (l2p1)node[midway, below]{$a_2$};
 \draw[->] (l2p1) -- (y);
 %
 \draw [decorate,decoration={brace,amplitude=5pt}] (-0.5,2) -- (0.5,2) node [black,midway,yshift=0.4cm]{input};
@@ -3204,17 +3204,17 @@ Prediction
 \node[iol](x1) at (0,-1){$x_2$};
 \node[hl](l1p1) at (2,+1){$\sigma_{\textcolor{C0}{1}}\left({\bm{w}_{\textcolor{C0}{1}}^\mathrm{T}\bm{x} + b_{\textcolor{C0}{1}}}\right)$};
 \node[hl](l1p2) at (2,-1){$\sigma_{\textcolor{C3}{2}}\left({\bm{w}_{\textcolor{C3}{2}}^\mathrm{T}\bm{x} + b_{\textcolor{C3}{2}}}\right)$};
-\node[hl](l2p1) at (5,0){$\sigma_{\textcolor{C1}{3}}\left({\bm{w}_{\textcolor{C1}{3}}^\mathrm{T}\bm{z} + b_{\textcolor{C1}{3}}}\right)$};
-\node[iol](y) at (7,0){$\hat{y}$};
+\node[hl](l2p1) at (5,0){$\sigma_{\textcolor{C1}{3}}\left({\bm{w}_{\textcolor{C1}{3}}^\mathrm{T}\bm{a} + b_{\textcolor{C1}{3}}}\right)$};
+\node[iol](y) at (7,0){$a_3=\hat{y}$};
 %
-\node[iol](yd) at (8.1,+0){$\rightarrow 0,1,1,0 \,\,?$};
+\node[iol](yd) at (8.4,+0){$\rightarrow 0,1,1,0 \,\,?$};
 %
 \draw[->] (x0) -- (l1p1);
 \draw[->] (x0) -- (l1p2);
 \draw[->] (x1) -- (l1p1);
 \draw[->] (x1) -- (l1p2);
-\draw[->] (l1p1) -- (l2p1)node[midway, above]{$z_1$};
-\draw[->] (l1p2) -- (l2p1)node[midway, below]{$z_2$};
+\draw[->] (l1p1) -- (l2p1)node[midway, above]{$a_1$};
+\draw[->] (l1p2) -- (l2p1)node[midway, below]{$a_2$};
 \draw[->] (l2p1) -- (y);
 %
 \draw [decorate,decoration={brace,amplitude=5pt}] (-0.5,2) -- (0.5,2) node [black,midway,yshift=0.4cm]{input};
@@ -3261,22 +3261,22 @@ $$
 $\cdot$ model prediction for $\bm{x} = [x_1, x_2]^\mathrm{T}$
 
 \begin{align*}
-\bm{z} =
+\bm{a} =
 \begin{bmatrix}
-z_1\\
-z_2
+a_1\\
+a_2
 \end{bmatrix}=
 \mathrm{max}\left\{\bm{0},\,\,\,\bm{W}_\text{layer 1}^\mathrm{T} \bm{x} + \bm{b}_\text{layer 1}\right\}
 &\qquad\text{with ReLU activation}\,\,\,
-\sigma_{1,2}(\cdot) = \mathrm{max}\left\{\bm{0}, \cdot\right\}
+\sigma_{1,2}(\bm{z}) = \mathrm{max}\left\{\bm{0}, \bm{z}\right\}
 \\
-\hat{y} = \bm{W}_\text{layer 2}^\mathrm{T} \bm{z} + \bm{b}_\text{layer 2}
+a_3 = \hat{y} = \bm{W}_\text{layer 2}^\mathrm{T} \bm{a} + \bm{b}_\text{layer 2}
 &\qquad\text{with linear activation}\,\,\,
-\sigma_{3}(\cdot) = (\cdot)
+\sigma_{3}(\bm{z}) = \bm{z}
 \end{align*}
 $\cdot$ model prediction in one line
 \begin{align*}
-\hat{y} = \bm{W}_\text{layer 2}^\mathrm{T}
+a_3 = \hat{y} = \bm{W}_\text{layer 2}^\mathrm{T}
 \mathrm{max}\left\{\bm{0},\,\,\,\bm{W}_\text{layer 1}^\mathrm{T} \bm{x} + \bm{b}_\text{layer 1}\right\}
 + \bm{b}_\text{layer 2}
 \end{align*}
@@ -3320,7 +3320,7 @@ $$
 $\cdot$ predict for $\bm{x} = [1, 0]^\mathrm{T}$ where true XOR-result is $y = 1$
 
 \begin{align*}
-\bm{z} =
+\bm{a} =
 \begin{bmatrix}
 1\\
 0
@@ -3347,9 +3347,9 @@ $\cdot$ predict for $\bm{x} = [1, 0]^\mathrm{T}$ where true XOR-result is $y = 1
 \end{bmatrix}
 \right\}
 &\qquad\text{with ReLU activation}\,\,\,
-\sigma_{1,2}(\cdot) = \mathrm{max}\left\{\bm{0}, \cdot\right\}
+\sigma_{1,2}(\bm{z}) = \mathrm{max}\left\{\bm{0}, \bm{z}\right\}
 \\
-\hat{y} = \begin{bmatrix}
+a_3 = \hat{y} = \begin{bmatrix}
 1\\
 -2
 \end{bmatrix}^\mathrm{T}
@@ -3359,7 +3359,7 @@ $\cdot$ predict for $\bm{x} = [1, 0]^\mathrm{T}$ where true XOR-result is $y = 1
 \end{bmatrix}
 + 0 = 1
 &\qquad\text{with linear activation}\,\,\,
-\sigma_{3}(\cdot) = (\cdot)
+\sigma_{3}(\bm{z}) = (\bm{z})
 \end{align*}
 
 $\cdot$ predict the other three cases...to make sure everything is fine
@@ -3421,8 +3421,8 @@ What could be another model architecture and/or loss function for the given prob
 %\coordinate (sigmoid_in) at (-0.541324854612918,2.94443897916644);
 \coordinate (sigmoid_out) at (0.367879441171442,0.95);
 %
-\draw[-{Latex[length=2mm]}] (-2.5,0) -- (2.5,0)node[below]{$\textcolor{C2}{z_1}=\textcolor{C0}{z_1}, \textcolor{C3}{z_1}$};
-\draw[-{Latex[length=2mm]}] (0,0) -- (0,3.75)node[right]{$\textcolor{C2}{z_2}=\textcolor{C0}{z_2}, \textcolor{C3}{z_2}$};
+\draw[-{Latex[length=2mm]}] (-2.5,0) -- (2.5,0)node[below]{$\textcolor{C2}{\tilde{z}_1}, \textcolor{C0}{z_1}, \textcolor{C3}{a_1}$};
+\draw[-{Latex[length=2mm]}] (0,0) -- (0,3.75)node[right]{$\textcolor{C2}{\tilde{z}_2}, \textcolor{C0}{z_2}, \textcolor{C3}{a_2}$};
 %
 \draw[-{Latex[length=2mm]}, thick, C2] (0,0) -- (wx)node[below, right]{$\bm{W}^\mathrm{T} \bm{x}$};
 \draw[-{Latex[length=2mm]}, thick, dashed, C7] (wx) -- (wxbias);
@@ -3451,7 +3451,7 @@ What could be another model architecture and/or loss function for the given prob
 \node[iol](xF) at (0,-2){$x_F$};
 
 \node[hl](l1p1) at (2,0){$\sigma\left(\bm{w}^\mathrm{T}\bm{x} + b\right)$};
-\node[iol](y) at (4,0){$\hat{y}$};
+\node[iol](y) at (4,0){$a=\hat{y}$};
 %
 \draw[->] (x1) -- (l1p1);
 \draw[->] (x2) -- (l1p1);
@@ -3830,6 +3830,7 @@ for new state / for GD update: ?
 
 \begin{frame}{Binary Classification with Hidden Layer Model}
 %
+\vspace{-0.75cm}
 \begin{center}
 \begin{tikzpicture}[scale=1.25]
 \tikzstyle{iol}=[draw,shape=rectangle,minimum size=0.5cm]
@@ -3839,9 +3840,9 @@ for new state / for GD update: ?
 \node[iol](x1) at (0,-1.25){$x_2$};
 \node[hl](l1p1) at (2,+1.25){$\sigma_{1}\left(\bm{w}_{11}^\mathrm{T} \bm{x} + b_{11}\right)$};
 \node[hl](l1p2) at (2,-1.25){$\sigma_{1}\left(\bm{w}_{12}^\mathrm{T} \bm{x} + b_{12}\right)$};
-\node[hl](l2p1) at (5,+1.25){$\sigma_{2}\left(\bm{w}_{21}^\mathrm{T} \bm{z}_{1} + b_{21}\right)$};
-\node[hl](l2p2) at (5,-1.25){$\sigma_{2}\left(\bm{w}_{22}^\mathrm{T} \bm{z}_{1} + b_{22}\right)$};
-\node[hl](lop1) at (8,0){$\hat{y} = \sigma_{o}\left({\bm{w}_{o}^\mathrm{T}\bm{z}_{2} + b_{o}}\right)$};
+\node[hl](l2p1) at (5,+1.25){$\sigma_{2}\left(\bm{w}_{21}^\mathrm{T} \bm{a}_{1} + b_{21}\right)$};
+\node[hl](l2p2) at (5,-1.25){$\sigma_{2}\left(\bm{w}_{22}^\mathrm{T} \bm{a}_{1} + b_{22}\right)$};
+\node[hl](lop1) at (8,0){$\hat{y} = \sigma_{o}\left({\bm{w}_{o}^\mathrm{T}\bm{a}_{2} + b_{o}}\right)$};
 \node[](y) at (9.75,0){};
 %
 \draw[->] (x0) -- (l1p1);
@@ -3857,21 +3858,58 @@ for new state / for GD update: ?
 \draw[->] (l2p1) -- (lop1);
 \draw[->] (l2p2) -- (lop1);
 %
-\draw[->] (l1p1) -- (l2p1)node[midway, above]{$z_{11}$};
-\draw[->] (l1p2) -- (l2p2)node[midway, below]{$z_{12}$};
+\draw[->] (l1p1) -- (l2p1)node[midway, above]{$a_{11}$};
+\draw[->] (l1p2) -- (l2p2)node[midway, below]{$a_{12}$};
 %
-\draw[->] (l2p1) -- (lop1)node[midway, above]{$z_{21}$};
-\draw[->] (l2p2) -- (lop1)node[midway, below]{$z_{22}$};
+\draw[->] (l2p1) -- (lop1)node[midway, above]{$a_{21}$};
+\draw[->] (l2p2) -- (lop1)node[midway, below]{$a_{22}$};
 %
 \draw[->] (lop1) -- (y)node[right]{$0,1,1,0 \,\,?$};
 %
-\draw [decorate,decoration={brace,amplitude=5pt}] (-0.5,2.5) -- (0.5,2.5) node [black,midway,yshift=0.4cm]{input layer};
-\draw [decorate,decoration={brace,amplitude=5pt}] (1.5,2.5) -- (2.5,2.5) node [black,midway,yshift=0.4cm]{hidden layer 1};
-\draw [decorate,decoration={brace,amplitude=5pt}] (4.5,2.5) -- (5.5,2.5) node [black,midway,yshift=0.4cm]{hidden layer 2};
-\draw [decorate,decoration={brace,amplitude=5pt}] (7.5,2.5) -- (8.5,2.5) node [black,midway,yshift=0.4cm]{output layer};
+\draw [decorate,decoration={brace,amplitude=5pt}] (-0.5,2.75) -- (0.5,2.75) node [black,midway,yshift=0.4cm]{input layer};
+\draw [decorate,decoration={brace,amplitude=5pt}] (1.5,2.75) -- (2.5,2.75) node [black,midway,yshift=0.4cm]{hidden layer 1};
+\draw [decorate,decoration={brace,amplitude=5pt}] (4.5,2.75) -- (5.5,2.75) node [black,midway,yshift=0.4cm]{hidden layer 2};
+\draw [decorate,decoration={brace,amplitude=5pt}] (7.5,2.75) -- (8.5,2.75) node [black,midway,yshift=0.4cm]{output layer};
+%
+\node[](a1) at (0.5,2.25){$
+\bm{x} =
+\begin{bmatrix}
+x_{1}\\x_{2}
+\end{bmatrix}
+$};
+%
+\node[](a1) at (3.5,2.25){$
+\bm{a}_1 =
+\begin{bmatrix}
+a_{11}\\a_{12}
+\end{bmatrix}
+$};
+%
+\node[](a2) at (6.5,2.25){$
+\bm{a}_2 =
+\begin{bmatrix}
+a_{21}\\a_{22}
+\end{bmatrix}
+$};
+%
+\node[](ao) at (9.5,2.25){$a_o = \hat{y}$};
 \end{tikzpicture}
 \end{center}
-%
+% cf. Aggarwal NN and DL, Springer, 2018, pg. 114
+% cf. Drori Science of DL, Cambridge, 2023, ch. 2.8
+$$
+\text{e.g.}\quad
+\frac{\partial \mathcal{L}}{\partial w_{11,x_1}}
+=
+\frac{\partial z_{11}}{\partial w_{11,x_1}}\cdot
+\frac{\partial a_{11}}{\partial z_{11}}\cdot
+\frac{\partial z_{21}}{\partial a_{11}}\cdot
+\frac{\partial a_{21}}{\partial z_{21}}\cdot
+\frac{\partial z_o}{\partial a_{21}}\cdot
+\frac{\partial a_o}{\partial z_o}\cdot
+\frac{\partial \mathcal{L}}{\partial a_o}
+\quad\text{if $a_:$ are independent of each other}
+$$
 \end{frame}
 
 
