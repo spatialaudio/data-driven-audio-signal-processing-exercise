@@ -3721,9 +3721,9 @@ For GD we not only use the loss of one data sample, but rather need the empirica
 
 
 
-\begin{frame}{Binary Classification: Numerical Example for GD}
+\begin{frame}{Binary Classification: Numerical Example for GD Update}
 
-\begin{minipage}[]{0.49\textwidth}
+\begin{minipage}[]{0.39\textwidth}
 %
 \begin{align*}
 &\textcolor{C0}{\hat{y}} = \sigma(z) = \frac{1}{1+\e^{-z}}
@@ -3736,23 +3736,6 @@ For GD we not only use the loss of one data sample, but rather need the empirica
 \end{align*}
 %
 actual state:
-  % x = [1; 2; 3];      y = 0;
-  % w = [1/1;1/2; 1/3]; b = 1;
-  % z = w'*x + b
-  % yh = 1 / (1+exp(-z))
-  %
-  % dLdyh = - (y/yh - (1-y)/(1-yh))
-  % dLdyh == 1/(1-yh)
-  % dyhdz = yh * (1-yh)
-  % dzw1 = x(1);
-  % dzw2 = x(2);
-  % dzw3 = x(3);
-  % dzdb = 1;
-  %
-  % dLw1 = dLdyh * dyhdz * dzw1
-  % dLw2 = dLdyh * dyhdz * dzw2
-  % dLw3 = dLdyh * dyhdz * dzw3
-  % dLdb = dLdyh * dyhdz * dzdb
 \begin{align*}
 &\bm{x} =
 \begin{bmatrix}
@@ -3764,7 +3747,7 @@ x_1\\x_2\\x_3
 \end{bmatrix}
 \quad
 y=0\\
-&\bm{w} =
+&\bm{w}_\text{act} =
 \begin{bmatrix}
 w_1\\w_2\\w_3
 \end{bmatrix}
@@ -3773,12 +3756,12 @@ w_1\\w_2\\w_3
 1\\\frac{1}{2}\\\frac{1}{3}
 \end{bmatrix}
 \quad
-b=1
+b_\text{act}=1
 \end{align*}
 %
 \end{minipage}
 %
-\begin{minipage}[t]{0.49\textwidth}
+\begin{minipage}[t]{0.59\textwidth}
 %
 \begin{tikzpicture}[scale=1]
 %
@@ -3799,7 +3782,45 @@ b=1
 \end{tikzpicture}
 %
 
-new state: ?
+for new state / for GD update: ?
+%
+\pause
+% clear all; clc; format long g
+% % actual state
+% x = [1; 2; 3];      y = 0;
+% w = [1/1;1/2; 1/3]; b = 1;
+% % predict / forward prop
+% z = w.'*x + b; yh = 1 / (1+exp(-z));
+% % partial derivatives
+% dLdyh = - y/yh + (1-y)/(1-yh);
+% dyhdz = yh * (1-yh);
+% dzdw1 = x(1);
+% dzdw2 = x(2);
+% dzdw3 = x(3);
+% dzdb = 1;
+% % chain rule / back prop
+% dLdw1 = dLdyh * dyhdz * dzdw1;
+% dLdw2 = dLdyh * dyhdz * dzdw2;
+% dLdw3 = dLdyh * dyhdz * dzdw3;
+% dLdb = dLdyh * dyhdz * dzdb;
+% % round to meaningful format for slides
+% prec = 7;
+% round(dLdyh,prec)
+% round(dyhdz,prec)
+% round(dLdw1,prec)
+% round(dLdw2,prec)
+% round(dLdw3,prec)
+% round(dLdb,prec)
+\begin{align*}
+&\frac{\partial \mathcal{L}}{\partial \textcolor{C0}{\hat{y}}}\bigg|_{\hat{y}(w_{:,\text{act}}, b_{\text{act}})} = 55.59815\quad
+\frac{\partial \textcolor{C0}{\hat{y}}}{\partial z}\bigg|_{z(w_{:,\text{act}}, b_{\text{act}})}= 0.0176627\\
+&\frac{\partial \mathcal{L}}{\partial w_1}\bigg|_{w_{1,\text{act}}} = 0.9820138\quad
+\frac{\partial \mathcal{L}}{\partial w_2}\bigg|_{w_{2,\text{act}}} = 1.9640276\\
+&\frac{\partial \mathcal{L}}{\partial w_3}\bigg|_{w_{3,\text{act}}} = 2.9460414\quad
+\frac{\partial \mathcal{L}}{\partial b}\bigg|_{b_{\text{act}}} = 0.9820138
+\end{align*}
+
+
 \end{minipage}
 %
 \end{frame}
