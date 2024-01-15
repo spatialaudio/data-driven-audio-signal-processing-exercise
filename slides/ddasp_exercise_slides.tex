@@ -27,6 +27,7 @@
 \usepackage{tikz}
 \usetikzlibrary{calc}
 \usetikzlibrary {arrows.meta}
+\usetikzlibrary {matrix,fit}
 \usepackage{comment}
 \usepackage{drawmatrix}
 
@@ -2853,7 +2854,7 @@ data \underline{plane} in 2D space (PC3 not used)
 \includegraphics[width=\textwidth]{pca_3d_dim_red.pdf}
 \end{minipage}
 \end{frame}
-\end{comment}
+
 
 
 
@@ -2866,6 +2867,9 @@ no slides so far
 \begin{frame}[t]{Ex 10: Gradient Descent}
 no slides so far
 \end{frame}
+
+
+\end{comment}
 
 
 \section{Section IV: Model Architectures}
@@ -2901,8 +2905,8 @@ $$\sigma_1(z) = \frac{1}{1+\e^{-z}} = \frac{\e^{z}}{\e^{z}+1} \qquad\qquad \sigm
     xmax = 6,
     ymax = 1,
     ytick = {0,0.25,0.5,0.75,1},
-    ylabel={perceptron output $\sigma(z)$},
-    xlabel={perceptron input $z$},
+    ylabel={act fcn output $\sigma(z)$},
+    xlabel={act fcn input $z$},
     ]
     \addplot [domain=-6:6,samples=128, ultra thick, C0] {exp(x)/(exp(x)+1)}
         node [pos=1, below left] {$\sigma_1(z)$};
@@ -2937,8 +2941,8 @@ $$\sigma(z) = \frac{1}{1+\e^{-z}} = \frac{\e^{z}}{\e^{z}+1}$$
     xmax = 6,
     ymax = 1,
     ytick = {0,0.25,0.5,0.75,1},
-    xlabel={perceptron input $z$},
-    ylabel={perceptron output $\sigma(z)$},
+    xlabel={act fcn input $z$},
+    ylabel={act fcn output $\sigma(z)$},
     ]
     \addplot [domain=-6:6,samples=128, ultra thick, C0] {exp(x)/(exp(x)+1)}
         node [pos=1, below left] {$\sigma(z)$};
@@ -3165,9 +3169,9 @@ Prediction
 \node[hl](l1p1) at (2,+1){$P_{\textcolor{C0}{1}}$};
 \node[hl](l1p2) at (2,-1){$P_{\textcolor{C3}{2}}$};
 \node[hl](l2p1) at (5,0){$P_{\textcolor{C1}{3}}$};
-\node[iol](y) at (7,0){$\hat{y}$};
+\node[iol](y) at (7,0){$a_3=\hat{y}$};
 %
-\node[iol](yd) at (8.1,+0){$\rightarrow 0,1,1,0 \,\,?$};
+\node[iol](yd) at (8.4,+0){$\rightarrow 0,1,1,0 \,\,?$};
 %
 \draw[->] (x0) -- (l1p1);
 \draw[->] (x0) -- (l1p2);
@@ -3914,7 +3918,72 @@ $$
 
 
 
+\begin{frame}[t]{Confusion Matrix for Binary Classification}
+%
+\begin{center}
+\begin{tikzpicture}[scale=1.25]
+\tikzstyle{mtxi}=[draw, shape=rectangle,minimum size=1.5cm]
+\tikzstyle{mtxo}=[draw=none, shape=rectangle,minimum size=0.5cm]
+\node[mtxi, align=center](tn) at (-0.75,+0.75){$\textcolor{C0}{0} | \textcolor{C3}{0}$\\TN\\\textcolor{C3}{0},\textcolor{C0}{0}};
+\node[mtxi, align=center](fp) at (+0.75,+0.75){$\textcolor{C0}{1} | \textcolor{C3}{0}$\\FP\\\textcolor{C3}{0},\textcolor{C0}{1}};
+\node[mtxi, align=center](fn) at (-0.75,-0.75){$\textcolor{C0}{0} | \textcolor{C3}{1}$\\FN\\\textcolor{C3}{1},\textcolor{C0}{0}};
+\node[mtxi, align=center](tp) at (+0.75,-0.75){$\textcolor{C0}{1} | \textcolor{C3}{1}$\\TP\\\textcolor{C3}{1},\textcolor{C0}{1}};
+%
+\node[mtxo, align=center](realtrue) at (-1.5,+0.75){$\textcolor{C3}{0}$};
+\node[mtxo, align=center](realfalse) at (-1.5,-0.75){$\textcolor{C3}{1}$};
+\node[mtxo, align=center](predtrue) at (-0.75,+1.5){$\textcolor{C0}{0}$};
+\node[mtxo, align=center](predfalse) at (+0.75,1.5){$\textcolor{C0}{1}$};
+%
+\node[mtxo, align=center, rotate=90](reallbl) at (-1.75,0){real label};
+\node[mtxo, align=center](predlbl) at (0,1.75){predicted label};
+%
+%
+\node[mtxo, align=left](realfalse) at (2.25,+0.75){$R_0 = TN+FP$};
+\node[mtxo, align=left](realtrue) at (2.25,-0.75){$R_1 = FN+TP$};
+%
+\node[mtxo, align=center](predfalse) at (-0.75,-1.75){$P_0 =$\\$TN+FN$};
+\node[mtxo, align=center](predtrue) at (+0.75,-1.75){$P_1 =$\\$FP+TP$};
+%
+\end{tikzpicture}
+\end{center}
 
+\begin{align*}
+\text{accuracy}=\frac{TP+TN}{R_0+R_1}=\frac{TP+TN}{P_0+P_1}
+\qquad
+\text{recall}=\frac{TP}{R_1}
+\qquad
+\text{precision}=\frac{TP}{P_1}
+\end{align*}
+%
+\end{frame}
+
+
+
+\begin{frame}[t]{Recall / Precision}
+%
+$\cdot$ extrem cases
+\begin{align*}
+&\text{recall}=\frac{TP}{R_1}=\frac{TP}{TP+FN}
+&\text{precision}=\frac{TP}{P_1}=\frac{TP}{TP+FP}\\
+&\text{recall}\approx 0:    FN \gg TP,\,\,\, TP \approx 0
+&\text{precision}\approx 0: FP \gg TP,\,\,\, TP \approx 0\\
+&\text{recall}\approx 1:    TP \gg FN,\,\,\, FN \approx 0
+&\text{precision}\approx 1: TP \gg FP,\,\,\, FP \approx 0\\
+\end{align*}
+%
+$\cdot$ $\text{recall}\approx 1$ and $\text{precision}\approx 0$: few FN but many FP (e.g. overestimation of infections)
+
+$\cdot$ $\text{recall}\approx 0$ and $\text{precision}\approx 1$: few FP but many FN (e.g. we think we are safe, but are not)
+
+$\cdot$ a potentially meaningful(?!) combination
+$$
+\left(\frac{\frac{1}{\text{recall}} + \frac{1}{\text{precision}}}{2}\right)^{-1}
+=
+2 \cdot \frac{\text{recall}\cdot\text{precision}}{\text{recall}+\text{precision}}
+=F_1\,\,\,\text{score}
+$$
+
+\end{frame}
 
 
 
