@@ -2869,7 +2869,7 @@ no slides so far
 \end{frame}
 
 
-\end{comment}
+
 
 
 \section{Section IV: Model Architectures}
@@ -3404,7 +3404,7 @@ What could be another model architecture and/or loss function for the given prob
 
 
 
-
+\end{comment}
 
 \begin{frame}{Recap: Modeling Non-Linearity with Bias and Activation Function}
 %
@@ -4001,18 +4001,201 @@ $$
 
 
 
-\begin{frame}[t]{Ex14: Multiclass Classification}
-model with only a softmax output layer $\rightarrow$ multinomial logistic regression $\rightarrow$ GLM
+
+\begin{frame}{Ex14: Multiclass Classification with Softmax Output Layer}
+%
+\begin{flushleft}
+\begin{tikzpicture}[scale=1]
+\tikzstyle{iol}=[draw,shape=rectangle,minimum size=0.6cm]
+\tikzstyle{hl}=[draw,shape=circle,minimum size=1cm]
+\tikzstyle{dl}=[draw,shape=rectangle,minimum size=3.6cm]
+%
+\node[iol](x1) at (0,+1.5){$x_1$};
+\node[iol](x2) at (0,+0.75){$x_2$};
+\node[iol](x3) at (0,0){$x_3$};
+\node[iol](xf) at (0,-0.75){$x_:$};
+\node[iol](xF) at (0,-1.5){$x_F$};
+%
+\node[dl](dl) at (2.5,0){Deep Model: $\bm{a} = \mathcal{M}(\bm{x})$};
+%
+\node[hl](lop1) at (6,+2.62){$\sigma\left({\bm{w}_{\textcolor{C0}{1}\text{o}}^\mathrm{T}\bm{a} + b_{\textcolor{C0}{1}\text{o}}}\right)$};
+\node[hl](lop2) at (6,0){$\sigma\left({\bm{w}_{\textcolor{C3}{2}\text{o}}^\mathrm{T}\bm{a} + b_{\textcolor{C3}{2}\text{o}}}\right)$};
+\node[hl](lop3) at (6,-2.62){$\sigma\left({\bm{w}_{\textcolor{C1}{3}\text{o}}^\mathrm{T}\bm{a} + b_{\textcolor{C1}{3}\text{o}}}\right)$};
+%
+\node[iol](y1) at (8,+2.62){$\hat{y}_1$};
+\node[iol](y2) at (8,+0){$\hat{y}_2$};
+\node[iol](y3) at (8,-2.62){$\hat{y}_3$};
+%
+\draw[->] (x1) -- (dl);
+\draw[->] (x2) -- (dl);
+\draw[->] (x3) -- (dl);
+\draw[->] (xf) -- (dl);
+\draw[->] (xF) -- (dl);
+%
+\draw[->] (dl) -- (lop1);
+\draw[->] (dl) -- (lop2);
+\draw[->] (dl) -- (lop3);
+%
+\draw[->] (lop1) -- (y1);
+\draw[->] (lop2) -- (y2);
+\draw[->] (lop3) -- (y3);
+%
+\node at (10.4,+3.46){softmax activation:};
+\node at (10.85,+2.46){$\hat{y}_k = \sigma(z_{k\text{o}})=\frac{\mathrm{exp}(z_{k\text{o}})}{\sum\limits_{k'=1}^{K} \mathrm{exp}(z_{k'\text{o}})}$};
+\node at (10.85,+1.46){$\sum\limits_{k=1}^{K} \hat{y}_k = 1$};
+\end{tikzpicture}
+\end{flushleft}
+%
 \end{frame}
 
 
 
 
+\begin{frame}[t]{Loss Function For Multiclass Classification / Categorical Cross Entropy}
+
+$\cdot$ Loss function $\mathcal{L}$ / empirical risk $\mathcal{R}$ for $K$ one-hot encoded true labels
+%
+$\bm{y} =
+\left\{
+\begin{bmatrix}
+1\\0\\0
+\end{bmatrix},
+\begin{bmatrix}
+0\\1\\0
+\end{bmatrix},
+\begin{bmatrix}
+0\\0\\1
+\end{bmatrix}
+\right\}
+$
+and prediction vector
+$\hat{\bm{y}} =
+\begin{bmatrix}
+\hat{y}[k=1]=0\dots1\\\hat{y}[k=2]=0\dots1\\\hat{y}[k=3]=0\dots1
+\end{bmatrix}
+$
+where
+$\bm{1}^\mathrm{T} \hat{\bm{y}} := 1$  holds from normalization in softmax:
+
+$$\mathcal{L}_n(\bm{y}, {\hat{\bm{y}}}) = - \bm{y}_n^\mathrm{T} \,\,\, \log_\e(\hat{\bm{y}}_n)
+= \textcolor{C1}{-} \sum\limits_{k=1}^{K} \bm{y}_n[k] \,\,\, \textcolor{C1}{\log_\e}(\hat{\bm{y}}_n[k])
+%-\left[y_n \log_\e(\textcolor{C0}{\hat{y}_n}) + (1-y_n) \log_\e(1-\textcolor{C0}{\hat{y}_n})\right]
+\qquad\quad
+\mathcal{R} = \frac{1}{N} \sum\limits_{n=1}^N \mathcal{L}_n(\bm{y}, {\hat{\bm{y}}})
+$$
+%
+\begin{flushleft}
+\begin{tikzpicture}[scale=0.5]
+\begin{axis}[
+    axis lines=middle,
+    xmin = 0,
+    xmax = 2,
+    ymin = -1.2,
+    ymax = 3,
+    xtick = {0,...,1},
+    ytick = {-3,...,3},
+    xlabel={$t$},
+    ylabel={},
+    ]
+    \addplot [domain=0:2,samples=64, ultra thick, C7] {ln(x))}
+        node [pos=1, above left] {$+\log_\e(t)$};
+    \addplot [domain=0:2,samples=64, ultra thick, C1] {-ln(x))}
+            node [pos=1, below left] {$-\log_\e(t)$};
+\end{axis}
+\end{tikzpicture}
+\end{flushleft}
+%
+\end{frame}
 
 
-
-
-
+\begin{frame}[t]{Confusion Matrix for Multiclass Classification}
+\begin{center}
+\begin{tikzpicture}[scale=1]
+\tikzstyle{mtxi}=[draw, shape=rectangle,minimum size=1cm]
+\tikzstyle{mtxo}=[draw=none, shape=rectangle,minimum size=0.5cm]
+%
+\begin{scope}[shift={(-5,0)}]
+\node[mtxi, fill=C2!75, align=center]() at (-1,+1){60};
+\node[mtxi, align=center]() at (+0,+1){30};
+\node[mtxi, align=center]() at (+1,+1){10};
+\node[mtxi, align=center]() at (-1,+0){10};
+\node[mtxi, fill=C2!75, align=center]() at (+0,+0){20};
+\node[mtxi, align=center]() at (+1,+0){3};
+\node[mtxi, align=center]() at (-1,-1){2};
+\node[mtxi, align=center]() at (+0,-1){3};
+\node[mtxi, fill=C2!75, align=center]() at (+1,-1){95};
+%
+\node[mtxo, align=center]() at (-1.75,+1){$\textcolor{C3}{0}$};
+\node[mtxo, align=center]() at (-1.75,0){$\textcolor{C3}{1}$};
+\node[mtxo, align=center]() at (-1.75,-1){$\textcolor{C3}{2}$};
+\node[mtxo, align=center, rotate=90](reallbl) at (-2.1,0){\textcolor{C3}{real} label};
+%
+\node[mtxo, align=center]() at (-1,+1.75){$\textcolor{C0}{0}$};
+\node[mtxo, align=center]() at (0,1.75){$\textcolor{C0}{1}$};
+\node[mtxo, align=center]() at (+1,1.75){$\textcolor{C0}{2}$};
+\node[mtxo, align=center](predlbl) at (0,2){\textcolor{C0}{predicted} label};
+%
+\node at (0,-2){counts, total 233};
+\node at (0,-3){$\text{ACC} = \frac{\text{\textcolor{C2!75}{Correct Counts}}}{\text{Total Counts}}\approx75.1\%$};
+\end{scope}
+%
+%
+%
+\begin{scope}[shift={(0,0)}]
+\node[mtxi, fill=C2!60, align=center]() at (-1,+1){25.8};
+\node[mtxi, align=center]() at (+0,+1){12.9};
+\node[mtxi, align=center]() at (+1,+1){4.3};
+\node[mtxi, align=center]() at (-1,+0){4.3};
+\node[mtxi, fill=C2!60, align=center]() at (+0,+0){8.6};
+\node[mtxi, align=center]() at (+1,+0){1.3};
+\node[mtxi, align=center]() at (-1,-1){0.9};
+\node[mtxi, align=center]() at (+0,-1){1.3};
+\node[mtxi, fill=C2!60, align=center]() at (+1,-1){40.8};
+%
+\node[mtxo, align=center]() at (-1.75,+1){$\textcolor{C3}{0}$};
+\node[mtxo, align=center]() at (-1.75,0){$\textcolor{C3}{1}$};
+\node[mtxo, align=center]() at (-1.75,-1){$\textcolor{C3}{2}$};
+\node[mtxo, align=center, rotate=90](reallbl) at (-2.1,0){\textcolor{C3}{real} label};
+%
+\node[mtxo, align=center]() at (-1,+1.75){$\textcolor{C0}{0}$};
+\node[mtxo, align=center]() at (0,1.75){$\textcolor{C0}{1}$};
+\node[mtxo, align=center]() at (+1,1.75){$\textcolor{C0}{2}$};
+\node[mtxo, align=center](predlbl) at (0,2){\textcolor{C0}{predicted} label};
+%
+\node at (0,-2){percent, total 100.2\%};
+\node at (0,-3){good only for balanced classes};
+\end{scope}
+%
+%
+%
+\begin{scope}[shift={(5,0)}]
+\node[mtxi, fill=C2!30, align=center]() at (-1,+1){60.0};
+\node[mtxi, align=center]() at (+0,+1){30.0};
+\node[mtxi, align=center]() at (+1,+1){10.0};
+\node[mtxi, align=center]() at (-1,+0){30.3};
+\node[mtxi, fill=C2!30, align=center]() at (+0,+0){60.6};
+\node[mtxi, align=center]() at (+1,+0){9.1};
+\node[mtxi, align=center]() at (-1,-1){2.0};
+\node[mtxi, align=center]() at (+0,-1){3.0};
+\node[mtxi, fill=C2!30, align=center]() at (+1,-1){95.0};
+%
+\node[mtxo, align=center]() at (-1.75,+1){$\textcolor{C3}{0}$};
+\node[mtxo, align=center]() at (-1.75,0){$\textcolor{C3}{1}$};
+\node[mtxo, align=center]() at (-1.75,-1){$\textcolor{C3}{2}$};
+\node[mtxo, align=center, rotate=90](reallbl) at (-2.1,0){\textcolor{C3}{real} label};
+%
+\node[mtxo, align=center]() at (-1,+1.75){$\textcolor{C0}{0}$};
+\node[mtxo, align=center]() at (0,1.75){$\textcolor{C0}{1}$};
+\node[mtxo, align=center]() at (+1,1.75){$\textcolor{C0}{2}$};
+\node[mtxo, align=center](predlbl) at (0,2){\textcolor{C0}{predicted} label};
+%
+\node at (0,-2){100\% percent per row};
+\node at (0,-3){good for unbalanced classes};
+\end{scope}
+%
+\end{tikzpicture}
+\end{center}
+\end{frame}
 
 
 
