@@ -3934,50 +3934,64 @@ $$
 \node[mtxo, align=center](predtrue) at (-0.75,+1.5){$\textcolor{C0}{0}$};
 \node[mtxo, align=center](predfalse) at (+0.75,1.5){$\textcolor{C0}{1}$};
 %
-\node[mtxo, align=center, rotate=90](reallbl) at (-1.75,0){real label};
-\node[mtxo, align=center](predlbl) at (0,1.75){predicted label};
+\node[mtxo, align=center, rotate=90](reallbl) at (-1.75,0){\textcolor{C3}{real} label};
+\node[mtxo, align=center](predlbl) at (0,1.75){\textcolor{C0}{predicted} label};
 %
+\node[mtxo, align=left](realfalse) at (2.25,+0.75){$\text{R}_0 = \text{TN}+\text{FP}$};
+\node[mtxo, align=left](realtrue) at (2.25,-0.75){$\text{R}_1 = \text{FN}+\text{TP}$};
 %
-\node[mtxo, align=left](realfalse) at (2.25,+0.75){$R_0 = TN+FP$};
-\node[mtxo, align=left](realtrue) at (2.25,-0.75){$R_1 = FN+TP$};
-%
-\node[mtxo, align=center](predfalse) at (-0.75,-1.75){$P_0 =$\\$TN+FN$};
-\node[mtxo, align=center](predtrue) at (+0.75,-1.75){$P_1 =$\\$FP+TP$};
+\node[mtxo, align=center](predfalse) at (-0.75,-1.75){$\text{P}_0 =$\\$\text{TN}+\text{FN}$};
+\node[mtxo, align=center](predtrue) at (+0.75,-1.75){$\text{P}_1 =$\\$\text{FP}+\text{TP}$};
 %
 \end{tikzpicture}
 \end{center}
-
+%
 \begin{align*}
-\text{accuracy}=\frac{TP+TN}{R_0+R_1}=\frac{TP+TN}{P_0+P_1}
+&\text{ACC}=\frac{\text{TN}+\text{TP}}{\text{R}_0+\text{R}_1}
 \qquad
-\text{recall}=\frac{TP}{R_1}
+\text{TNR}=\frac{\text{TN}}{\text{R}_0}
 \qquad
-\text{precision}=\frac{TP}{P_1}
+\text{TPR}=\frac{\text{TP}}{\text{R}_1}
+\\
+&\text{ACC}=\frac{\text{TN}+\text{TP}}{\text{P}_0+\text{P}_1}
+\qquad
+\text{NPV}=\frac{\text{TN}}{\text{P}_0}
+\qquad
+\text{PPV}=\frac{\text{TP}}{\text{P}_1}
 \end{align*}
 %
+
 \end{frame}
 
 
 
-\begin{frame}[t]{Recall / Precision}
+\begin{frame}[t]{Binary Classification Metrics}
 %
-$\cdot$ extrem cases
+$\cdot$ TNR = specificity / selectivity, NPV = ?, TPR = sensitivity / recall, PPV = precision
+
+$\cdot$ metric based on TNR and TPR
+
+$\cdot$ metric based on TNR and NPV and/or TPR and PPV
+
+$\cdot$ TPR vs. PPV extrem cases
 \begin{align*}
-&\text{recall}=\frac{TP}{R_1}=\frac{TP}{TP+FN}
-&\text{precision}=\frac{TP}{P_1}=\frac{TP}{TP+FP}\\
-&\text{recall}\approx 0:    FN \gg TP,\,\,\, TP \approx 0
-&\text{precision}\approx 0: FP \gg TP,\,\,\, TP \approx 0\\
-&\text{recall}\approx 1:    TP \gg FN,\,\,\, FN \approx 0
-&\text{precision}\approx 1: TP \gg FP,\,\,\, FP \approx 0\\
+&\text{TPR}=\frac{TP}{R_1}=\frac{TP}{TP+FN}
+&\text{PPV}=\frac{TP}{P_1}=\frac{TP}{TP+FP}\\
+&\text{TPR}\approx 0: FN \gg TP,\,\,\, TP \approx 0
+&\text{PPV}\approx 0: FP \gg TP,\,\,\, TP \approx 0\\
+&\text{TPR}\approx 1: TP \gg FN,\,\,\, FN \approx 0
+&\text{PPV}\approx 1: TP \gg FP,\,\,\, FP \approx 0\\
 \end{align*}
 %
-$\cdot$ $\text{recall}\approx 1$ and $\text{precision}\approx 0$: few FN but many FP (e.g. overestimation of infections)
+$\cdot$ $\text{TPR}\approx 1$ and $\text{PPV}\approx 0$: few FN but many FP (e.g. overestimation of infections)
 
-$\cdot$ $\text{recall}\approx 0$ and $\text{precision}\approx 1$: few FP but many FN (e.g. we think we are safe, but are not)
+$\cdot$ $\text{TPR}\approx 0$ and $\text{PPV}\approx 1$: few FP but many FN (e.g. we think we are safe, but are not)
 
 $\cdot$ a potentially meaningful(?!) combination
 $$
-\left(\frac{\frac{1}{\text{recall}} + \frac{1}{\text{precision}}}{2}\right)^{-1}
+\left(\frac{\frac{1}{\text{TPR}} + \frac{1}{\text{PPV}}}{2}\right)^{-1}
+=
+2 \cdot \frac{\text{TPR}\cdot\text{PPV}}{\text{TPR}+\text{PPV}}
 =
 2 \cdot \frac{\text{recall}\cdot\text{precision}}{\text{recall}+\text{precision}}
 =F_1\,\,\,\text{score}
