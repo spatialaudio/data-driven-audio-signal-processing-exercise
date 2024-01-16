@@ -3975,19 +3975,19 @@ $\cdot$ metric based on TNR and NPV and/or TPR and PPV
 
 $\cdot$ TPR vs. PPV extrem cases
 \begin{align*}
-&\text{TPR}=\frac{TP}{R_1}=\frac{TP}{TP+FN}
-&\text{PPV}=\frac{TP}{P_1}=\frac{TP}{TP+FP}\\
-&\text{TPR}\approx 0: FN \gg TP,\,\,\, TP \approx 0
-&\text{PPV}\approx 0: FP \gg TP,\,\,\, TP \approx 0\\
-&\text{TPR}\approx 1: TP \gg FN,\,\,\, FN \approx 0
-&\text{PPV}\approx 1: TP \gg FP,\,\,\, FP \approx 0\\
+&\text{TPR}=\frac{\text{TP}}{\text{R}_1}=\frac{\text{TP}}{\text{TP}+\text{FN}}
+&\text{PPV}=\frac{\text{TP}}{\text{P}_1}=\frac{\text{TP}}{\text{TP}+\text{FP}}\\
+&\text{TPR}\approx 0: \text{FN} \gg \text{TP},\,\,\, \text{TP} \approx 0
+&\text{PPV}\approx 0: \text{FP} \gg \text{TP},\,\,\, \text{TP} \approx 0\\
+&\text{TPR}\approx 1: \text{TP} \gg \text{FN},\,\,\, \text{FN} \approx 0
+&\text{PPV}\approx 1: \text{TP} \gg \text{FP},\,\,\, \text{FP} \approx 0\\
 \end{align*}
 %
 $\cdot$ $\text{TPR}\approx 1$ and $\text{PPV}\approx 0$: few FN but many FP (e.g. overestimation of infections)
 
-$\cdot$ $\text{TPR}\approx 0$ and $\text{PPV}\approx 1$: few FP but many FN (e.g. we think we are safe, but are not)
+$\cdot$ $\text{TPR}\approx 0$ and $\text{PPV}\approx 1$: few FP but many FN (e.g. underestimation of infections)
 
-$\cdot$ a potentially meaningful(?!) combination
+$\cdot$ a potentially meaningful(?!) average (harmonic mean)
 $$
 \left(\frac{\frac{1}{\text{TPR}} + \frac{1}{\text{PPV}}}{2}\right)^{-1}
 =
