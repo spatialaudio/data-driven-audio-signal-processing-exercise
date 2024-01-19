@@ -172,9 +172,9 @@ University of Rostock, Rostock, Germany}
 \end{frame}
 
 
+ 
 
-
-\begin{comment}
+%\begin{comment}
 \section{Ex01: Introduction}
 \begin{frame}{Ex01: Introduction}
 Objectives
@@ -3008,7 +3008,7 @@ $$\mathcal{R} = \frac{1}{N} \sum\limits_{n=1}^{N} \mathcal{L}(\bm{y}_n, \hat{\bm
 
 \end{frame}
 
-\end{comment}
+%\end{comment}
 
 
 \begin{frame}[t]{Ex11: Linear Model for XOR (...is not working)}
@@ -3834,19 +3834,19 @@ for new state / for GD update: ?
 
 \begin{frame}{Binary Classification with Hidden Layer Model}
 %
-\vspace{-0.75cm}
+\vspace{-0.25cm}
 \begin{center}
-\begin{tikzpicture}[scale=1.25]
+\begin{tikzpicture}[scale=1, every node/.style={scale=0.8}]
 \tikzstyle{iol}=[draw,shape=rectangle,minimum size=0.5cm]
 \tikzstyle{hl}=[draw,shape=circle,minimum size=2cm]
 %
 \node[iol](x0) at (0,+1.25){$x_1$};
 \node[iol](x1) at (0,-1.25){$x_2$};
-\node[hl](l1p1) at (2,+1.25){$\sigma_{1}\left(\bm{w}_{11}^\mathrm{T} \bm{a}_0 + b_{11}\right)$};
-\node[hl](l1p2) at (2,-1.25){$\sigma_{1}\left(\bm{w}_{21}^\mathrm{T} \bm{a}_0 + b_{21}\right)$};
-\node[hl](l2p1) at (5,+1.25){$\sigma_{2}\left(\bm{w}_{12}^\mathrm{T} \bm{a}_{1} + b_{12}\right)$};
-\node[hl](l2p2) at (5,-1.25){$\sigma_{2}\left(\bm{w}_{22}^\mathrm{T} \bm{a}_{1} + b_{22}\right)$};
-\node[hl](lop1) at (8,0){$\sigma_{3}\left({\bm{w}_{13}^\mathrm{T}\bm{a}_{2} + b_{13}}\right)=\hat{y}$};
+\node[hl](l1p1) at (2,+1.25){$\sigma_{1}(\underbrace{\bm{w}_{11}^\mathrm{T} \bm{a}_0 + b_{11}}_{z_{11}})$};
+\node[hl](l1p2) at (2,-1.25){$\sigma_{1}(\underbrace{\bm{w}_{21}^\mathrm{T} \bm{a}_0 + b_{21}}_{z_{21}})$};
+\node[hl](l2p1) at (5,+1.25){$\sigma_{2}(\underbrace{\bm{w}_{12}^\mathrm{T} \bm{a}_{1} + b_{12}}_{z_{12}})$};
+\node[hl](l2p2) at (5,-1.25){$\sigma_{2}(\underbrace{\bm{w}_{22}^\mathrm{T} \bm{a}_{1} + b_{22}}_{z_{22}})$};
+\node[hl](lop1) at (8,0){$\sigma_{3}(\underbrace{{\bm{w}_{13}^\mathrm{T}\bm{a}_{2} + b_{13}}}_{z_{13}})=\hat{y}$};
 \node[](y) at (9.75,0){};
 %
 \draw[->] (x0) -- (l1p1);
@@ -3854,19 +3854,19 @@ for new state / for GD update: ?
 \draw[->] (x1) -- (l1p1);
 \draw[->] (x1) -- (l1p2);
 %
-\draw[->] (l1p1) -- (l2p1);
-\draw[->] (l1p1) -- (l2p2);
-\draw[->] (l1p2) -- (l2p1);
-\draw[->] (l1p2) -- (l2p2);
-%
-\draw[->] (l2p1) -- (lop1);
-\draw[->] (l2p2) -- (lop1);
-%
 \draw[->] (l1p1) -- (l2p1)node[midway, above]{$a_{11}$};
 \draw[->] (l1p2) -- (l2p2)node[midway, below]{$a_{21}$};
 %
 \draw[->] (l2p1) -- (lop1)node[midway, above]{$a_{12}$};
 \draw[->] (l2p2) -- (lop1)node[midway, below]{$a_{22}$};
+%
+\draw[->,C0, thick] (l1p1) -- (l2p1);
+\draw[->,C2, thick] (l1p1) -- (l2p2);
+\draw[->] (l1p2) -- (l2p1);
+\draw[->] (l1p2) -- (l2p2);
+%
+\draw[->, C0, thick] (l2p1) -- (lop1);
+\draw[->, C2, thick] (l2p2) -- (lop1);
 %
 \draw[->] (lop1) -- (y)node[right]{$0,1,1,0 \,\,?$};
 %
@@ -3875,45 +3875,110 @@ for new state / for GD update: ?
 \draw [decorate,decoration={brace,amplitude=5pt}] (4.5,2.75) -- (5.5,2.75) node [black,midway,yshift=0.4cm]{hidden layer 2};
 \draw [decorate,decoration={brace,amplitude=5pt}] (7.5,2.75) -- (8.5,2.75) node [black,midway,yshift=0.4cm]{output layer};
 %
-\node[](a0) at (0.25,2.25){$
+\node[](a0) at (0.25,2.5){$
 \bm{x} = \bm{a}_0 =
 \begin{bmatrix}
 x_{1}\\x_{2}
 \end{bmatrix}
 $};
 %
-\node[](a1) at (3.4,2.25){$
+\node[](a1) at (3.4,2.5){$
 \bm{a}_1 =
 \begin{bmatrix}
 a_{11}\\a_{21}
 \end{bmatrix}
 $};
 %
-\node[](a2) at (6.4,2.25){$
+\node[](a2) at (6.4,2.5){$
 \bm{a}_2 =
 \begin{bmatrix}
 a_{12}\\a_{22}
 \end{bmatrix}
 $};
 %
-\node[](a3) at (9.5,2.25){$\bm{a}_3 = [a_{13}] = \hat{y}$};
+\node[](a3) at (9.5,2.5){$\bm{a}_3 = [a_{13}] = \hat{y}$};
 \end{tikzpicture}
 \end{center}
 % cf. Aggarwal NN and DL, Springer, 2018, pg. 114
 % cf. Drori Science of DL, Cambridge, 2023, ch. 2.8
-$$
-\text{e.g.}\quad
+\only<1>{
+\begin{align*}
 \frac{\partial \mathcal{L}}{\partial w_{11,x_1}}
 =
-\frac{\partial z_{11}}{\partial w_{11,x_1}}\cdot
+&\frac{\partial z_{11}}{\partial w_{11,x_1}}\cdot
 \frac{\partial a_{11}}{\partial z_{11}}\cdot
+\left[
+\textcolor{C0}{
 \frac{\partial z_{12}}{\partial a_{11}}\cdot
 \frac{\partial a_{12}}{\partial z_{12}}\cdot
-\frac{\partial z_{13}}{\partial a_{12}}\cdot
+\frac{\partial z_{13}}{\partial a_{12}}}
+\right]\cdot
 \frac{\partial a_{13}}{\partial z_{13}}\cdot
 \frac{\partial \mathcal{L}}{\partial a_{13}}
-\quad\text{if $a_:$ in one layer are independent}
-$$
+\textcolor{C3}{+}\\
+&\frac{\partial z_{11}}{\partial w_{11,x_1}}\cdot
+\frac{\partial a_{11}}{\partial z_{11}}\cdot
+\left[
+\textcolor{C2}{
+\frac{\partial z_{22}}{\partial a_{11}}\cdot
+\frac{\partial a_{22}}{\partial z_{22}}\cdot
+\frac{\partial z_{13}}{\partial a_{22}}
+}
+\right]\cdot
+\frac{\partial a_{13}}{\partial z_{13}}\cdot
+\frac{\partial \mathcal{L}}{\partial a_{13}}
+\end{align*}}
+\only<2>{
+\begin{align*}
+\text{back-prop with post-activation variables:}\,
+\frac{\partial \mathcal{L}}{\partial w_{11,x_1}}
+=
+&\frac{\partial a_{11}}{\partial w_{11,x_1}}\cdot
+\left[
+\textcolor{C0}{
+\frac{\partial a_{12}}{\partial a_{11}}\cdot
+\frac{\partial a_{13}}{\partial a_{12}}
+}
+\right]\cdot
+\frac{\partial \mathcal{L}}{\partial a_{13}}
+\textcolor{C3}{+}\\
+&\frac{\partial a_{11}}{\partial w_{11,x_1}}\cdot
+\left[
+\textcolor{C2}{
+\frac{\partial a_{22}}{\partial a_{11}}\cdot
+\frac{\partial a_{13}}{\partial a_{22}}
+}
+\right]\cdot
+\frac{\partial \mathcal{L}}{\partial a_{13}}
+\end{align*}}
+\only<3>{
+\begin{align*}
+\text{back-prop with pre-activation variables:}\,
+\frac{\partial \mathcal{L}}{\partial w_{11,x_1}}
+=
+&x_1\cdot
+\left[
+\textcolor{C0}{
+\frac{\partial z_{12}}{\partial z_{11}}\cdot
+\frac{\partial z_{13}}{\partial z_{12}}
+}
+\right]\cdot
+\frac{\partial a_{13}}{\partial z_{13}}\cdot
+\frac{\partial \mathcal{L}}{\partial a_{13}}
+\textcolor{C3}{+}\\
+&x_1\cdot
+\left[
+\textcolor{C2}{
+\frac{\partial z_{22}}{\partial z_{11}}\cdot
+\frac{\partial z_{13}}{\partial z_{22}}
+}
+\right]\cdot
+\frac{\partial a_{13}}{\partial z_{13}}\cdot
+\frac{\partial \mathcal{L}}{\partial a_{13}}
+\end{align*}}
+
+
+
 \end{frame}
 
 
