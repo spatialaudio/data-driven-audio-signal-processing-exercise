@@ -172,9 +172,9 @@ University of Rostock, Rostock, Germany}
 \end{frame}
 
 
- 
 
-%\begin{comment}
+
+\begin{comment}
 \section{Ex01: Introduction}
 \begin{frame}{Ex01: Introduction}
 Objectives
@@ -2869,7 +2869,7 @@ no slides so far
 \end{frame}
 
 
-
+\end{comment}
 
 
 \section{Section IV: Model Architectures}
@@ -3008,7 +3008,7 @@ $$\mathcal{R} = \frac{1}{N} \sum\limits_{n=1}^{N} \mathcal{L}(\bm{y}_n, \hat{\bm
 
 \end{frame}
 
-%\end{comment}
+
 
 
 \begin{frame}[t]{Ex11: Linear Model for XOR (...is not working)}
@@ -3651,8 +3651,8 @@ $$
 \frac{\partial z}{\partial w_1}
 \qquad\qquad
 \frac{\partial \mathcal{L}(y, \textcolor{C0}{\hat{y}})}{\partial w_1} =
-\frac{\partial \mathcal{L}}{\partial \sigma(\zeta(w_1))} \cdot
-\frac{\partial \sigma(\zeta(w_1))}{\partial \zeta(w_1)} \cdot
+\frac{\partial \mathcal{L}}{\partial \sigma} \cdot
+\frac{\partial \sigma(\zeta(w_1))}{\partial \zeta} \cdot
 \frac{\partial \zeta(w_1)}{\partial w_1}
 $$
 %
@@ -3976,10 +3976,140 @@ $};
 \frac{\partial a_{13}}{\partial z_{13}}\cdot
 \frac{\partial \mathcal{L}}{\partial a_{13}}
 \end{align*}}
-
-
-
+%
 \end{frame}
+
+
+
+
+\begin{frame}[label=MultiLabelClassification]{Multi-Label Classification with Hidden Layer Model}
+%
+\vspace{-0.25cm}
+\begin{center}
+\begin{tikzpicture}[scale=1, every node/.style={scale=0.8}]
+\tikzstyle{iol}=[draw,shape=rectangle,minimum size=0.5cm]
+\tikzstyle{hl}=[draw,shape=circle,minimum size=2cm]
+%
+\node[iol](x0) at (0,+1.25){$x_1$};
+\node[iol](x1) at (0,-1.25){$x_2$};
+\node[hl](l1p1) at (2,+1.25){$\sigma_{1}(\underbrace{\bm{w}_{11}^\mathrm{T} \bm{a}_0 + b_{11}}_{z_{11}})$};
+\node[hl](l1p2) at (2,-1.25){$\sigma_{1}(\underbrace{\bm{w}_{21}^\mathrm{T} \bm{a}_0 + b_{21}}_{z_{21}})$};
+\node[hl](l2p1) at (5,+1.25){$\sigma_{2}(\underbrace{\bm{w}_{12}^\mathrm{T} \bm{a}_{1} + b_{12}}_{z_{12}})$};
+\node[hl](l2p2) at (5,-1.25){$\sigma_{2}(\underbrace{\bm{w}_{22}^\mathrm{T} \bm{a}_{1} + b_{22}}_{z_{22}})$};
+\node[hl](lop1) at (8,+1.25){$\sigma_{3}(\underbrace{{\bm{w}_{13}^\mathrm{T}\bm{a}_{2} + b_{13}}}_{z_{13}})$};
+\node[hl](lop2) at (8,-1.25){$\sigma_{3}(\underbrace{{\bm{w}_{23}^\mathrm{T}\bm{a}_{2} + b_{23}}}_{z_{23}})$};
+\node[](yh1) at (9.5,+1.25){};
+\node[](yh2) at (9.5,-1.25){};
+%
+\draw[->] (x0) -- (l1p1);
+\draw[->] (x0) -- (l1p2);
+\draw[->] (x1) -- (l1p1);
+\draw[->] (x1) -- (l1p2);
+%
+\draw[->] (l1p1) -- (l2p1)node[midway, above]{$a_{11}$};
+\draw[->, C0, ultra thick] (l1p1) -- (l2p1);
+\draw[->, C1, dashed, thick] (l1p1) -- (l2p1);
+\draw[->, C2, ultra thick] (l1p1) -- (l2p2);
+\draw[->, C3, dashed, thick] (l1p1) -- (l2p2);
+\draw[->] (l1p2) -- (l2p1);
+\draw[->] (l1p2) -- (l2p2)node[midway, below]{$a_{21}$};
+%
+\draw[->] (l2p1) -- (lop1)node[midway, above]{$a_{12}$};
+\draw[->, C0, thick] (l2p1) -- (lop1);
+\draw[->, C1, thick] (l2p1) -- (lop2);
+\draw[->, C2, thick] (l2p2) -- (lop1);
+\draw[->] (l2p2) -- (lop2)node[midway, below]{$a_{22}$};
+\draw[->, C3] (l2p2) -- (lop2);
+%
+\draw[->] (lop1) -- (yh1)node[right]{$a_{13}$};
+\draw[->] (lop2) -- (yh2)node[right]{$a_{23}$};
+%
+\node[](a0) at (0.25,2.5){$
+\bm{x} = \bm{a}_0 =
+\begin{bmatrix}
+x_{1}\\x_{2}
+\end{bmatrix}
+$};
+%
+\node[](a1) at (3.4,2.5){$
+\bm{a}_1 =
+\begin{bmatrix}
+a_{11}\\a_{21}
+\end{bmatrix}
+$};
+%
+\node[](a2) at (6.4,2.5){$
+\bm{a}_2 =
+\begin{bmatrix}
+a_{12}\\a_{22}
+\end{bmatrix}
+$};
+%
+\node[](a2) at (9.5,2.5){$
+\bm{a}_3 =
+\begin{bmatrix}
+a_{13} = \hat{y}_1\\a_{23} = \hat{y}_2
+\end{bmatrix}
+$};
+%
+\node[](sigmoid) at (9.5,0)[]{sigmoid $\sigma_3(\cdot)$};
+%
+\end{tikzpicture}
+\end{center}
+
+\begin{align*}
+\frac{\partial \mathcal{L}}{\partial w_{11,x_1}}
+=
+&x_1\cdot
+\left[
+\textcolor{C0}{
+\frac{\partial z_{12}}{\partial z_{11}}\cdot
+\frac{\partial z_{13}}{\partial z_{12}}
+}
+\right]\cdot
+\frac{\partial a_{13}}{\partial z_{13}}\cdot
+\frac{\partial \mathcal{L}}{\partial a_{13}}
++
+x_1\cdot
+\left[
+\textcolor{C2}{
+\frac{\partial z_{22}}{\partial z_{11}}\cdot
+\frac{\partial z_{13}}{\partial z_{22}}
+}
+\right]\cdot
+\frac{\partial a_{13}}{\partial z_{13}}\cdot
+\frac{\partial \mathcal{L}}{\partial a_{13}}
++\\
+%
+&x_1\cdot
+\left[
+\textcolor{C1}{
+\frac{\partial z_{12}}{\partial z_{11}}\cdot
+\frac{\partial z_{23}}{\partial z_{12}}
+}
+\right]\cdot
+\frac{\partial a_{23}}{\partial z_{23}}\cdot
+\frac{\partial \mathcal{L}}{\partial a_{23}}
++
+x_1\cdot
+\left[
+\textcolor{C3}{
+\frac{\partial z_{22}}{\partial z_{11}}\cdot
+\frac{\partial z_{23}}{\partial z_{22}}
+}
+\right]\cdot
+\frac{\partial a_{23}}{\partial z_{23}}\cdot
+\frac{\partial \mathcal{L}}{\partial a_{23}}
+\end{align*}
+%
+\end{frame}
+
+
+
+
+
+
+
 
 
 
@@ -4025,7 +4155,6 @@ $};
 \text{PPV}=\frac{\text{TP}}{\text{P}_1}
 \end{align*}
 %
-
 \end{frame}
 
 
@@ -4081,15 +4210,15 @@ $$
 \node[iol](xf) at (0,-0.75){$x_:$};
 \node[iol](xF) at (0,-1.5){$x_F$};
 %
-\node[dl](dl) at (2.5,0){Deep Model: $\bm{a} = \mathcal{M}(\bm{x})$};
+\node[dl](dl) at (3,0){(Deep) Model: $\bm{a} = \mathcal{M}(\bm{x})$};
 %
-\node[hl](lop1) at (6,+2.62){$\sigma\left({\bm{w}_{\textcolor{C0}{1}\text{o}}^\mathrm{T}\bm{a} + b_{\textcolor{C0}{1}\text{o}}}\right)$};
-\node[hl](lop2) at (6,0){$\sigma\left({\bm{w}_{\textcolor{C3}{2}\text{o}}^\mathrm{T}\bm{a} + b_{\textcolor{C3}{2}\text{o}}}\right)$};
-\node[hl](lop3) at (6,-2.62){$\sigma\left({\bm{w}_{\textcolor{C1}{3}\text{o}}^\mathrm{T}\bm{a} + b_{\textcolor{C1}{3}\text{o}}}\right)$};
+\node[hl](lop1) at (7,+2.62){$\sigma\left({\bm{w}_{\textcolor{C0}{1}\text{o}}^\mathrm{T}\bm{a} + b_{\textcolor{C0}{1}\text{o}}}\right)$};
+\node[hl](lop2) at (7,0){$\sigma\left({\bm{w}_{\textcolor{C3}{2}\text{o}}^\mathrm{T}\bm{a} + b_{\textcolor{C3}{2}\text{o}}}\right)$};
+\node[hl](lop3) at (7,-2.62){$\sigma\left({\bm{w}_{\textcolor{C1}{3}\text{o}}^\mathrm{T}\bm{a} + b_{\textcolor{C1}{3}\text{o}}}\right)$};
 %
-\node[iol](y1) at (8,+2.62){$\hat{y}_1$};
-\node[iol](y2) at (8,+0){$\hat{y}_2$};
-\node[iol](y3) at (8,-2.62){$\hat{y}_3$};
+\node[iol](y1) at (9,+2.62){$\hat{y}_1$};
+\node[iol](y2) at (9,+0){$\hat{y}_2$};
+\node[iol](y3) at (9,-2.62){$\hat{y}_3$};
 %
 \draw[->] (x1) -- (dl);
 \draw[->] (x2) -- (dl);
@@ -4105,9 +4234,9 @@ $$
 \draw[->] (lop2) -- (y2);
 \draw[->] (lop3) -- (y3);
 %
-\node at (10.4,+3.46){softmax activation:};
-\node at (10.85,+2.46){$\hat{y}_k = \sigma(z_{k\text{o}})=\frac{\mathrm{exp}(z_{k\text{o}})}{\sum\limits_{k'=1}^{K} \mathrm{exp}(z_{k'\text{o}})}$};
-\node at (10.85,+1.46){$\sum\limits_{k=1}^{K} \hat{y}_k = 1$};
+\node at (11.4,+3.46){softmax activation:};
+\node at (11.85,+2.46){$\hat{y}_i = \sigma(z_{i\text{o}})=\frac{\mathrm{exp}(z_{i\text{o}})}{\sum\limits_{i'=1}^{K} \mathrm{exp}(z_{i'\text{o}})}$};
+\node at (11.85,+1.46){$\sum\limits_{i=1}^{K} \hat{y}_i = 1$};
 \end{tikzpicture}
 \end{flushleft}
 %
@@ -4136,14 +4265,14 @@ $
 and prediction vector
 $\hat{\bm{y}} =
 \begin{bmatrix}
-\hat{y}[k=1]=0\dots1\\\hat{y}[k=2]=0\dots1\\\hat{y}[k=3]=0\dots1
+\hat{y}_{i=1}=0\dots1\\\hat{y}_{i=2}=0\dots1\\\hat{y}_{i=3}=0\dots1
 \end{bmatrix}
 $
 where
 $\bm{1}^\mathrm{T} \hat{\bm{y}} := 1$  holds from normalization in softmax:
 
-$$\mathcal{L}_n(\bm{y}, {\hat{\bm{y}}}) = - \bm{y}_n^\mathrm{T} \,\,\, \log_\e(\hat{\bm{y}}_n)
-= \textcolor{C1}{-} \sum\limits_{k=1}^{K} \bm{y}_n[k] \,\,\, \textcolor{C1}{\log_\e}(\hat{\bm{y}}_n[k])
+$$\mathcal{L}_n(\bm{y}, {\hat{\bm{y}}}) = - \bm{y}[n]^\mathrm{T} \,\,\, \log_\e(\hat{\bm{y}}[n])
+= \textcolor{C1}{-} \sum\limits_{i=1}^{K} y_i[n] \,\,\, \textcolor{C1}{\log_\e}(\hat{y}_i[n])
 %-\left[y_n \log_\e(\textcolor{C0}{\hat{y}_n}) + (1-y_n) \log_\e(1-\textcolor{C0}{\hat{y}_n})\right]
 \qquad\quad
 \mathcal{R} = \frac{1}{N} \sum\limits_{n=1}^N \mathcal{L}_n(\bm{y}, {\hat{\bm{y}}})
@@ -4171,6 +4300,313 @@ $$
 \end{flushleft}
 %
 \end{frame}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\againframe{MultiLabelClassification}
+%
+\begin{frame}{Multiclass Classification with Hidden Layer Model}
+%
+\vspace{-0.25cm}
+\begin{center}
+\begin{tikzpicture}[scale=1, every node/.style={scale=0.8}]
+\tikzstyle{iol}=[draw,shape=rectangle,minimum size=0.5cm]
+\tikzstyle{hl}=[draw,shape=circle,minimum size=2cm]
+%
+\node[iol](x0) at (0,+1.25){$x_1$};
+\node[iol](x1) at (0,-1.25){$x_2$};
+\node[hl](l1p1) at (2,+1.25){$\sigma_{1}(\underbrace{\bm{w}_{11}^\mathrm{T} \bm{a}_0 + b_{11}}_{z_{11}})$};
+\node[hl](l1p2) at (2,-1.25){$\sigma_{1}(\underbrace{\bm{w}_{21}^\mathrm{T} \bm{a}_0 + b_{21}}_{z_{21}})$};
+\node[hl](l2p1) at (5,+1.25){$\sigma_{2}(\underbrace{\bm{w}_{12}^\mathrm{T} \bm{a}_{1} + b_{12}}_{z_{12}})$};
+\node[hl](l2p2) at (5,-1.25){$\sigma_{2}(\underbrace{\bm{w}_{22}^\mathrm{T} \bm{a}_{1} + b_{22}}_{z_{22}})$};
+\node[hl](lop1) at (8,+1.25){$\sigma_{3}(\underbrace{{\bm{w}_{13}^\mathrm{T}\bm{a}_{2} + b_{13}}}_{z_{13}})$};
+\node[hl](lop2) at (8,-1.25){$\sigma_{3}(\underbrace{{\bm{w}_{23}^\mathrm{T}\bm{a}_{2} + b_{23}}}_{z_{23}})$};
+\node[](yh1) at (9.5,+1.25){};
+\node[](yh2) at (9.5,-1.25){};
+%
+\draw[->] (x0) -- (l1p1);
+\draw[->] (x0) -- (l1p2);
+\draw[->] (x1) -- (l1p1);
+\draw[->] (x1) -- (l1p2);
+%
+\draw[->] (l1p1) -- (l2p1)node[midway, above]{$a_{11}$};
+\draw[->, C0, ultra thick] (l1p1) -- (l2p1);
+\draw[->, C1, dashed, thick] (l1p1) -- (l2p1);
+\draw[->, C2, ultra thick] (l1p1) -- (l2p2);
+\draw[->, C3, dashed, thick] (l1p1) -- (l2p2);
+\draw[->] (l1p2) -- (l2p1);
+\draw[->] (l1p2) -- (l2p2)node[midway, below]{$a_{21}$};
+%
+\draw[->] (l2p1) -- (lop1)node[midway, above]{$a_{12}$};
+\draw[->, C0, thick] (l2p1) -- (lop1);
+\draw[->, C1, thick] (l2p1) -- (lop2);
+\draw[->, C2, thick] (l2p2) -- (lop1);
+\draw[->] (l2p2) -- (lop2)node[midway, below]{$a_{22}$};
+\draw[->, C3] (l2p2) -- (lop2);
+%
+\draw[->] (lop1) -- (yh1)node[right]{$a_{13}$};
+\draw[->] (lop2) -- (yh2)node[right]{$a_{23}$};
+%
+\node[](a0) at (0.25,2.5){$
+\bm{x} = \bm{a}_0 =
+\begin{bmatrix}
+x_{1}\\x_{2}
+\end{bmatrix}
+$};
+%
+\node[](a1) at (3.4,2.5){$
+\bm{a}_1 =
+\begin{bmatrix}
+a_{11}\\a_{21}
+\end{bmatrix}
+$};
+%
+\node[](a2) at (6.4,2.5){$
+\bm{a}_2 =
+\begin{bmatrix}
+a_{12}\\a_{22}
+\end{bmatrix}
+$};
+%
+\node[](a2) at (9.5,2.5){$
+\bm{a}_3 =
+\begin{bmatrix}
+a_{13} = \hat{y}_1\\a_{23} = \hat{y}_2
+\end{bmatrix}
+$};
+%
+\node[](sigmoid) at (9.5,0)[]{softmax $\sigma_3(\cdot)$};
+%
+\end{tikzpicture}
+\end{center}
+
+\begin{align*}
+\frac{\partial \mathcal{L}_{\text{CCE}}}{\partial w_{11,x_1}}
+=
+&x_1\cdot
+\left[
+\textcolor{C0}{
+\frac{\partial z_{12}}{\partial z_{11}}\cdot
+\frac{\partial z_{13}}{\partial z_{12}}
+}
+\right]\cdot
+\frac{\partial \mathcal{L}}{\partial z_{13}}
++
+x_1\cdot
+\left[
+\textcolor{C2}{
+\frac{\partial z_{22}}{\partial z_{11}}\cdot
+\frac{\partial z_{13}}{\partial z_{22}}
+}
+\right]\cdot
+\frac{\partial \mathcal{L}}{\partial z_{13}}
++\\
+%
+&x_1\cdot
+\left[
+\textcolor{C1}{
+\frac{\partial z_{12}}{\partial z_{11}}\cdot
+\frac{\partial z_{23}}{\partial z_{12}}
+}
+\right]\cdot
+\frac{\partial \mathcal{L}}{\partial z_{23}}
++
+x_1\cdot
+\left[
+\textcolor{C3}{
+\frac{\partial z_{22}}{\partial z_{11}}\cdot
+\frac{\partial z_{23}}{\partial z_{22}}
+}
+\right]\cdot
+\frac{\partial \mathcal{L}}{\partial z_{23}}
+\end{align*}
+%
+\end{frame}
+
+
+
+\begin{frame}{Softmax Activation Combined With Categorical Cross Entropy}
+
+$\cdot$ $\hat{y}_{i=1 \dots K} \in\mathbb{R}$ model outputs with $K$ mutual exclusive classes
+
+$\cdot$ true labels as one hot encoded vectors with $y_{i=1 \dots K} \in\{0,1\}$
+
+$\cdot$ softmax activation function in output layer
+$$
+\hat{y}_i = \sigma(z_{i\text{o}}) = \frac{\e^{z_{i\text{o}}}}{\sum\limits_{i'=1}^{K} \e^{z_{i'\text{o}}}},
+\quad
+\frac{\partial \hat{y}_i}{\partial z_{i\text{o}}} = \hat{y}_i  (1-\hat{y}_i ),
+\quad
+\frac{\partial \hat{y}_i}{\partial z_{j \neq i\,\text{o}}} = - \hat{y}_i \hat{y}_j
+$$
+$\cdot$ categorical cross entropy as loss function
+$$
+\mathcal{L}_(\bm{y}, \hat{\bm{y}}) = - \sum\limits_{i=1}^{K} y_i \log_\e(\hat{y}_i),
+\quad
+\frac{\partial \mathcal{L}}{\hat{y}_i} = - \frac{y_i}{\hat{y}_i}
+$$
+$\cdot$ categorical cross entropy \underline{combined} with softmax output layer yields
+$$
+\frac{\partial \mathcal{L}}{\partial z_{i\text{o}}} =
+\sum\limits_{j=1}^{K} \frac{\partial \mathcal{L}}{\partial \hat{y}_j} \frac{\partial \hat{y}_j}{\partial z_{i\text{o}}} = \hat{y}_i - y_i
+$$
+
+
+\end{frame}
+
+
+
+
+
+\begin{frame}{Multiclass Classification with Hidden Layer Model}
+%
+\vspace{-0.25cm}
+\begin{center}
+\begin{tikzpicture}[scale=1, every node/.style={scale=0.8}]
+\tikzstyle{iol}=[draw,shape=rectangle,minimum size=0.5cm]
+\tikzstyle{hl}=[draw,shape=circle,minimum size=2cm]
+%
+\node[iol](x0) at (0,+1.25){$x_1$};
+\node[iol](x1) at (0,-1.25){$x_2$};
+\node[hl](l1p1) at (2,+1.25){$\sigma_{1}(\underbrace{\bm{w}_{11}^\mathrm{T} \bm{a}_0 + b_{11}}_{z_{11}})$};
+\node[hl](l1p2) at (2,-1.25){$\sigma_{1}(\underbrace{\bm{w}_{21}^\mathrm{T} \bm{a}_0 + b_{21}}_{z_{21}})$};
+\node[hl](l2p1) at (5,+1.25){$\sigma_{2}(\underbrace{\bm{w}_{12}^\mathrm{T} \bm{a}_{1} + b_{12}}_{z_{12}})$};
+\node[hl](l2p2) at (5,-1.25){$\sigma_{2}(\underbrace{\bm{w}_{22}^\mathrm{T} \bm{a}_{1} + b_{22}}_{z_{22}})$};
+\node[hl](lop1) at (8,+1.25){$\sigma_{3}(\underbrace{{\bm{w}_{13}^\mathrm{T}\bm{a}_{2} + b_{13}}}_{z_{13}})$};
+\node[hl](lop2) at (8,-1.25){$\sigma_{3}(\underbrace{{\bm{w}_{23}^\mathrm{T}\bm{a}_{2} + b_{23}}}_{z_{23}})$};
+\node[](yh1) at (9.5,+1.25){};
+\node[](yh2) at (9.5,-1.25){};
+%
+\draw[->] (x0) -- (l1p1);
+\draw[->] (x0) -- (l1p2);
+\draw[->] (x1) -- (l1p1);
+\draw[->] (x1) -- (l1p2);
+%
+\draw[->] (l1p1) -- (l2p1)node[midway, above]{$a_{11}$};
+\draw[->, C0, ultra thick] (l1p1) -- (l2p1);
+\draw[->, C1, dashed, thick] (l1p1) -- (l2p1);
+\draw[->, C2, ultra thick] (l1p1) -- (l2p2);
+\draw[->, C3, dashed, thick] (l1p1) -- (l2p2);
+\draw[->] (l1p2) -- (l2p1);
+\draw[->] (l1p2) -- (l2p2)node[midway, below]{$a_{21}$};
+%
+\draw[->] (l2p1) -- (lop1)node[midway, above]{$a_{12}$};
+\draw[->, C0, thick] (l2p1) -- (lop1);
+\draw[->, C1, thick] (l2p1) -- (lop2);
+\draw[->, C2, thick] (l2p2) -- (lop1);
+\draw[->] (l2p2) -- (lop2)node[midway, below]{$a_{22}$};
+\draw[->, C3] (l2p2) -- (lop2);
+%
+\draw[->] (lop1) -- (yh1)node[right]{$a_{13}$};
+\draw[->] (lop2) -- (yh2)node[right]{$a_{23}$};
+%
+\node[](a0) at (0.25,2.5){$
+\bm{x} = \bm{a}_0 =
+\begin{bmatrix}
+x_{1}\\x_{2}
+\end{bmatrix}
+$};
+%
+\node[](a1) at (3.4,2.5){$
+\bm{a}_1 =
+\begin{bmatrix}
+a_{11}\\a_{21}
+\end{bmatrix}
+$};
+%
+\node[](a2) at (6.4,2.5){$
+\bm{a}_2 =
+\begin{bmatrix}
+a_{12}\\a_{22}
+\end{bmatrix}
+$};
+%
+\node[](a2) at (9.5,2.5){$
+\bm{a}_3 =
+\begin{bmatrix}
+a_{13} = \hat{y}_1\\a_{23} = \hat{y}_2
+\end{bmatrix}
+$};
+%
+\node[](sigmoid) at (9.5,0)[]{softmax $\sigma_3(\cdot)$};
+%
+\end{tikzpicture}
+\end{center}
+
+\begin{align*}
+\frac{\partial \mathcal{L}_{\text{CCE}}}{\partial w_{11,x_1}}
+=
+&x_1\cdot
+\left[
+\textcolor{C0}{
+\frac{\partial z_{12}}{\partial z_{11}}\cdot
+\frac{\partial z_{13}}{\partial z_{12}}
+}
+\right]\cdot
+(\hat{y}_1 - y_1)
+%\frac{\partial a_{13}}{\partial z_{13}}\cdot
+%\frac{\partial \mathcal{L}}{\partial a_{13}}
++
+x_1\cdot
+\left[
+\textcolor{C2}{
+\frac{\partial z_{22}}{\partial z_{11}}\cdot
+\frac{\partial z_{13}}{\partial z_{22}}
+}
+\right]\cdot
+(\hat{y}_1 - y_1)
+%\frac{\partial a_{13}}{\partial z_{13}}\cdot
+%\frac{\partial \mathcal{L}}{\partial a_{13}}
++\\
+%
+&x_1\cdot
+\left[
+\textcolor{C1}{
+\frac{\partial z_{12}}{\partial z_{11}}\cdot
+\frac{\partial z_{23}}{\partial z_{12}}
+}
+\right]\cdot
+(\hat{y}_2 - y_2)
+%\frac{\partial a_{23}}{\partial z_{23}}\cdot
+%\frac{\partial \mathcal{L}}{\partial a_{23}}
++
+x_1\cdot
+\left[
+\textcolor{C3}{
+\frac{\partial z_{22}}{\partial z_{11}}\cdot
+\frac{\partial z_{23}}{\partial z_{22}}
+}
+\right]\cdot
+(\hat{y}_2 - y_2)
+%\frac{\partial a_{23}}{\partial z_{23}}\cdot
+%\frac{\partial \mathcal{L}}{\partial a_{23}}
+\end{align*}
+%
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 \begin{frame}[t]{Confusion Matrix for Multiclass Classification}
