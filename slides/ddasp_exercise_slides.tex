@@ -110,7 +110,7 @@ University of Rostock, Rostock, Germany}
 %
 %
 \begin{frame}{Literature}
-  check textbooks in our main library (check free ebbok access within uni VPN)
+  check textbooks in our main library (check free ebook access within uni VPN)
   \begin{itemize}
     \item \href{https://find.ub.uni-rostock.de/sk830}{SK830...SK840 statistics, (generalized) linear models, regression}
     \item ST 285...ST 306 machine learning, artifical intelligence, neural networks
@@ -2879,15 +2879,15 @@ no slides so far
 \section{Section IV: Model Architectures}
 \begin{frame}[t]{Output Layer for Regression Model}
 
-$\cdot$ Output layer exhibits $l=1 \dots L$ perceptrons
+$\cdot$ Output layer exhibits $i=1 \dots K$ perceptrons
 
-$\cdot$ Activation function $\sigma(\cdot)$ for $l\text{-th}$ perceptron: \underline{linear}
+$\cdot$ Activation function $\sigma(\cdot)$ for $i\text{-th}$ perceptron: \underline{linear}
 
-$$\sigma(z_l) = z_l$$
+$$\sigma(z_i) = z_i$$
 
 $\cdot$ Derivative
 
-$$\frac{\partial \sigma(z_l)}{\partial z_l} = 1$$
+$$\frac{\partial \sigma(z_i)}{\partial z_i} = 1$$
 
 \end{frame}
 
@@ -2964,23 +2964,27 @@ $\cdot$ Well known as \underline{binary logistic regression} for a model with th
 
 
 
-\begin{frame}[t]{Output Layer for Multiclass Classification Model}
+\begin{frame}[t]{Output Layer for Multi-Class Classification Model}
 
-$\cdot$ Output layer exhibits $l=1 \dots L$ perceptrons for $L$ classes
+$\cdot$ Output layer exhibits $i=1 \dots K$ perceptrons for $K$ mutually exclusive classes
 
-$\cdot$ Activation function $\sigma(\cdot)$ for $l\text{-th}$ perceptron: \underline{softmax}
+$\cdot$ Activation function $\sigma(\cdot)$ for $i\text{-th}$ perceptron: \underline{softmax}
 
-$$\sigma(z_l) = \frac{\e^{z_l}}{\sum\limits_{l'=1}^{L} \e^{z_{l'}}} \qquad \text{hence, }\sum\limits_{l=1}^{L} \sigma(z_l) = 1$$
+$$
+\sigma(z_i) = \frac{\e^{z_i}}{\sum\limits_{i'=1}^{K} \e^{z_{i'}}} \qquad \text{hence, }\sum\limits_{i=1}^{K} \sigma(z_i) = 1
+\text{, which couples the perceptrons}
+$$
+%which couples the perceptrons in the output layer
 
 $\cdot$ Derivatives to set up the Jacobian matrix
 
-$$\frac{\partial \sigma(z_l)}{\partial z_l} = \frac{\e^{z_l}}{\left(\sum\limits_{l'=1}^{L} \e^{z_{l'}}\right)^2} \cdot \left(\sum\limits_{l'=1, l' \neq l}^{L} \e^{z_{l'}}\right)=
-\frac{\e^{z_l}}{\left(\sum\limits_{l'=1}^{L} \e^{z_{l'}}\right)} \cdot
-\frac{\left(\sum\limits_{l'=1, l' \neq l}^{L} \e^{z_{l'}}\right)}{\left(\sum\limits_{l'=1}^{L} \e^{z_{l'}}\right)}=
-\sigma(z_l) \cdot(1-\sigma(z_l))
+$$\frac{\partial \sigma(z_i)}{\partial z_i} = \frac{\e^{z_i}}{\left(\sum\limits_{i'=1}^{K} \e^{z_{i'}}\right)^2} \cdot \left(\sum\limits_{i'=1, i' \neq i}^{K} \e^{z_{i'}}\right)=
+\frac{\e^{z_i}}{\left(\sum\limits_{i'=1}^{K} \e^{z_{i'}}\right)} \cdot
+\frac{\left(\sum\limits_{i'=1, i' \neq i}^{K} \e^{z_{i'}}\right)}{\left(\sum\limits_{i'=1}^{K} \e^{z_{i'}}\right)}=
+\sigma(z_i) \cdot(1-\sigma(z_i))
 $$
 
-$$\frac{\partial \sigma(z_l)}{\partial z_j} = - \sigma(z_l) \cdot \sigma(z_j)\qquad l \neq j$$
+$$\frac{\partial \sigma(z_i)}{\partial z_j} = - \sigma(z_i) \cdot \sigma(z_j)\qquad \text{if} \quad i \neq j$$
 
 $\cdot$ Well known as \underline{multinomial logistic regression} for a model with the output layer only, but no other (non-linear, hidden) layers $\rightarrow$ cf. textbooks on generalized linear models (GLMs)
 
@@ -2990,24 +2994,28 @@ $\cdot$ Well known as \underline{multinomial logistic regression} for a model wi
 
 \begin{frame}[t]{Typical Loss Functions Used In Numerical Optimization}
 
-Loss is about comparing train/val/test data $\bm{y}, y$ against model prediction data $\hat{\bm{y}}, \hat{y}$
+Loss is about `comparing` train/val/test data $\bm{y}, y$ against model prediction data $\hat{\bm{y}}, \hat{y}$
 
-$\cdot$ \textcolor{C0}{Regression} with least squares for predicted data sample $\hat{y}_l = \sigma_\text{\textcolor{C0}{linear}}(z_l)$; $\bm{y}\in\mathbb{R}, \hat{\bm{y}}\in\mathbb{R}$
+$\cdot$ \textcolor{C0}{Regression} with least squares for predicted data sample $\hat{y}_i = \sigma_\text{\textcolor{C0}{linear}}(z_i)$; $\bm{y}\in\mathbb{R}, \hat{\bm{y}}\in\mathbb{R}$
 
-$$\mathcal{L}(\bm{y}, \hat{\bm{y}}) = \sum\limits_{l=1}^{L} (y_l-\hat{y}_l)^2$$
+$$\mathcal{L}(\bm{y}, \hat{\bm{y}}) = \sum\limits_{i=1}^{K} (y_i-\hat{y}_i)^2$$
 
-$\cdot$ \textcolor{C0}{Binary classification} for predicted data sample $\hat{y} = \sigma_\text{\textcolor{C0}{sigmoid}}(z)$; $y \in \{0,1\}, 0 \leq \hat{y} \leq 1$
+$\cdot$ \textcolor{C0}{Binary classification} for predicted data sample $\hat{y} = \sigma_\text{\textcolor{C0}{sigmoid}}(z)$; $y \in \{0,1\}, 0 \leq \hat{y}\in\mathbb{R} \leq 1$
 
 $$\mathcal{L}(y, \hat{y}) = -\left[y \log_\e(\hat{y}) + (1-y)\log_\e(1-\hat{y})\right]$$
 
-$\cdot$ \textcolor{C0}{Multiclass classification} for predicted data sample $\hat{y}_l = \sigma_\text{\textcolor{C0}{softmax}}(z_l)$; $y_l \in \{0,1\}, 0 \leq \hat{y}_l \leq 1$
+$\cdot$ \textcolor{C0}{Multi-Class classification} for predicted data sample $\hat{y}_i = \sigma_\text{\textcolor{C0}{softmax}}(z_i)$; $y_i \in \{0,1\}, 0 \leq \hat{y}_i\in\mathbb{R} \leq 1$
 
-note: $L$ mutually exclusive classes
+note: $K$ mutually exclusive classes
 
-$$\mathcal{L}(\bm{y}, \hat{\bm{y}}) = - \left[\sum\limits_{l=1}^{L} y_l \log_\e(\hat{y}_l)\right]$$
+$$\mathcal{L}(\bm{y}, \hat{\bm{y}}) = - \left[\sum\limits_{i=1}^{K} y_i \log_\e(\hat{y}_i)\right]$$
 
 Empirical risk for $N$ data samples
-$$\mathcal{R} = \frac{1}{N} \sum\limits_{n=1}^{N} \mathcal{L}(\bm{y}_n, \hat{\bm{y}}_n)$$
+$$
+\mathcal{R} = \frac{1}{N} \sum\limits_{n=1}^{N} \mathcal{L}(\bm{y}_n, \hat{\bm{y}}_n)
+\qquad \text{or} \qquad
+\mathcal{R} = \frac{1}{N} \sum\limits_{n=1}^{N} \mathcal{L}({y}_n, \hat{{y}}_n)
+$$
 
 
 \end{frame}
@@ -4133,8 +4141,8 @@ x_1\cdot
 \node[mtxo, align=center](predtrue) at (-0.75,+1.5){$\textcolor{C0}{0}$};
 \node[mtxo, align=center](predfalse) at (+0.75,1.5){$\textcolor{C0}{1}$};
 %
-\node[mtxo, align=center, rotate=90](reallbl) at (-1.75,0){\textcolor{C3}{real} label};
-\node[mtxo, align=center](predlbl) at (0,1.75){\textcolor{C0}{predicted} label};
+\node[mtxo, align=center, rotate=90](reallbl) at (-1.75,0){\textcolor{C3}{real} class};
+\node[mtxo, align=center](predlbl) at (0,1.75){\textcolor{C0}{predicted} class};
 %
 \node[mtxo, align=left](realfalse) at (2.25,+0.75){$\text{R}_0 = \text{TN}+\text{FP}$};
 \node[mtxo, align=left](realtrue) at (2.25,-0.75){$\text{R}_1 = \text{FN}+\text{TP}$};
@@ -4200,7 +4208,7 @@ $$
 
 
 
-\begin{frame}{Ex14: Multiclass Classification with Softmax Output Layer}
+\begin{frame}{Ex14: Multi-Class Classification with Softmax Output Layer}
 %
 \begin{flushleft}
 \begin{tikzpicture}[scale=1]
@@ -4216,11 +4224,17 @@ $$
 %
 \node[dl](dl) at (3,0){(Deep) Model: $\bm{a} = \mathcal{M}(\bm{x})$};
 %
-\node[hl](lop1) at (7,+2.62){$\sigma\left({\bm{w}_{\textcolor{C0}{1}\text{o}}^\mathrm{T}\bm{a} + b_{\textcolor{C0}{1}\text{o}}}\right)$};
+\node[hl](lop1) at (7,+2.67){$\sigma
+%\left(
+(
+\underbrace{{\bm{w}_{\textcolor{C0}{1}\text{o}}^\mathrm{T}\bm{a} + b_{\textcolor{C0}{1}\text{o}}}}_{z_{\textcolor{C0}{1}\text{o}}}
+)
+%\right)
+$};
 \node[hl](lop2) at (7,0){$\sigma\left({\bm{w}_{\textcolor{C3}{2}\text{o}}^\mathrm{T}\bm{a} + b_{\textcolor{C3}{2}\text{o}}}\right)$};
 \node[hl](lop3) at (7,-2.62){$\sigma\left({\bm{w}_{\textcolor{C1}{3}\text{o}}^\mathrm{T}\bm{a} + b_{\textcolor{C1}{3}\text{o}}}\right)$};
 %
-\node[iol](y1) at (9,+2.62){$\hat{y}_1$};
+\node[iol](y1) at (9,+2.67){$\hat{y}_1$};
 \node[iol](y2) at (9,+0){$\hat{y}_2$};
 \node[iol](y3) at (9,-2.62){$\hat{y}_3$};
 %
@@ -4249,9 +4263,9 @@ $$
 
 
 
-\begin{frame}[t]{Loss Function For Multiclass Classification / Categorical Cross Entropy}
+\begin{frame}[t]{Loss For Multi-Class Classification / Categorical Cross Entropy}
 
-$\cdot$ Loss function $\mathcal{L}$ / empirical risk $\mathcal{R}$ for $K$ one-hot encoded true labels
+$\cdot$ Loss function $\mathcal{L}$ / empirical risk $\mathcal{R}$ for $K$ one-hot encoded true-labels
 %
 $\bm{y} =
 \left\{
@@ -4320,7 +4334,7 @@ $$
 
 \againframe{MultiLabelClassification}
 %
-\begin{frame}{Multiclass Classification with Hidden Layer Model}
+\begin{frame}{Multi-Class Classification with Hidden Layer Model}
 %
 \vspace{-0.25cm}
 \begin{center}
@@ -4444,7 +4458,7 @@ x_1\cdot
 
 $\cdot$ $\hat{y}_{i=1 \dots K} \in\mathbb{R}$ model outputs with $K$ mutual exclusive classes
 
-$\cdot$ true labels as one hot encoded vectors with $y_{i=1 \dots K} \in\{0,1\}$
+$\cdot$ true-labels as one hot encoded vectors with $y_{i=1 \dots K} \in\{0,1\}$
 
 $\cdot$ softmax activation function in output layer
 $$
@@ -4458,7 +4472,7 @@ $\cdot$ categorical cross entropy as loss function
 $$
 \mathcal{L}_(\bm{y}, \hat{\bm{y}}) = - \sum\limits_{i=1}^{K} y_i \log_\e(\hat{y}_i),
 \quad
-\frac{\partial \mathcal{L}}{\hat{y}_i} = - \frac{y_i}{\hat{y}_i}
+\frac{\partial \mathcal{L}}{\partial \hat{y}_i} = - \frac{y_i}{\hat{y}_i}
 $$
 $\cdot$ categorical cross entropy \underline{combined} with softmax output layer yields
 $$
@@ -4473,7 +4487,7 @@ $$
 
 
 
-\begin{frame}{Multiclass Classification with Hidden Layer Model}
+\begin{frame}{Multi-Class Classification with Hidden Layer Model}
 %
 \vspace{-0.25cm}
 \begin{center}
@@ -4613,7 +4627,7 @@ x_1\cdot
 
 
 
-\begin{frame}[t]{Confusion Matrix for Multiclass Classification}
+\begin{frame}[t]{Confusion Matrix for Multi-Class Classification}
 \begin{center}
 \begin{tikzpicture}[scale=1]
 \tikzstyle{mtxi}=[draw, shape=rectangle,minimum size=1cm]
@@ -4633,12 +4647,12 @@ x_1\cdot
 \node[mtxo, align=center]() at (-1.75,+1){$\textcolor{C3}{0}$};
 \node[mtxo, align=center]() at (-1.75,0){$\textcolor{C3}{1}$};
 \node[mtxo, align=center]() at (-1.75,-1){$\textcolor{C3}{2}$};
-\node[mtxo, align=center, rotate=90](reallbl) at (-2.1,0){\textcolor{C3}{real} label};
+\node[mtxo, align=center, rotate=90](reallbl) at (-2.1,0){\textcolor{C3}{real} class};
 %
 \node[mtxo, align=center]() at (-1,+1.75){$\textcolor{C0}{0}$};
 \node[mtxo, align=center]() at (0,1.75){$\textcolor{C0}{1}$};
 \node[mtxo, align=center]() at (+1,1.75){$\textcolor{C0}{2}$};
-\node[mtxo, align=center](predlbl) at (0,2){\textcolor{C0}{predicted} label};
+\node[mtxo, align=center](predlbl) at (0,2){\textcolor{C0}{predicted} class};
 %
 \node at (0,-2){counts, total 233};
 \node at (0,-3){$\text{ACC} = \frac{\text{\textcolor{C2!75}{Correct Counts}}}{\text{Total Counts}}\approx75.1\%$};
@@ -4660,12 +4674,12 @@ x_1\cdot
 \node[mtxo, align=center]() at (-1.75,+1){$\textcolor{C3}{0}$};
 \node[mtxo, align=center]() at (-1.75,0){$\textcolor{C3}{1}$};
 \node[mtxo, align=center]() at (-1.75,-1){$\textcolor{C3}{2}$};
-\node[mtxo, align=center, rotate=90](reallbl) at (-2.1,0){\textcolor{C3}{real} label};
+\node[mtxo, align=center, rotate=90](reallbl) at (-2.1,0){\textcolor{C3}{real} class};
 %
 \node[mtxo, align=center]() at (-1,+1.75){$\textcolor{C0}{0}$};
 \node[mtxo, align=center]() at (0,1.75){$\textcolor{C0}{1}$};
 \node[mtxo, align=center]() at (+1,1.75){$\textcolor{C0}{2}$};
-\node[mtxo, align=center](predlbl) at (0,2){\textcolor{C0}{predicted} label};
+\node[mtxo, align=center](predlbl) at (0,2){\textcolor{C0}{predicted} class};
 %
 \node at (0,-2){percent, total 100.2\%};
 \node at (0,-3){good only for balanced classes};
@@ -4687,12 +4701,12 @@ x_1\cdot
 \node[mtxo, align=center]() at (-1.75,+1){$\textcolor{C3}{0}$};
 \node[mtxo, align=center]() at (-1.75,0){$\textcolor{C3}{1}$};
 \node[mtxo, align=center]() at (-1.75,-1){$\textcolor{C3}{2}$};
-\node[mtxo, align=center, rotate=90](reallbl) at (-2.1,0){\textcolor{C3}{real} label};
+\node[mtxo, align=center, rotate=90](reallbl) at (-2.1,0){\textcolor{C3}{real} class};
 %
 \node[mtxo, align=center]() at (-1,+1.75){$\textcolor{C0}{0}$};
 \node[mtxo, align=center]() at (0,1.75){$\textcolor{C0}{1}$};
 \node[mtxo, align=center]() at (+1,1.75){$\textcolor{C0}{2}$};
-\node[mtxo, align=center](predlbl) at (0,2){\textcolor{C0}{predicted} label};
+\node[mtxo, align=center](predlbl) at (0,2){\textcolor{C0}{predicted} class};
 %
 \node at (0,-2){100\% percent per row};
 \node at (0,-3){good for unbalanced classes};
