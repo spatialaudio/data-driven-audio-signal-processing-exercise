@@ -179,7 +179,9 @@ University of Rostock, Rostock, Germany}
 
 
 %\begin{comment}
-\section{Ex01: Introduction}
+\section{Section I: Introduction}
+
+\subsection{Exercise 01}
 \begin{frame}{Ex01: Introduction}
 Objectives
 \begin{itemize}
@@ -260,9 +262,10 @@ Let us assume that i) we know $\bm{X}$ (i.e. the individual audio tracks) and $\
 \end{frame}
 
 
-\section{Section I: SVD / 4 Subspaces / Pseudo-Inverse}
+\section{Section II: SVD / 4 Subspaces / Pseudo-Inverse}
 
-\begin{frame}{Ex02 / Ex03: SVD and 4 Subspaces of a Matrix}
+\subsection{Exercise 02}
+\begin{frame}{Ex02: Singular Value Decomposition (SVD)}
 Objectives
 \begin{itemize}
 \item recap important matrix factorizations
@@ -272,6 +275,7 @@ Objectives
 \item rank-1 matrix superposition
 \end{itemize}
 \end{frame}
+
 
 
 
@@ -576,8 +580,16 @@ singular value matrix $\bm{\Sigma}$
 
 
 
+\subsection{Exercise 03}
 
-\begin{frame}{Singular Value Decomposition (SVD)}
+\begin{frame}{Ex03: SVD and the 4 Matrix Subspaces}
+Objectives
+\begin{itemize}
+\item TBD
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Ex03: SVD and the 4 Matrix Subspaces}
 
 \begin{flushleft}
 $
@@ -1546,8 +1558,17 @@ $
 % \end{frame}
 
 
-\begin{frame}[t]{Ex04: Recap 4 Subspaces of a Matrix}
+\subsection{Exercise 04}
 
+\begin{frame}{Ex04: Solving an Inverse Problem == Finding Model Parameters / Projection Matrices}
+Objectives
+\begin{itemize}
+\item TBD
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[t]{Recap 4 Subspaces of a Matrix}
 \hspace{-0.5cm}
 \textcolor{C2}{row space} $\perp$ \textcolor{C1}{null space}
 \hspace{0.5cm}
@@ -1569,7 +1590,7 @@ left singular vectors in $\bm{U}$
 
 
 
-\begin{frame}[t]{Ex04: Solving an Inverse Problem == Finding Model Parameters}
+\begin{frame}[t]{Solving an Inverse Problem == Finding Model Parameters}
 feature matrix $\bm{X}$ as full column rank with rank $R=2$ (2 independent columns = 2 independent rows = 2 non-zero singular values)
 $$
 \bm{X} =
@@ -2203,8 +2224,17 @@ which lives in the left null space. Due to the orthogonal subspaces, we know tha
 
 
 
+\subsection{Exercise 05}
 
-\begin{frame}[t]{Ex05: Matrix with Large Condition Number}
+\begin{frame}{Ex05: Condition Number / Regularization}
+Objectives
+\begin{itemize}
+\item TBD
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[t]{Matrix with Large Condition Number}
 %Square matrix, full rank, thus invertible
 $$
 \bm{X}
@@ -2439,6 +2469,14 @@ Such a model has $N$ \underline{model parameters} $\bm{\theta} = [\theta_1, \the
 
 
 
+\subsection{Exercise 06}
+
+\begin{frame}{Ex06: Audio Toy Example for Linear Regression and SVD}
+Objectives
+\begin{itemize}
+\item TBD
+\end{itemize}
+\end{frame}
 
 \begin{frame}[t]{Ex06: Audio Toy Example for Linear Regression and SVD}
 \begin{center}
@@ -2480,14 +2518,24 @@ Let us assume that a) we know $\bm{X}$ (i.e. the individual audio tracks) and $\
 
 
 
-\section{Section II: Feature Design}
+\section{Section III: Feature Design}
 
+\subsection{Exercise 07}
 \begin{frame}[t]{Ex07: Audio Features}
 no slides so far
 \end{frame}
 
+\subsection{Exercise 08}
 
-\begin{frame}[t]{Ex08: Principal Component Analysis (PCA)}
+\begin{frame}{Ex08: Principal Component Analysis (PCA)}
+Objectives
+\begin{itemize}
+\item TBD
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[t]{Principal Component Analysis (PCA)}
 
 PCA is typically applied on mean-free data
 
@@ -2862,12 +2910,14 @@ data \underline{plane} in 2D space (PC3 not used)
 
 
 
-\section{Section III: Train Models}
+\section{Section IV: Train Models}
+
+\subsection{Exercise 09}
 \begin{frame}[t]{Ex 09: Bias-Variance Trade Off}
 no slides so far
 \end{frame}
 
-
+\subsection{Exercise 10}
 \begin{frame}[t]{Ex 10: Gradient Descent}
 no slides so far
 \end{frame}
@@ -2876,7 +2926,10 @@ no slides so far
 %\end{comment}
 
 
-\section{Section IV: Model Architectures}
+\section{Section V: Model Architectures}
+
+\subsection{Fundamentals}
+
 \begin{frame}[t]{Output Layer for Regression Model}
 
 $\cdot$ Output layer exhibits $i=1 \dots K$ perceptrons
@@ -3022,8 +3075,17 @@ $$
 
 
 
+\subsection{Exercise 11}
 
-\begin{frame}[t]{Ex11: Linear Model for XOR (...is not working)}
+\begin{frame}{Ex11: Non-Linear Model Introduction}
+Objectives
+\begin{itemize}
+\item TBD
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[t]{Linear Model for XOR (...is not working)}
 
 XOR mapping well known as
 \begin{align*}
@@ -3417,6 +3479,14 @@ What could be another model architecture and/or loss function for the given prob
 
 
 
+\subsection{Exercise 12}
+
+\begin{frame}{Ex12: Binary Classification}
+Objectives
+\begin{itemize}
+\item TBD
+\end{itemize}
+\end{frame}
 
 \begin{frame}{Recap: Modeling Non-Linearity with Bias and Activation Function}
 %
@@ -3451,7 +3521,7 @@ What could be another model architecture and/or loss function for the given prob
 \end{frame}
 
 
-\begin{frame}[t]{Ex12 / 13: Binary Classification aka Binary Logistic Regression}
+\begin{frame}[t]{Binary Classification aka Binary Logistic Regression}
 
 \begin{center}
 \begin{tikzpicture} %[scale=1.25]
@@ -3843,6 +3913,14 @@ for new state / for GD update: ?
 
 
 
+\subsection{Exercise 13}
+
+\begin{frame}{Ex13: Binary Classification with Hidden Layer Model / Multivariate Chain Rule / Metrics}
+Objectives
+\begin{itemize}
+\item TBD
+\end{itemize}
+\end{frame}
 
 \begin{frame}{Binary Classification with Hidden Layer Model}
 %
@@ -4207,8 +4285,16 @@ $$
 
 
 
+\subsection{Exercise 14}
 
 \begin{frame}{Ex14: Multi-Class Classification with Softmax Output Layer}
+Objectives
+\begin{itemize}
+\item TBD
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Multi-Class Classification with Softmax Output Layer}
 %
 \begin{flushleft}
 \begin{tikzpicture}[scale=1]
@@ -4715,6 +4801,117 @@ x_1\cdot
 \end{tikzpicture}
 \end{center}
 \end{frame}
+
+
+
+
+
+
+
+
+\begin{frame}{Music Genre Classification with Softmax / Categorical Cross Entropy}
+%
+\begin{center}
+\begin{tikzpicture}[scale=1]
+\tikzstyle{iol}=[draw,shape=rectangle,minimum size=0.7cm]
+\tikzstyle{hl}=[draw,shape=circle,minimum size=1cm]
+\tikzstyle{dl}=[draw,shape=rectangle,minimum size=3.6cm]
+%
+\node[iol](x1) at (0,+1.5){$x_\text{Peak}$};
+\node[iol](x2) at (0,+0.75){$x_\text{RMS dB}$};
+\node[iol](x3) at (0,0){$x_\text{Crest}$};
+\node[iol](xf) at (0,-0.75){$x_:$};
+\node[iol](xF) at (0,-1.5){$x_\text{L/H}$};
+%
+\node at (0,+3){
+$
+y_\text{M}=
+\begin{bmatrix}
+1\\0\\0
+\end{bmatrix},\,
+y_\text{E}=
+\begin{bmatrix}
+0\\1\\0
+\end{bmatrix},\,
+y_\text{C}=
+\begin{bmatrix}
+0\\0\\1
+\end{bmatrix}
+$};
+%
+\node[dl](dl) at (3,0){(Deep) Model: $\bm{a} = \mathcal{M}(\bm{x})$};
+%
+\node[hl](lop1) at (7,+2.67){$\sigma
+%\left(
+(
+\underbrace{{\bm{w}_{\textcolor{C0}{1}\text{o}}^\mathrm{T}\bm{a} + b_{\textcolor{C0}{1}\text{o}}}}_{z_{\textcolor{C0}{1}\text{o}}}
+)
+%\right)
+$};
+\node[hl](lop2) at (7,0){$\sigma\left({\bm{w}_{\textcolor{C3}{2}\text{o}}^\mathrm{T}\bm{a} + b_{\textcolor{C3}{2}\text{o}}}\right)$};
+\node[hl](lop3) at (7,-2.62){$\sigma\left({\bm{w}_{\textcolor{C1}{3}\text{o}}^\mathrm{T}\bm{a} + b_{\textcolor{C1}{3}\text{o}}}\right)$};
+%
+\node[iol](y1) at (9,+2.67){$\hat{y}_\text{M}$};
+\node[iol](y2) at (9,+0){$\hat{y}_\text{E}$};
+\node[iol](y3) at (9,-2.62){$\hat{y}_\text{C}$};
+%
+\draw[->] (x1) -- (dl);
+\draw[->] (x2) -- (dl);
+\draw[->] (x3) -- (dl);
+\draw[->] (xf) -- (dl);
+\draw[->] (xF) -- (dl);
+%
+\draw[->] (dl) -- (lop1);
+\draw[->] (dl) -- (lop2);
+\draw[->] (dl) -- (lop3);
+%
+\draw[->] (lop1) -- (y1);
+\draw[->] (lop2) -- (y2);
+\draw[->] (lop3) -- (y3);
+%
+\end{tikzpicture}
+\end{center}
+%
+\end{frame}
+
+
+\begin{frame}[t]{Music Genre Classification with Softmax / Categorical Cross Entropy}
+\begin{center}
+$
+\def\K{0.4}
+\def\F{2}
+\def\N{5}
+\def\rank{0.999999}
+\drawmatrix[fill=none, height=\F, width=\N]{X}_\mathtt{F \times N}
+\drawmatrix[fill=none, height=\K, width=\N]{Y}_\mathtt{K \times N}
+$
+\end{center}
+
+\only<1>{
+$\cdot$ feature design
+}
+\only<2>{
+\begin{center}
+\begin{tabular}{ c c c }
+training data & validate data & test data\\
+e.g. 50\% & 25\% & 25\%
+\end{tabular}
+\end{center}
+}
+\only<3>{
+\begin{itemize}
+\item randomly split total data into train / dev / test data
+\item find best model(s) by hyper parameter tuning with train / dev data
+\item optionally: combine train / dev data and re-split it to new train / dev data
+\item train best model(s) with train / dev data
+\item check model(s) performance on never before seen test data
+\end{itemize}
+}
+
+\end{frame}
+
+
+
 
 
 
