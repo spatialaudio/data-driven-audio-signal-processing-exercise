@@ -119,9 +119,9 @@ University of Rostock, Rostock, Germany}
   \vspace{1cm}
   highly recommended textbooks / I like very much
   \begin{itemize}
-    \item Kevin P. Murphy (2022): "Probabilistic Machine Learning: An Introduction", MIT Press, 1st. ed.
+    \item K. P. Murphy (2022): "Probabilistic Machine Learning: An Introduction", MIT Press, 1st. ed.
     \href{https://probml.github.io/pml-book/book1.html}{current draft as free pdf}
-    \item \href{https://math.mit.edu/~gs/}{Gilbert Strang} (2019): "Linear Algebra and Learning from Data", Wellesley, 1st ed.
+    \item \href{https://math.mit.edu/~gs/}{G. Strang} (2019): "Linear Algebra and Learning from Data", Wellesley, 1st ed.
   \end{itemize}
 \end{frame}
 
@@ -129,7 +129,7 @@ University of Rostock, Rostock, Germany}
   theory textbooks that inspire me a lot (in some order of heavy usage)
   \begin{itemize}
     \item C.C. Aggarwal, Neural Networks and Deep Learning. Springer, 2018.
-    \item Christopher M. Bishop, Pattern Recognition and Machine Learning, Springer, 2006
+    \item C. M. Bishop, Pattern Recognition and Machine Learning, Springer, 2006
     \item S. Theodoridis, Machine Learning, 2nd ed. Academic Press, 2020.
     \href{https://www.sciencedirect.com/book/9780128188033/machine-learning}{free ebook}
     \item I. Goodfellow, Y. Bengio, and A. Courville, Deep Learning. MIT Press, 2016.
@@ -137,8 +137,8 @@ University of Rostock, Rostock, Germany}
     \href{https://hastie.su.domains/ElemStatLearn/}{free ebook}
     \item G. James, D. Witten, T. Hastie, and R. Tibshirani, An Introduction to Statistical Learning with Applications in R, 2nd ed. Springer, 2021. \href{https://www.statlearning.com/}{free ebook}
     \item C.C. Aggarwal, Linear Algebra and Optimization for Machine Learning. Springer, 2020. \href{https://link.springer.com/book/10.1007/978-3-030-40344-7}{free ebook}
-    \item Marc P. Deisenroth, A. Aldo Faisal, Cheng S. Ong, Mathematics for Machine Learning, Cambridge, 2020. \href{https://mml-book.github.io/book/mml-book.pdf}{free ebook}
-    \item Steven L. Brunton, J. Nathan Kutz, Data Driven Science \& Engineering, Cambridge, 2019. \href{http://www.databookuw.com/databook.pdf}{free ebook draft}
+    \item M. P. Deisenroth, A. A. Faisal, C. S. Ong, Mathematics for Machine Learning, Cambridge, 2020. \href{https://mml-book.github.io/book/mml-book.pdf}{free ebook}
+    \item S. L. Brunton, J. N. Kutz, Data Driven Science \& Engineering, Cambridge, 2019. \href{http://www.databookuw.com/databook.pdf}{free ebook draft}
   \end{itemize}
 \end{frame}
 
@@ -150,7 +150,7 @@ University of Rostock, Rostock, Germany}
     \href{http://www.databookuw.com/databook.pdf}{free ebook draft},
     \href{http://www.databookuw.com/}{video lectures},
     \href{https://github.com/dylewsky/Data_Driven_Science_Python_Demos}{Python tutorials}
-    \item A. G\'{e}ron, Hands-On Machine Learning with SciKit \& TensorFlow, 1st/2nd ed. O'Reilly, 2017/2019.
+    \item Aur\'{e}lien G\'{e}ron, Hands-On Machine Learning with SciKit \& TensorFlow, 1st/2nd ed. O'Reilly, 2017/2019.
     \href{https://github.com/ageron/handson-ml2}{Python tutorials}
     \item \href{https://playground.tensorflow.org}{A Neural Network Playground---TensorFlow}
     \item courses by Andrew Ng at \url{https://www.deeplearning.ai/} and/or \url{https://www.coursera.org/}
@@ -165,7 +165,7 @@ University of Rostock, Rostock, Germany}
 
     textbooks that I like very much
   \begin{itemize}
-  \item John F. Monahan, A Primer on Linear Models, CRC Press, 2008.
+  \item J. F. Monahan, A Primer on Linear Models, CRC Press, 2008.
   \item L. Fahrmeir, A. Hamerle, and G. Tutz, Multivariate statistische Verfahren, 2nd ed. de Gruyter, 1996.
   \href{https://www.degruyter.com/document/doi/10.1515/9783110816020/html}{free ebook}
   \item L. Fahrmeir, T. Kneib, S. Lang, and B. D. Marx, Regression, 2nd ed. Springer, 2021.
@@ -271,8 +271,7 @@ Objectives
 \item recap important matrix factorizations
 \item recap eigenvalues/eigenvectors
 \item spectral theorem
-\item SVD and 4 subspaces within orthonormal bases $\bm{V}$, $\bm{U}$
-\item rank-1 matrix superposition
+\item SVD as a fundamental matrix factorization
 \end{itemize}
 \end{frame}
 
@@ -585,7 +584,10 @@ singular value matrix $\bm{\Sigma}$
 \begin{frame}{Ex03: SVD and the 4 Matrix Subspaces}
 Objectives
 \begin{itemize}
-\item TBD
+\item matrix spans four subspaces
+\item the SVD explains these 4 subspaces with orthonormal bases $\bm{V}$, $\bm{U}$
+\item singular values tell us the 'gain' from input to output singular vectors
+\item rank-1 matrix superposition
 \end{itemize}
 \end{frame}
 
@@ -1563,7 +1565,9 @@ $
 \begin{frame}{Ex04: Solving an Inverse Problem == Finding Model Parameters / Projection Matrices}
 Objectives
 \begin{itemize}
-\item TBD
+\item solving linear, inverse problem is actually machine learning
+\item left inverse solves least squares error problem
+\item projections matrices nicely explain the inverse solution
 \end{itemize}
 \end{frame}
 
@@ -2229,7 +2233,11 @@ which lives in the left null space. Due to the orthogonal subspaces, we know tha
 \begin{frame}{Ex05: Condition Number / Regularization}
 Objectives
 \begin{itemize}
-\item TBD
+\item concept of the condition number in terms of singular values
+\item impact / problem of matrix with high condition number
+\item how to handle small singular values
+\item ridge regression as simple regularization method
+\item L-curve concept to find optimum regularization amount
 \end{itemize}
 \end{frame}
 
@@ -2474,7 +2482,9 @@ Such a model has $N$ \underline{model parameters} $\bm{\theta} = [\theta_1, \the
 \begin{frame}{Ex06: Audio Toy Example for Linear Regression and SVD}
 Objectives
 \begin{itemize}
-\item TBD
+\item audio multitrack data (stems) arranged as data matrix
+\item the SVD of this matrix allows to listen to the U space, i.e. to the orthogonal audio signals (which is some source separation approach)
+\item try to find the mixing gains of a mix that is corrupted by noise
 \end{itemize}
 \end{frame}
 
@@ -2521,16 +2531,31 @@ Let us assume that a) we know $\bm{X}$ (i.e. the individual audio tracks) and $\
 \section{Section III: Feature Design}
 
 \subsection{Exercise 07}
-\begin{frame}[t]{Ex07: Audio Features}
+\begin{frame}{Ex07: Audio Features}
+Objectives
+\begin{itemize}
+\item frequency / time / frequency x time based
+\item histogram, PDF
+\item simple technical energy/peak based measures
+\item loudness: technical vs. perceptual, LUFS concept
+\item STFT / periodogram
+\end{itemize}
+
 no slides so far
+
 \end{frame}
+
+
+
 
 \subsection{Exercise 08}
 
 \begin{frame}{Ex08: Principal Component Analysis (PCA)}
 Objectives
 \begin{itemize}
-\item TBD
+\item insights to a mean-free data matrix
+\item low rank approximation / linear dimensionality reduction as pre-processing steps for feature design
+\item PCA creates orthogonal features which are sorted by its importance (wrt variance)
 \end{itemize}
 \end{frame}
 
@@ -2913,13 +2938,33 @@ data \underline{plane} in 2D space (PC3 not used)
 \section{Section IV: Train Models}
 
 \subsection{Exercise 09}
-\begin{frame}[t]{Ex 09: Bias-Variance Trade Off}
+\begin{frame}{Ex 09: Bias-Variance Trade Off}
+
+Objectives
+\begin{itemize}
+\item concept of total variance split into model bias$^2$ + model variance + data noise variance
+\item underfitting / overfitting as extrem cases for unappropriate model architectures
+\item example with Fourier series, i.e. polynomial regression
+\end{itemize}
+
 no slides so far
+
+
 \end{frame}
 
 \subsection{Exercise 10}
-\begin{frame}[t]{Ex 10: Gradient Descent}
+\begin{frame}{Ex 10: Gradient Descent}
+
+Objectives
+\begin{itemize}
+\item least Squares: closed form vs. numerical via gradient descent (i.e. first order approach)
+\item local vs. global minima, saddle points
+\item crucial parameter settings for learning rate, number of iterations and init values
+\item improvements of plain GD: momentum
+\end{itemize}
+
 no slides so far
+
 \end{frame}
 
 
@@ -3080,7 +3125,10 @@ $$
 \begin{frame}{Ex11: Non-Linear Model Introduction}
 Objectives
 \begin{itemize}
-\item TBD
+\item XOR is a classification problem, which cannot be handled by linear algebra
+\item introduce two nonlinearities: add bias, non-linear activation function
+\item perceptron concept
+\item general architecture of non-linear models
 \end{itemize}
 \end{frame}
 
@@ -3484,7 +3532,8 @@ What could be another model architecture and/or loss function for the given prob
 \begin{frame}{Ex12: Binary Classification}
 Objectives
 \begin{itemize}
-\item TBD
+\item binary classifier as most simple non-linear model
+\item check ingredients on that model: architecture, output activation function, an appropriate loss function, forward and back propagation, gradient descent
 \end{itemize}
 \end{frame}
 
@@ -3918,7 +3967,8 @@ for new state / for GD update: ?
 \begin{frame}{Ex13: Binary Classification with Hidden Layer Model / Multivariate Chain Rule / Metrics}
 Objectives
 \begin{itemize}
-\item TBD
+\item binary classification model with hidden layers means more complexity, more back prop effort
+\item metrics for binary classification: 2x2 confusion matrix
 \end{itemize}
 \end{frame}
 
@@ -4290,7 +4340,13 @@ $$
 \begin{frame}{Ex14: Multi-Class Classification with Softmax Output Layer}
 Objectives
 \begin{itemize}
-\item TBD
+\item a potential (often used) multi-class classification with hidden layers
+\item check ingredients on that model: architecture, output activation function, an appropriate loss function, forward and back propagation
+\item metrics: confusion matrix with different normalizations, accuracy as single number metrics
+\item final toy example: simple music genre classification with 3 mutually exclusive classes
+\item data preparation and feature design
+\item hyper parameter tuning for DNN models
+\item final training and evaluation
 \end{itemize}
 \end{frame}
 
