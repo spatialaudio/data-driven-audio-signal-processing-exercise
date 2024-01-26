@@ -3532,8 +3532,8 @@ What could be another model architecture and/or loss function for the given prob
 \begin{frame}{Ex12: Binary Classification}
 Objectives
 \begin{itemize}
-\item binary classifier as most simple non-linear model
-\item check ingredients on that model: architecture, output activation function, an appropriate loss function, forward and back propagation, gradient descent
+\item binary classifier as most simple non-linear model using sigmoid activation function
+\item check ingredients on that model: architecture, output activation function, an appropriate loss function (sigmoid), forward and back propagation, gradient descent
 \end{itemize}
 \end{frame}
 
@@ -3972,7 +3972,7 @@ Objectives
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Binary Classification with Hidden Layer Model}
+\begin{frame}{Binary Classification with Hidden Layers and Sigmoid Output Model}
 %
 \vspace{-0.25cm}
 \begin{center}
@@ -4121,8 +4121,89 @@ $};
 
 
 
+\begin{frame}[t]{Confusion Matrix for Binary Classification}
+%
+\begin{center}
+\begin{tikzpicture}[scale=1.25]
+\tikzstyle{mtxi}=[draw, shape=rectangle,minimum size=1.5cm]
+\tikzstyle{mtxo}=[draw=none, shape=rectangle,minimum size=0.5cm]
+\node[mtxi, fill=C2!75, align=center](tn) at (-0.75,+0.75){$\textcolor{C0}{0} | \textcolor{C3}{0}$\\TN\\\textcolor{C3}{0},\textcolor{C0}{0}};
+\node[mtxi, align=center](fp) at (+0.75,+0.75){$\textcolor{C0}{1} | \textcolor{C3}{0}$\\FP\\\textcolor{C3}{0},\textcolor{C0}{1}};
+\node[mtxi, align=center](fn) at (-0.75,-0.75){$\textcolor{C0}{0} | \textcolor{C3}{1}$\\FN\\\textcolor{C3}{1},\textcolor{C0}{0}};
+\node[mtxi, fill=C2!75, align=center](tp) at (+0.75,-0.75){$\textcolor{C0}{1} | \textcolor{C3}{1}$\\TP\\\textcolor{C3}{1},\textcolor{C0}{1}};
+%
+\node[mtxo, align=center](realtrue) at (-1.5,+0.75){$\textcolor{C3}{0}$};
+\node[mtxo, align=center](realfalse) at (-1.5,-0.75){$\textcolor{C3}{1}$};
+\node[mtxo, align=center](predtrue) at (-0.75,+1.5){$\textcolor{C0}{0}$};
+\node[mtxo, align=center](predfalse) at (+0.75,1.5){$\textcolor{C0}{1}$};
+%
+\node[mtxo, align=center, rotate=90](reallbl) at (-1.75,0){\textcolor{C3}{real} class};
+\node[mtxo, align=center](predlbl) at (0,1.75){\textcolor{C0}{predicted} class};
+%
+\node[mtxo, align=left](realfalse) at (2.25,+0.75){$\text{R}_0 = \text{TN}+\text{FP}$};
+\node[mtxo, align=left](realtrue) at (2.25,-0.75){$\text{R}_1 = \text{FN}+\text{TP}$};
+%
+\node[mtxo, align=center](predfalse) at (-0.75,-1.75){$\text{P}_0 =$\\$\text{TN}+\text{FN}$};
+\node[mtxo, align=center](predtrue) at (+0.75,-1.75){$\text{P}_1 =$\\$\text{FP}+\text{TP}$};
+%
+\end{tikzpicture}
+\end{center}
+%
+\begin{align*}
+&\text{ACC}=\frac{\text{TN}+\text{TP}}{\text{R}_0+\text{R}_1}
+\qquad
+\text{TNR}=\frac{\text{TN}}{\text{R}_0}
+\qquad
+\text{TPR}=\frac{\text{TP}}{\text{R}_1}
+\\
+&\text{ACC}=\frac{\text{TN}+\text{TP}}{\text{P}_0+\text{P}_1}
+\qquad
+\text{NPV}=\frac{\text{TN}}{\text{P}_0}
+\qquad
+\text{PPV}=\frac{\text{TP}}{\text{P}_1}
+\end{align*}
+%
+\end{frame}
 
-\begin{frame}[label=MultiLabelClassification]{Multi-Label Classification with Hidden Layer Model}
+
+
+\begin{frame}[t]{Binary Classification Metrics}
+%
+$\cdot$ TNR = specificity / selectivity, NPV = ?, TPR = sensitivity / recall, PPV = precision
+
+$\cdot$ metric based on TNR and TPR
+
+$\cdot$ metric based on TNR and NPV and/or TPR and PPV
+
+$\cdot$ TPR vs. PPV extrem cases
+\begin{align*}
+&\text{TPR}=\frac{\text{TP}}{\text{R}_1}=\frac{\text{TP}}{\text{TP}+\text{FN}}
+&\text{PPV}=\frac{\text{TP}}{\text{P}_1}=\frac{\text{TP}}{\text{TP}+\text{FP}}\\
+&\text{TPR}\approx 0: \text{FN} \gg \text{TP},\,\,\, \text{TP} \approx 0
+&\text{PPV}\approx 0: \text{FP} \gg \text{TP},\,\,\, \text{TP} \approx 0\\
+&\text{TPR}\approx 1: \text{TP} \gg \text{FN},\,\,\, \text{FN} \approx 0
+&\text{PPV}\approx 1: \text{TP} \gg \text{FP},\,\,\, \text{FP} \approx 0\\
+\end{align*}
+%
+$\cdot$ $\text{TPR}\approx 1$ and $\text{PPV}\approx 0$: few FN but many FP (e.g. overestimation of infections)
+
+$\cdot$ $\text{TPR}\approx 0$ and $\text{PPV}\approx 1$: few FP but many FN (e.g. underestimation of infections)
+
+$\cdot$ a potentially meaningful(?!) average (harmonic mean)
+$$
+\left(\frac{\frac{1}{\text{TPR}} + \frac{1}{\text{PPV}}}{2}\right)^{-1}
+=
+2 \cdot \frac{\text{TPR}\cdot\text{PPV}}{\text{TPR}+\text{PPV}}
+=
+2 \cdot \frac{\text{recall}\cdot\text{precision}}{\text{recall}+\text{precision}}
+=F_1\,\,\,\text{score}
+$$
+
+\end{frame}
+
+
+
+\begin{frame}[label=MultiLabelClassification]{Multi-Label Classification with Hidden Layer and Sigmoid Output Model}
 %
 \vspace{-0.25cm}
 \begin{center}
@@ -4192,7 +4273,7 @@ a_{13} = \hat{y}_1\\a_{23} = \hat{y}_2
 \end{bmatrix}
 $};
 %
-\node[](sigmoid) at (9.5,0)[]{sigmoid $\sigma_3(\cdot)$};
+\node[](sigmoid) at (9.5,0)[]{\underline{sigmoid} $\sigma_3(\cdot)$};
 %
 \end{tikzpicture}
 \end{center}
@@ -4242,95 +4323,6 @@ x_1\cdot
 \frac{\partial \mathcal{L}}{\partial a_{23}}
 \end{align*}
 %
-\end{frame}
-
-
-
-
-
-
-
-
-
-
-\begin{frame}[t]{Confusion Matrix for Binary Classification}
-%
-\begin{center}
-\begin{tikzpicture}[scale=1.25]
-\tikzstyle{mtxi}=[draw, shape=rectangle,minimum size=1.5cm]
-\tikzstyle{mtxo}=[draw=none, shape=rectangle,minimum size=0.5cm]
-\node[mtxi, align=center](tn) at (-0.75,+0.75){$\textcolor{C0}{0} | \textcolor{C3}{0}$\\TN\\\textcolor{C3}{0},\textcolor{C0}{0}};
-\node[mtxi, align=center](fp) at (+0.75,+0.75){$\textcolor{C0}{1} | \textcolor{C3}{0}$\\FP\\\textcolor{C3}{0},\textcolor{C0}{1}};
-\node[mtxi, align=center](fn) at (-0.75,-0.75){$\textcolor{C0}{0} | \textcolor{C3}{1}$\\FN\\\textcolor{C3}{1},\textcolor{C0}{0}};
-\node[mtxi, align=center](tp) at (+0.75,-0.75){$\textcolor{C0}{1} | \textcolor{C3}{1}$\\TP\\\textcolor{C3}{1},\textcolor{C0}{1}};
-%
-\node[mtxo, align=center](realtrue) at (-1.5,+0.75){$\textcolor{C3}{0}$};
-\node[mtxo, align=center](realfalse) at (-1.5,-0.75){$\textcolor{C3}{1}$};
-\node[mtxo, align=center](predtrue) at (-0.75,+1.5){$\textcolor{C0}{0}$};
-\node[mtxo, align=center](predfalse) at (+0.75,1.5){$\textcolor{C0}{1}$};
-%
-\node[mtxo, align=center, rotate=90](reallbl) at (-1.75,0){\textcolor{C3}{real} class};
-\node[mtxo, align=center](predlbl) at (0,1.75){\textcolor{C0}{predicted} class};
-%
-\node[mtxo, align=left](realfalse) at (2.25,+0.75){$\text{R}_0 = \text{TN}+\text{FP}$};
-\node[mtxo, align=left](realtrue) at (2.25,-0.75){$\text{R}_1 = \text{FN}+\text{TP}$};
-%
-\node[mtxo, align=center](predfalse) at (-0.75,-1.75){$\text{P}_0 =$\\$\text{TN}+\text{FN}$};
-\node[mtxo, align=center](predtrue) at (+0.75,-1.75){$\text{P}_1 =$\\$\text{FP}+\text{TP}$};
-%
-\end{tikzpicture}
-\end{center}
-%
-\begin{align*}
-&\text{ACC}=\frac{\text{TN}+\text{TP}}{\text{R}_0+\text{R}_1}
-\qquad
-\text{TNR}=\frac{\text{TN}}{\text{R}_0}
-\qquad
-\text{TPR}=\frac{\text{TP}}{\text{R}_1}
-\\
-&\text{ACC}=\frac{\text{TN}+\text{TP}}{\text{P}_0+\text{P}_1}
-\qquad
-\text{NPV}=\frac{\text{TN}}{\text{P}_0}
-\qquad
-\text{PPV}=\frac{\text{TP}}{\text{P}_1}
-\end{align*}
-%
-\end{frame}
-
-
-
-\begin{frame}[t]{Binary Classification Metrics}
-%
-$\cdot$ TNR = specificity / selectivity, NPV = ?, TPR = sensitivity / recall, PPV = precision
-
-$\cdot$ metric based on TNR and TPR
-
-$\cdot$ metric based on TNR and NPV and/or TPR and PPV
-
-$\cdot$ TPR vs. PPV extrem cases
-\begin{align*}
-&\text{TPR}=\frac{\text{TP}}{\text{R}_1}=\frac{\text{TP}}{\text{TP}+\text{FN}}
-&\text{PPV}=\frac{\text{TP}}{\text{P}_1}=\frac{\text{TP}}{\text{TP}+\text{FP}}\\
-&\text{TPR}\approx 0: \text{FN} \gg \text{TP},\,\,\, \text{TP} \approx 0
-&\text{PPV}\approx 0: \text{FP} \gg \text{TP},\,\,\, \text{TP} \approx 0\\
-&\text{TPR}\approx 1: \text{TP} \gg \text{FN},\,\,\, \text{FN} \approx 0
-&\text{PPV}\approx 1: \text{TP} \gg \text{FP},\,\,\, \text{FP} \approx 0\\
-\end{align*}
-%
-$\cdot$ $\text{TPR}\approx 1$ and $\text{PPV}\approx 0$: few FN but many FP (e.g. overestimation of infections)
-
-$\cdot$ $\text{TPR}\approx 0$ and $\text{PPV}\approx 1$: few FP but many FN (e.g. underestimation of infections)
-
-$\cdot$ a potentially meaningful(?!) average (harmonic mean)
-$$
-\left(\frac{\frac{1}{\text{TPR}} + \frac{1}{\text{PPV}}}{2}\right)^{-1}
-=
-2 \cdot \frac{\text{TPR}\cdot\text{PPV}}{\text{TPR}+\text{PPV}}
-=
-2 \cdot \frac{\text{recall}\cdot\text{precision}}{\text{recall}+\text{precision}}
-=F_1\,\,\,\text{score}
-$$
-
 \end{frame}
 
 
@@ -4476,7 +4468,7 @@ $$
 
 \againframe{MultiLabelClassification}
 %
-\begin{frame}{Multi-Class Classification with Hidden Layer Model}
+\begin{frame}{Multi-Class Classification with Hidden Layer and Softmax Output Model}
 %
 \vspace{-0.25cm}
 \begin{center}
@@ -4546,7 +4538,7 @@ a_{13} = \hat{y}_1\\a_{23} = \hat{y}_2
 \end{bmatrix}
 $};
 %
-\node[](sigmoid) at (9.5,0)[]{softmax $\sigma_3(\cdot)$};
+\node[](sigmoid) at (9.5,0)[]{\underline{softmax} $\sigma_3(\cdot)$};
 %
 \end{tikzpicture}
 \end{center}
@@ -4596,7 +4588,7 @@ x_1\cdot
 
 
 
-\begin{frame}{Softmax Activation Combined With Categorical Cross Entropy}
+\begin{frame}{Softmax Activation Output Combined With Categorical Cross Entropy}
 
 $\cdot$ $\hat{y}_{i=1 \dots K} \in\mathbb{R}$ model outputs with $K$ mutual exclusive classes
 
@@ -4629,7 +4621,7 @@ $$
 
 
 
-\begin{frame}{Multi-Class Classification with Hidden Layer Model}
+\begin{frame}{Multi-Class Classification with Hidden Layer and Softmax Output Model}
 %
 \vspace{-0.25cm}
 \begin{center}
@@ -4699,7 +4691,7 @@ a_{13} = \hat{y}_1\\a_{23} = \hat{y}_2
 \end{bmatrix}
 $};
 %
-\node[](sigmoid) at (9.5,0)[]{softmax $\sigma_3(\cdot)$};
+\node[](sigmoid) at (9.5,0)[]{\underline{softmax} $\sigma_3(\cdot)$};
 %
 \end{tikzpicture}
 \end{center}
@@ -4851,7 +4843,7 @@ x_1\cdot
 \node[mtxo, align=center](predlbl) at (0,2){\textcolor{C0}{predicted} class};
 %
 \node at (0,-2){100\% percent per row};
-\node at (0,-3){good for unbalanced classes};
+\node at (0,-3){good for (un)balanced classes};
 \end{scope}
 %
 \end{tikzpicture}
