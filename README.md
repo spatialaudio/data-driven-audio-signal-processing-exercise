@@ -16,11 +16,12 @@ Jupyter notebooks with rendered **outputs** can be viewed at https://nbviewer.or
 
 - [v0.1](https://github.com/spatialaudio/data-driven-audio-signal-processing-exercise/releases/tag/v0.1) for winter term 2021/22, initial version
 - [v0.2](https://github.com/spatialaudio/data-driven-audio-signal-processing-exercise/releases/tag/v0.2) for winter term 2022/23
-- TBD for winter term 2023/24
+- [v0.3](https://github.com/spatialaudio/data-driven-audio-signal-processing-exercise/releases/tag/v0.3) for winter term 2023/24, many beamer tex slides added, CI
+- TBD for winter term 2024/25
 
 ## Branch Conventions
 
-- the **default branch** of the repository is `dev` used for development 
+- the **default branch** of the repository is `dev` used for development
 - all notebook outputs in `dev` branch are cleared for convenient diff handling
 - `main` branch contains notebooks with rendered outputs, which is maintained from time to time
 - do **not** rely on `main` branch as this is hard reset from time to time
