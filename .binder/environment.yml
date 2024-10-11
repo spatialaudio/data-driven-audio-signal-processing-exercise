@@ -20,6 +20,7 @@ dependencies:
   - librosa  # 0.10.1
   - pip:
     - pyloudnorm==0.1.0
-# conda env create -f environment.yml  --force
+# conda env remove -n myddasp
+# conda env create -f environment.yml
 # pip manually?!
 # python -m ipykernel install --user --name myddasp --display-name "myddasp"
