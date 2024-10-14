@@ -1,0 +1,11 @@
+matplotlib
+numpy
+scipy
+librosa
+soundfile
+ipympl
+scikit-learn
+tensorflow
+keras-tuner
+statsmodels
+pyloudnorm
