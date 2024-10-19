@@ -10,7 +10,7 @@
 
 import numpy as np
 import tensorflow as tf
-import tensorflow.keras as keras
+from tensorflow import keras
 
 
 print("element-wise multiplication of matrix slices")
