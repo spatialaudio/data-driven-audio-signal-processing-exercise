@@ -320,7 +320,7 @@ rank of matrix $\bm{A}$ is $R$ == number of non-zero eigenvalues
 
 \begin{frame}{Matrix Factorization from Eigenwert Problem for Symmetric Matrix}
 
-for \underline{symmetric} matrix $\bm{A}_{M \times M} = \bm{A}_{M \times M}^H$ we can have a special case of diagonalization
+for \underline{Hermitian} matrix $\bm{A}_{M \times M} = \bm{A}_{M \times M}^H$ we can have a special case of diagonalization
 
 $$\bm{A} = \bm{Q} \bm{\Lambda} \bm{Q}^{-1} = \bm{Q} \bm{\Lambda} \bm{Q}^{H}$$
 
@@ -359,12 +359,12 @@ rank of matrix $\bm{A}$ is $R$ == number of non-zero eigenvalues
 
 \begin{frame}[t]{Matrix Factorization from Eigenwert Problem for Symmetric Matrix}
 
-for a normal matrix $\bm{A}$ (such as symmetric, i.e. $\bm{A}^H \bm{A} = \bm{A} \bm{A}^H$ )
+for a \underline{normal} matrix $\bm{A}$ (i.e. it holds $\bm{A}^H \bm{A} = \bm{A} \bm{A}^H$ )
 
 there is the fundamental spectral theorem
 $$\bm{A} = \bm{Q} \bm{\Lambda} \bm{Q}^{H}$$
 
-i.e. diagonalization in terms of eigenvectors in full rank matrix $\bm{Q}$ and eigenvalues in $\bm{\Lambda}\in\mathbb{R}$
+i.e. diagonalization in terms of eigenvectors in unitary matrix $\bm{Q}$ and eigenvalues in $\bm{\Lambda}\in\mathbb{C}$
 
 What does $\bm{A}$ with an eigenvector $\bm{q}$?
 
@@ -754,7 +754,7 @@ $$
 $$
 matrix factorization in terms of SVD
 $$
-\bm{A} = \bm{U} \bm{\Sigma} \bm{V}^H
+\bm{A} = \bm{U} \bm{\Sigma} \bm{V}^T
 =
 \begin{bmatrix}
 0 & 1 & 0 \\
@@ -773,7 +773,7 @@ $$
 0 & 1\\
 1 & 0
 \end{bmatrix}
-\right)^H
+\right)^T
 $$
 
 What is the rank of $\bm{A}$?
@@ -833,7 +833,7 @@ We immediately see that i) rows are dependent because row2 = 2 row1, ii) columns
 
 Due to rank $R=1$, we expect only one non-zero singular value $\sigma_1$, therefore the dimension
 of row space (which is always equal to the dimension of column space) is $R=1$, i.e. we have $R$
-independent vectors that span the row space and $r$ independent vectors that span the column space, so these spaces are lines in both 2D spaces in our example.
+independent vectors that span the row space and $R$ independent vectors that span the column space, so these spaces are lines in both 2D spaces in our example.
 
 The $\bm{U}$ space has vectors in $\mathbb{R}^{M=2}$, the $\bm{V}$ space has vectors in $\mathbb{R}^{N=2}$.
 
@@ -868,7 +868,7 @@ $$
 1\\3
 \end{bmatrix},
 $$
-i.e. the transposed row found in the outer product. So, all $\bm{X}^\mathrm{T} \bm{y}$,
+i.e. the transposed row found in the above outer product. So, all $\bm{X}^\mathrm{T} \bm{y}$,
 except those solutions that produce $\bm{X}^\mathrm{T} \bm{y} = \bm{0}$ (these $\bm{y}$
 belong to the left null space), are multiples of $[1, 3]^\mathrm{T}$.
 
@@ -1468,7 +1468,7 @@ $
 \drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}^H
 $
 \end{center}
-$\cdot$ Flat / fat matrix $\bm{A}$, \quad $M$ rows $<$ $N$ columns, \quad full row rank ($r=M$), \quad right inverse $\bm{A}^{\dagger_r} = \bm{A}^H (\bm{A} \bm{A}^H )^{-1}$
+$\cdot$ Flat / fat matrix $\bm{A}$, \quad $M$ rows $<$ $N$ columns, \quad full row rank ($r=M$), \quad a right inverse $\bm{A}^{\dagger_r} = \bm{A}^H (\bm{A} \bm{A}^H )^{-1}$
 such that $\bm{A} \bm{A}^{\dagger_r} = \bm{I}$ (i.e. projection to row space)
 \begin{center}
 $
@@ -1481,7 +1481,7 @@ $
 \drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\M]{V}_\mathtt{N \times N}^H
 $
 \end{center}
-$\cdot$ Tall / thin matrix $\bm{A}$, \quad $M$ rows $>$ $N$ columns, \quad full column rank ($r=N$), \quad left inverse $\bm{A}^{\dagger_l} = (\bm{A}^H \bm{A})^{-1} \bm{A}^H$ such that $\bm{A}^{\dagger_l} \bm{A} = \bm{I}$ (i.e. projection to row space)
+$\cdot$ Tall / thin matrix $\bm{A}$, \quad $M$ rows $>$ $N$ columns, \quad full column rank ($r=N$), \quad a left inverse $\bm{A}^{\dagger_l} = (\bm{A}^H \bm{A})^{-1} \bm{A}^H$ such that $\bm{A}^{\dagger_l} \bm{A} = \bm{I}$ (i.e. projection to row space)
 \begin{center}
 $
 \def\M{1.4}
@@ -1502,7 +1502,7 @@ $
 $\cdot$ Sum of rank-1 matrices\qquad
 $\bm{A} = \bm{U} \bm{\Sigma} \bm{V}^H =  \sum\limits_{r=1}^{R} \sigma_r \quad \textcolor{C0}{\bm{u}}_r \quad \textcolor{C2}{\bm{v}}^H_r$
 
-$\cdot$ not full-rank cases need (general) pseudo-inverse $\bm{A}^\dagger = \bm{V} \Sigma^\dagger \bm{U}^H$
+$\cdot$ not full-rank cases need (a general) pseudo-inverse $\bm{A}^\dagger = \bm{V} \Sigma^\dagger \bm{U}^H$
 
 \hspace{4.25cm}
 \textcolor{C0}{column space} $\perp$ \textcolor{C4}{left null space}
@@ -1620,8 +1620,8 @@ $$
 0 & 1\\
 1 & 0
 \end{bmatrix}
-\right)^H=
-\bm{U} \bm{\Sigma} \bm{V}^H
+\right)^T=
+\bm{U} \bm{\Sigma} \bm{V}^T
 $$
 
 Can we solve for the model parameter vector $\bm{\theta}$ given the feature matrix $\bm{X}$ and the output data vector $\bm{y}$?
@@ -1662,14 +1662,14 @@ $$
 optimization problem in least squares sense: $\min_{\text{wrt }\bm{\theta}} \lVert\bm{e}\rVert_2^2 = \min_{\text{wrt }\bm{\theta}} \lVert\bm{y} - \bm{X} \bm{\theta}\rVert_2^2$
 %
 
-recall that $\lVert\bm{y} - \bm{X} \bm{\theta}\rVert_2^2 = (\bm{y} - \bm{X} \bm{\theta})^H (\bm{y} - \bm{X} \bm{\theta})$
+recall that $\lVert\bm{y} - \bm{X} \bm{\theta}\rVert_2^2 = (\bm{y} - \bm{X} \bm{\theta})^T (\bm{y} - \bm{X} \bm{\theta})$
 \begin{align*}
 \lVert \bm{y} - \bm{X} \bm{\theta}\rVert_2  &= \sqrt{(-3 - 3\theta_1)^2 + (4-8\theta_2)^2 + (0-2)^2}\\
 J(\theta_1, \theta_2) = \lVert\bm{y} - \bm{X} \bm{\theta}\rVert_2^2 &= (-3 - 3\theta_1)^2 + (4-8\theta_2)^2 + (0-2)^2
 \end{align*}
 %
 $$
-\nabla J(\theta_1, \theta_2) =
+\text{grad} J(\theta_1, \theta_2) =
 \begin{bmatrix}
 \frac{\partial J}{\partial \theta_1}\\
 \frac{\partial J}{\partial \theta_2}
@@ -1688,7 +1688,7 @@ $$
 \end{bmatrix}
 $$
 %
-minimum at $\nabla J(\theta_1, \theta_2) = \bm{0}$, hence
+minimum at $\text{grad} J(\theta_1, \theta_2) = \bm{0}$, hence
 %
 $$
 \hat{\bm{\theta}}
@@ -1761,8 +1761,8 @@ $$
 0 & 1\\
 1 & 0
 \end{bmatrix}
-\right)^H=
-\bm{U} \bm{\Sigma} \bm{V}^H
+\right)^T=
+\bm{U} \bm{\Sigma} \bm{V}^T
 $$
 
 \begin{center}
@@ -1789,13 +1789,13 @@ $$\bm{X} \hat{\bm{\theta}} + \bm{e} = \bm{y} \qquad \rightarrow \qquad \bm{e} = 
 %
 shortest path of $\bm{e}$ to column space means that $\bm{e}$ is orthogonal to column space
 
-hence, $\bm{e}$ must live purely in left null space, i.e. $\bm{X}^H \bm{e} = \bm{0}$ holds, this yields
+hence, $\bm{e}$ must live purely in left null space, i.e. $\bm{X}^T \bm{e} = \bm{0}$ holds, this yields
 %
-$$\bm{X}^H (\bm{y} - \bm{X} \hat{\bm{\theta}}) = \bm{0} \quad \rightarrow \quad \bm{X}^H \bm{y} = \bm{X}^H \bm{X} \hat{\bm{\theta}} \quad \rightarrow \quad
-(\bm{X}^H \bm{X})^{-1} \bm{X}^H \bm{y} = \hat{\bm{\theta}}
+$$\bm{X}^T (\bm{y} - \bm{X} \hat{\bm{\theta}}) = \bm{0} \quad \rightarrow \quad \bm{X}^T \bm{y} = \bm{X}^T \bm{X} \hat{\bm{\theta}} \quad \rightarrow \quad
+(\bm{X}^T \bm{X})^{-1} \bm{X}^T \bm{y} = \hat{\bm{\theta}}
 $$
 
-middle equation: normal equations, right equation: least squares error solution using left inverse $\bm{X}^{\dagger_l} = (\bm{X}^H \bm{X})^{-1} \bm{X}^H$ such that
+middle equation: normal equations, right equation: least squares error solution using left inverse $\bm{X}^{\dagger_l} = (\bm{X}^T \bm{X})^{-1} \bm{X}^T$ such that
 $\bm{X}^{\dagger_l} \bm{X} = \bm{I}$
 
 
@@ -1836,9 +1836,9 @@ $$\bm{X}^{\dagger_l} = \bm{V} \bm{\Sigma}^{\dagger_l}\bm{U}^\mathrm{H} = (\bm{X}
 
 we meanwhile know that for left inverse characteristics $$\bm{X}^{\dagger_l} \bm{X} = \bm{I}$$
 
-this is a projection matrix into the row space of $\bm{X}$, because $\bm{X}^{\dagger_l} \bm{X} \bm{\theta} = \bm{I} \bm{\theta}$
+this operation is a projection matrix into the row space of $\bm{X}$, because $\bm{X}^{\dagger_l} \bm{X} \bm{\theta} = \bm{I} \bm{\theta}$
 
-factor this with SVD
+we can factorise this with SVD
 
 $$\bm{V} \,\,\bm{?}\,\, \bm{U}^H \bm{U} \bm{\Sigma} \bm{V}^H = \bm{I}$$
 
@@ -1867,9 +1867,9 @@ $
 
 we meanwhile know that for left inverse characteristics $$\bm{X}^{\dagger_l} \bm{X} = \bm{I}$$
 
-this is a projection matrix into the row space of $\bm{X}$, because $\bm{X}^{\dagger_l} \bm{X} \bm{\theta} = \bm{I} \bm{\theta}$
+this operation is a projection matrix into the row space of $\bm{X}$, because $\bm{X}^{\dagger_l} \bm{X} \bm{\theta} = \bm{I} \bm{\theta}$
 
-factor this with SVD
+we can factorise this with SVD
 
 $$\bm{V} \,\,\bm{?}\,\, \bm{\Sigma} \bm{V}^H = \bm{I}$$
 
@@ -1895,9 +1895,9 @@ $
 
 we meanwhile know that for left inverse characteristics $$\bm{X}^{\dagger_l} \bm{X} = \bm{I}$$
 
-this is a projection matrix into the row space of $\bm{X}$, because $\bm{X}^{\dagger_l} \bm{X} \bm{\theta} = \bm{I} \bm{\theta}$
+this operation is a projection matrix into the row space of $\bm{X}$, because $\bm{X}^{\dagger_l} \bm{X} \bm{\theta} = \bm{I} \bm{\theta}$
 
-factor this with SVD
+we can factorise this with SVD
 
 $$\bm{?}\,\, \bm{\Sigma} = \bm{I}$$
 
@@ -1921,9 +1921,9 @@ $
 
 we meanwhile know that for left inverse characteristics $$\bm{X}^{\dagger_l} \bm{X} = \bm{I}$$
 
-this is a projection matrix into the row space of $\bm{X}$, because $\bm{X}^{\dagger_l} \bm{X} \bm{\theta} = \bm{I} \bm{\theta}$
+this operation is a projection matrix into the row space of $\bm{X}$, because $\bm{X}^{\dagger_l} \bm{X} \bm{\theta} = \bm{I} \bm{\theta}$
 
-factor this with SVD
+we can factorise this with SVD
 
 $$\bm{\Sigma}^{\dagger_l} \bm{\Sigma} = \bm{I}$$
 
@@ -1963,7 +1963,7 @@ $
 \def\M{1.8}
 \def\N{1}
 \def\rank{0.999999}
-\drawmatrix[bbox style={fill=gray!50}, bbox height=\N, bbox width=\M, fill=white, height=\rank\N, width=\rank\N]{\Sigma^H}_\mathtt{N \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\N, bbox width=\M, fill=white, height=\rank\N, width=\rank\N]{\Sigma^T}_\mathtt{N \times M}
 \drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}
 =
 \drawmatrix[fill=none, height=\N, width=\N]?_\mathtt{N \times N}
@@ -1993,7 +1993,7 @@ $
 \def\M{1.8}
 \def\N{1}
 \def\rank{0.999999}
-\drawmatrix[bbox style={fill=gray!50}, bbox height=\N, bbox width=\M, fill=white, height=\rank\N, width=\rank\N]{\Sigma^H}_\mathtt{N \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\N, bbox width=\M, fill=white, height=\rank\N, width=\rank\N]{\Sigma^T}_\mathtt{N \times M}
 \drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}
 =
 \drawmatrix[diag]{\sigma^2}_\mathtt{N \times N}
@@ -2006,15 +2006,15 @@ $
 \def\N{1}
 \def\rank{0.999999}
 \drawmatrix[diag]{1/\sigma^2}_\mathtt{N \times N}
-\drawmatrix[bbox style={fill=gray!50}, bbox height=\N, bbox width=\M, fill=white, height=\rank\N, width=\rank\N]{\Sigma^H}_\mathtt{N \times M} =
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\N, bbox width=\M, fill=white, height=\rank\N, width=\rank\N]{\Sigma^T}_\mathtt{N \times M} =
 \drawmatrix[bbox style={fill=gray!50}, bbox height=\N, bbox width=\M, fill=white, height=\rank\N, width=\rank\N]{\Sigma^{\dagger_l}}_\mathtt{N \times M}
 $
 \end{center}
 
-$$\bm{\Sigma}^{\dagger_l} = (\bm{\Sigma}^H \bm{\Sigma})^{-1} \bm{\Sigma}^H$$
+$$\bm{\Sigma}^{\dagger_l} = (\bm{\Sigma}^T \bm{\Sigma})^{-1} \bm{\Sigma}^T$$
 
 $$\bm{X}^{\dagger_l} = \bm{V} \bm{\Sigma}^{\dagger_l} \bm{U}^H =
-\bm{V} \left[(\bm{\Sigma}^H \bm{\Sigma})^{-1} \bm{\Sigma}^H\right] \bm{U}^H$$
+\bm{V} \left[(\bm{\Sigma}^T \bm{\Sigma})^{-1} \bm{\Sigma}^T\right] \bm{U}^H$$
 
 
 \end{frame}
@@ -2112,8 +2112,8 @@ $$
 0 & 1\\
 1 & 0
 \end{bmatrix}
-\right)^H=
-\bm{U} \bm{\Sigma} \bm{V}^H
+\right)^T=
+\bm{U} \bm{\Sigma} \bm{V}^T
 $$
 Find left-inverse $\bm{X}^{\dagger_l}$ of $\bm{X}$ such that $\bm{X}^{\dagger_l} \bm{X} = \bm{I}_{2 \times 2}$
 %
@@ -2140,10 +2140,10 @@ $$
 1 & 0 & 0 \\
 0 & 0 & 1
 \end{bmatrix}
-\right)^H}_{\text{this is not the SVD of } \bm{X}^{\dagger_l} \text{, why?, check the SVD of } \bm{X}^{\dagger_l}}
+\right)^T}_{\text{this is not the SVD of } \bm{X}^{\dagger_l} \text{, why?, check the SVD of } \bm{X}^{\dagger_l}}
 =
-\bm{V} \bm{\Sigma}^{\dagger_l} \bm{U}^H =
-\bm{V} \left[(\bm{\Sigma}^H \bm{\Sigma})^{-1} \bm{\Sigma}^H\right] \bm{U}^H
+\bm{V} \bm{\Sigma}^{\dagger_l} \bm{U}^T =
+\bm{V} \left[(\bm{\Sigma}^T \bm{\Sigma})^{-1} \bm{\Sigma}^T\right] \bm{U}^T
 $$
 %
 We can solve for optimum $\hat{\bm{\theta}}$ in sense of least squares error, i.e. $\lVert \bm{e} \rVert_2^2 = \lVert \bm{y} - \bm{X} \hat{\bm{\theta}} \rVert_2^2\rightarrow \text{min}$:
@@ -2253,7 +2253,7 @@ $$
 +\frac{\sqrt{2}}{100} & -\frac{\sqrt{2}}{100}
 \end{bmatrix}
 =
-\bm{U} \bm{\Sigma} \bm{V}^H
+\bm{U} \bm{\Sigma} \bm{V}^T
 =
 \begin{bmatrix}
 1 & 0\\
@@ -2268,12 +2268,12 @@ $$
 \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\
 \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}}
 \end{bmatrix}
-\right)^H
+\right)^T
 $$
 \pause
 %
 Left-inverse / here actually the Exact-inverse requires
-$$\hat{\bm{\theta}} = \frac{\bm{u}_1^H \bm{y}}{\textcolor{C0}{\sigma_1}}\bm{v}_1 + \frac{\bm{u}_2^H \bm{y}}{\textcolor{C1}{\sigma_2}}\bm{v}_2$$
+$$\hat{\bm{\theta}} = \frac{\bm{u}_1^T \bm{y}}{\textcolor{C0}{\sigma_1}}\bm{v}_1 + \frac{\bm{u}_2^T \bm{y}}{\textcolor{C1}{\sigma_2}}\bm{v}_2$$
 \pause
 %
 for $\bm{y}=[1,1]^T$ we get
@@ -2334,7 +2334,7 @@ $$
 =
 \bm{V}_{N \times N}\quad
 \bm{\Sigma}^{\dagger_l}_{N \times M}\quad
-(\bm{U}_{M \times M})^\mathrm{H}
+(\bm{U}_{M \times M})^\mathrm{T}
 =
 \bm{V}
 \begin{bmatrix}
@@ -2343,16 +2343,16 @@ $$
 0 & 0 & \frac{\sigma_i}{\sigma_i^2} & 0 & 0 & 0\\
 0 & 0 & 0 & \frac{\sigma_R}{\sigma_R^2} & 0 & 0
 \end{bmatrix}
-\bm{U}^\mathrm{H}
+\bm{U}^\mathrm{T}
 $$
 
 $\cdot$ if condition number $\kappa(\bm{X}) = \frac{\sigma_\text{max}}{\sigma_\text{min}}$ is very large, regularization yields more robust solutions
 
-$\cdot$ \textcolor{C0}{Tikhonov} regularization aka \textcolor{C0}{ridge regression} applies following modification
+$\cdot$ \textcolor{C0}{Tikhonov} regularization aka \textcolor{C0}{ridge regression} applies following modification with $\lambda > 0$
 
 $$
-\bm{\Sigma}^{\dagger_l} = (\bm{\Sigma}^H \bm{\Sigma})^{-1} \bm{\Sigma}^H \longrightarrow
-\bm{\Sigma}^{\dagger_\text{ridge}} = (\bm{\Sigma}^H \bm{\Sigma} + \textcolor{C0}{\lambda \bm{I}})^{-1} \bm{\Sigma}^H
+\bm{\Sigma}^{\dagger_l} = (\bm{\Sigma}^T \bm{\Sigma})^{-1} \bm{\Sigma}^T \longrightarrow
+\bm{\Sigma}^{\dagger_\text{ridge}} = (\bm{\Sigma}^T \bm{\Sigma} + \textcolor{C0}{\lambda \bm{I}})^{-1} \bm{\Sigma}^T
 $$
 
 $$
@@ -2402,7 +2402,7 @@ title={regularized singular value inversion}]
 \begin{frame}[t]{L-Curve to Find Optimum Regularization Parameter $\lambda$}
 $$
 \hat{\bm{\theta}}(\textcolor{C0}{\lambda}) \quad=\quad
-\left[\bm{V} (\bm{\Sigma}^\mathrm{H} \bm{\Sigma} + \textcolor{C0}{\lambda}\bm{I})^{-1} \bm{\Sigma}^\mathrm{H} \bm{U}^\mathrm{H}\right] \bm{y} \quad=\quad
+\left[\bm{V} (\bm{\Sigma}^\mathrm{T} \bm{\Sigma} + \textcolor{C0}{\lambda}\bm{I})^{-1} \bm{\Sigma}^\mathrm{T} \bm{U}^\mathrm{H}\right] \bm{y} \quad=\quad
 \left[(\bm{X}^\mathrm{H}\bm{X} + \textcolor{C0}{\lambda}\bm{I})^{-1} \bm{X}^\mathrm{H}\right] \bm{y}
 $$
 \begin{center}
@@ -2459,7 +2459,7 @@ J(\bm{\theta}) =
 \lVert\bm{y} - \bm{X} \bm{\theta}\rVert_2^2 + \textcolor{C0}{\lambda} \lVert \bm{\theta} \rVert_2^2
 $$
 
-$\cdot$ and the plain Least Squares Error Problem (i.e. for $\textcolor{C0}{\lambda}=0$)
+$\cdot$ and the plain Least Squares Error Problem (special case for $\textcolor{C0}{\lambda}=0$)
 $$
 \min_{\text{wrt }\bm{\theta}} J(\bm{\theta}) \quad\text{with cost function}\quad
 J(\bm{\theta}) =  \lVert\bm{y} - \bm{X} \bm{\theta}\rVert_2^2
@@ -2468,7 +2468,7 @@ $$
 have the closed form solution using the (regularized) left inverse of $\bm{X} = \bm{U}\bm{\Sigma}\bm{V}^H$:
 $$
 \hat{\bm{\theta}} \quad=\quad
-\left[\bm{V} (\bm{\Sigma}^\mathrm{H} \bm{\Sigma} + \textcolor{C0}{\lambda \bm{I})}^{-1} \bm{\Sigma}^\mathrm{H} \bm{U}^\mathrm{H}\right] \bm{y} \quad=\quad
+\left[\bm{V} (\bm{\Sigma}^\mathrm{T} \bm{\Sigma} + \textcolor{C0}{\lambda \bm{I})}^{-1} \bm{\Sigma}^\mathrm{T} \bm{U}^\mathrm{H}\right] \bm{y} \quad=\quad
 \left[(\bm{X}^\mathrm{H}\bm{X} + \textcolor{C0}{\lambda \bm{I}})^{-1} \bm{X}^\mathrm{H}\right] \bm{y}
 $$
 
@@ -2524,7 +2524,7 @@ where $\bm{\theta}=[\theta_1, \theta_2, \theta_3, ..., \theta_{F}]^\mathrm{T}$ a
 \item $\bm{y}_{N \times 1}$ audio signal with $N$ samples as a result of the linear model's linear combination plus noise
 \end{itemize}
 %
-Let us assume that a) we know $\bm{X}$ (i.e. the individual audio tracks) and $\bm{y}$ (i.e. the noise-corrupted final mixdown), b) that we do not know the noise $\bm{n}$ and c) that we want to estimate the 'real world' mixing gains $\bm{\theta}$
+Let us assume that a) we know $\bm{X}$ (i.e. the individual audio tracks) and $\bm{y}$ (i.e. the noise-corrupted final mixdown), b) that we do not know the noise $\bm{\nu}$ and c) that we want to estimate the 'real world' mixing gains $\bm{\theta}$
 \end{frame}
 
 
