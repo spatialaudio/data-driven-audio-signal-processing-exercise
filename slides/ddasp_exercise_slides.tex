@@ -123,6 +123,7 @@ University of Rostock, Rostock, Germany}
     \href{https://probml.github.io/pml-book/book1.html}{current draft as free pdf}
     \item \href{https://math.mit.edu/~gs/}{G. Strang} (2019): "Linear Algebra and Learning from Data", Wellesley, 1st ed.
     \item S. Raschka, Y. Liu, V. Mirjalili (2022): "Machine Learning with PyTorch and Scikit-Learn", Packt, 1st ed.
+    \item J.A. Fessler, R.R. Nadakuditi (2024): "Linear Algebra for Data Science, Machine Learning, and Signal Processing", Cambridge University Press, 1st ed.
   \end{itemize}
 \end{frame}
 
@@ -270,7 +271,7 @@ Let us assume that i) we know $\bm{X}$ (i.e. the individual audio tracks) and $\
 Objectives
 \begin{itemize}
 \item recap important matrix factorizations
-\item recap eigenvalues/eigenvectors
+\item recap eigenvalues / eigenvectors
 \item spectral theorem
 \item SVD as a fundamental matrix factorization
 \end{itemize}
@@ -281,13 +282,13 @@ Objectives
 
 \begin{frame}{Matrix Factorization from Eigenwert Problem for Square Matrix}
 
-for square matrix $\bm{A}_{M \times M}$ we can have a factorization (known as diagonalization)
+for \underline{square} matrix $\bm{A}_{M \times M}$ we can have a factorization (known as diagonalization)
 
 $$\bm{A} = \bm{X} \bm{\Lambda} \bm{X}^{-1}$$
 
 (but only) when $M$ independent eigenvectors as columns in $\bm{X}$ (only then $\bm{X}^{-1}$ is possible)
 
-with the corresponding eigenvalues $\lambda$ in the diagonal matrix $\Lambda$
+with the corresponding eigenvalues $\lambda$ in the diagonal matrix $\bm{\Lambda}$
 
 \begin{center}
 $
@@ -301,15 +302,15 @@ $
 $
 \end{center}
 
-the matrix is acting onto $m$-th eigenvector as
+the matrix is acting onto the $m$-th eigenvector as
 
 $$\bm{A} \bm{x}_m = \lambda_m \bm{x}_m$$
 
-$\Lambda$ might be complex-valued
+$\bm{\Lambda}$ might be complex-valued
 
 $\bm{X}$ might be complex-valued
 
-if $\lambda_m=0$ we get $\bm{A} \bm{x}_m = 0 \cdot \bm{x}_m = \bm{0}$, i.e. $\bm{A}$ is a singular matrix, i.e. $\bm{A}$ is a non-full rank matrix
+if $\lambda_m=\textcolor{C3}{0}$ we get $\bm{A} \bm{x}_m = \textcolor{C3}{0} \cdot \bm{x}_m = \bm{0}$, i.e. $\bm{A}$ is a singular matrix, i.e. $\bm{A}$ is a non-full rank matrix
 
 rank of matrix $\bm{A}$ is $R$ == number of non-zero eigenvalues
 
@@ -320,13 +321,16 @@ rank of matrix $\bm{A}$ is $R$ == number of non-zero eigenvalues
 
 \begin{frame}{Matrix Factorization from Eigenwert Problem for Symmetric Matrix}
 
-for \underline{Hermitian} matrix $\bm{A}_{M \times M} = \bm{A}_{M \times M}^H$ we can have a special case of diagonalization
+for \textcolor{C0}{\underline{Hermitian}} matrix $\bm{A}_{M \times M} = \bm{A}_{M \times M}^H$
 
+and a dedicated \underline{unitary} matrix $\bm{Q}$ (i.e. it holds $\bm{Q} \bm{Q}^H = \bm{I}$, $\bm{Q}^H \bm{Q} = \bm{I}$)
+
+special case of diagonalization, known as \underline{spectral theorem}:
 $$\bm{A} = \bm{Q} \bm{\Lambda} \bm{Q}^{-1} = \bm{Q} \bm{\Lambda} \bm{Q}^{H}$$
 
-(only) when $M$ independent, \underline{orthogonal} eigenvectors as columns in $\bm{Q}$ \quad($\bm{Q} \bm{Q}^H = \bm{I}$, $\bm{Q}^H \bm{Q} = \bm{I}$)
+with $M$ independent, \underline{orthonormal} eigenvectors as columns in $\bm{Q}$
 
-with the corresponding eigenvalues $\lambda\in\mathbb{R}$ in the diagonal matrix $\Lambda$
+with the corresponding eigenvalues $\textcolor{C0}{\lambda\in\mathbb{R}}$ in the diagonal matrix $\Lambda$
 
 \begin{center}
 $
@@ -344,7 +348,7 @@ the matrix is acting onto the $m$-th eigenvector as
 
 $$\bm{A} \bm{q}_m = \lambda_m \bm{q}_m$$
 
-$\bm{\Lambda}\in\mathbb{R}$
+$\textcolor{C0}{\bm{\Lambda}\in\mathbb{R}}$
 
 $\bm{Q}\in\mathbb{R}$ if $\bm{A}\in\mathbb{R}$, $\bm{Q}\in\mathbb{C}$ if $\bm{A}\in\mathbb{C}$
 
@@ -359,12 +363,18 @@ rank of matrix $\bm{A}$ is $R$ == number of non-zero eigenvalues
 
 \begin{frame}[t]{Matrix Factorization from Eigenwert Problem for Symmetric Matrix}
 
-for a \underline{normal} matrix $\bm{A}$ (i.e. it holds $\bm{A}^H \bm{A} = \bm{A} \bm{A}^H$ )
+for a \textcolor{C0}{\underline{normal}} matrix $\bm{A}$ (i.e. it holds $\bm{A}^H \bm{A} = \bm{A} \bm{A}^H$)
 
-there is the fundamental spectral theorem
-$$\bm{A} = \bm{Q} \bm{\Lambda} \bm{Q}^{H}$$
+and a dedicated \underline{unitary} matrix $\bm{Q}$ (i.e. it holds $\bm{Q} \bm{Q}^H = \bm{I}$, $\bm{Q}^H \bm{Q} = \bm{I}$)
 
-i.e. diagonalization in terms of eigenvectors in unitary matrix $\bm{Q}$ and eigenvalues in $\bm{\Lambda}\in\mathbb{C}$
+special case of diagonalization, known as \underline{spectral theorem}:
+$$\bm{A} = \bm{Q} \bm{\Lambda} \bm{Q}^{-1} = \bm{Q} \bm{\Lambda} \bm{Q}^{H}$$
+
+with $M$ independent, \underline{orthonormal} eigenvectors as columns in $\bm{Q}$
+
+with the corresponding eigenvalues $\textcolor{C0}{\lambda\in\mathbb{R}/\mathbb{C}}$ in the diagonal matrix $\bm{\Lambda}$
+
+%i.e. diagonalization in terms of orthonormal eigenvectors in $\bm{Q}$ and eigenvalues in $\bm{\Lambda}\in\mathbb{C}$
 
 What does $\bm{A}$ with an eigenvector $\bm{q}$?
 
@@ -451,7 +461,7 @@ $
 $
 \end{center}
 
-$$\bm{A} = \bm{U} \bm{\Sigma} \bm{V}^\mathrm{H}\qquad \qquad \bm{U}\bm{U}^H = \bm{U}^H\bm{U} = \bm{I}_{M \times M} \qquad \qquad \bm{V}\bm{V}^H = \bm{V}^H\bm{V} = \bm{I}_{N \times N}$$
+$$\bm{A} = \bm{U} \bm{\Sigma} \bm{V}^\mathrm{H} \qquad \qquad \text{unitary:} \qquad \bm{U}\bm{U}^H = \bm{U}^H\bm{U} = \bm{I}_{M \times M} \qquad \bm{V}\bm{V}^H = \bm{V}^H\bm{V} = \bm{I}_{N \times N}$$
 
 
 left singular vectors\quad$\bm{U} = \mathrm{eigvec}(\bm{A}\bm{A}^\mathrm{H})$
@@ -788,7 +798,7 @@ What are the four subspaces of $\bm{A}$? Give them as equations and as a sketch.
 \begin{frame}{SVD Fundamentals}
 %
 superposition of rank-1 matrices (outer products) because singular values in diagonal matrix $\bm{\Sigma}$
-$$\bm{A}_{M \times N} = \sum_{r=1}^{\text{rank }R} \sigma_r \bm{u}_r \bm{v}_r^\mathrm{H} = \bm{U} \bm{S} \bm{V}^\mathrm{H}$$
+$$\bm{A}_{M \times N} = \sum_{r=1}^{\text{rank }R} \sigma_r \bm{u}_r \bm{v}_r^\mathrm{H} = \bm{U} \bm{\Sigma} \bm{V}^\mathrm{H}$$
 %
 input-related matrix $\bm{V}$ and output related matrix $\bm{U}$ are unitary, i.e.
 $$\bm{V}\bm{V}^\mathrm{H}=\bm{I},\quad\bm{V}^\mathrm{H}\bm{V}=\bm{I},\quad\bm{U}\bm{U}^\mathrm{H}=\bm{I},\quad\bm{U}^\mathrm{H}\bm{U}=\bm{I}$$
@@ -820,7 +830,7 @@ $$\bm{X} =
 2 & 6
 \end{bmatrix}
 \stackrel{?}{=}
-\bm{U}\bm{S}\bm{V}^\mathrm{T}
+\bm{U}\bm{\Sigma}\bm{V}^\mathrm{T}
 $$
 manually.
 
@@ -891,7 +901,7 @@ $$\bm{X} =
 2 & 6
 \end{bmatrix}
 \stackrel{?}{=}
-\bm{U}\bm{S}\bm{V}^\mathrm{T}
+\bm{U}\bm{\Sigma}\bm{V}^\mathrm{T}
 $$
 
 As we have $M-R$ vectors that span the left null space, thus here $M=2$ and $R=1$,
@@ -917,13 +927,13 @@ $$\bm{X} =
 2 & 6
 \end{bmatrix}
 \stackrel{?}{=}
-\bm{U}\bm{S}\bm{V}^\mathrm{T}
+\bm{U}\bm{\Sigma}\bm{V}^\mathrm{T}
 $$
 
 Let us start with
-$\bm{X}^\mathrm{T} \bm{X} = (\bm{U}\bm{S}\bm{V}^\mathrm{T})^\mathrm{T} (\bm{U}\bm{S}\bm{V}^\mathrm{T})
-= \bm{V}\bm{S}^\mathrm{T}\bm{U}^\mathrm{T} \bm{U}\bm{S}\bm{V}^\mathrm{T}
-= \bm{V}\bm{S}^\mathrm{T}\bm{S}\bm{V}^\mathrm{T}
+$\bm{X}^\mathrm{T} \bm{X} = (\bm{U}\bm{\Sigma}\bm{V}^\mathrm{T})^\mathrm{T} (\bm{U}\bm{\Sigma}\bm{V}^\mathrm{T})
+= \bm{V}\bm{\Sigma}^\mathrm{T}\bm{U}^\mathrm{T} \bm{U}\bm{\Sigma}\bm{V}^\mathrm{T}
+= \bm{V}\bm{\Sigma}^\mathrm{T}\bm{\Sigma}\bm{V}^\mathrm{T}
 $
 using the property of SVD matrices $\bm{U}^\mathrm{T} \bm{U} = \bm{I}$
 
@@ -1002,13 +1012,13 @@ has dependent rows and columns, hence, rank 1
 
 \begin{frame}[t]{SVD Example Manual Calculus: Eigenvalue And -Vector Problem}
 $$\bm{X}^\mathrm{T} \bm{X} =
-\bm{V}\bm{S}^\mathrm{T}\bm{S}\bm{V}^\mathrm{T} =
+\bm{V}\bm{\Sigma}^\mathrm{T}\bm{\Sigma}\bm{V}^\mathrm{T} =
 \begin{bmatrix}
 5 & 15\\
 15 & 45
 \end{bmatrix}$$
 The matrix factorization in the middle stores eigenvectors in $\bm{V}$ and
-corresponding eigenvalues in $\bm{S}^\mathrm{T}\bm{S}$ of the matrix
+corresponding eigenvalues in $\bm{\Sigma}^\mathrm{T}\bm{\Sigma}$ of the matrix
 $\bm{X}^\mathrm{T} \bm{X}$.
 We need to calculate them, so we take the usual steps
 $$\mathrm{det}(\bm{X}^\mathrm{T} \bm{X} - \lambda \bm{I}) = 0$$
@@ -1267,7 +1277,7 @@ $$
 3 & -1
 \end{bmatrix}
 \qquad
-\bm{S}=
+\bm{\Sigma}=
 \begin{bmatrix}
 \lambda_1 \neq 0 & 0\\
 0 & 0
@@ -1363,7 +1373,7 @@ $$
 1 & 3\\
 2 & 6
 \end{bmatrix}
-= \bm{U} \bm{S} \bm{V}^\mathrm{T}=
+= \bm{U} \bm{\Sigma} \bm{V}^\mathrm{T}=
 \begin{bmatrix}
 \frac{1}{\sqrt{5}} & \frac{2}{\sqrt{5}}\\
 \frac{2}{\sqrt{5}} & \frac{-1}{\sqrt{5}}
