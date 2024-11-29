@@ -2874,7 +2874,7 @@ $\cdot$ SVD / covariance approaches are consistent by itself as calculation of $
 
 
 \begin{frame}[t]{Ex08: Principal Component Analysis (PCA) Feature Representation}
-
+\vspace{-1.5em}
 $\cdot$ for $\bm{X}_c \in\mathbb{R}$, $\bm{X}_c = \bm{X}_r^\mathrm{T}$, $\bm{F}_c = \bm{F}_r^\mathrm{T}$, SVD matrices $\bm{U} \bm{\Sigma} \bm{V}^\mathrm{T}$ for $\bm{X}_c$
 
 \begin{minipage}[t]{0.49\textwidth}
@@ -2919,6 +2919,7 @@ $\cdot$ Low-Rank Approximation / Truncated SVD (yields a matrix with lower rank 
 
 $\tilde{\bm{X}}_{c,N \times F} = (\bm{X}_c \bm{V}_K) \bm{V}_K^\mathrm{T} = \sum_{i=1}^{K} \sigma_i \bm{u}_i \bm{v}_i^\mathrm{T}$
 
+$\bm{V}_K \bm{V}_K^\mathrm{T}$ is a projection matrix into $\text{span}(\bm{v}_1...\bm{v}_K)$
 \end{minipage}
 %
 \begin{minipage}[t]{0.49\textwidth}
