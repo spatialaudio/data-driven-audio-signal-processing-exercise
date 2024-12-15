@@ -2678,14 +2678,16 @@ no slides so far
 
 \end{frame}
 
-\begin{frame}{Ex07: Audio Features}
+%\begin{frame}{Ex07: Audio Features}
 % empty slide for clever touch
-\end{frame}
-
-
-
+%\end{frame}
 
 \subsection{Exercise 08}
+
+%\begin{frame}{Ex08: Principal Component Analysis (PCA)}
+% empty slide for clever touch
+%\end{frame}
+
 
 \begin{frame}{Ex08: Principal Component Analysis (PCA)}
 Objectives
@@ -2697,9 +2699,36 @@ Objectives
 \end{frame}
 
 
+\begin{frame}[t]{Recap Diagonalization / SVD}
+
+$\cdot$ Assume $N \times F$ \underline{full-column rank} matrix $\bm{X}$ with \underline{mean-free columns}
+
+$\cdot$ Then $\bm{C}_X = \frac{1}{N-1}\bm{X}^\mathrm{T}\bm{X}$ is symmetric and positive definite (i.e. all \underline{eigenvalues are non-negative})
+
+$\cdot$ Eigendecomposition (cf. Spectral Theorem)
+
+$$\bm{C}_X \bm{v}_1 = \lambda_1 \bm{v}_1$$
+
+$\bm{v}_1$ is an eigenvector of $\bm{C}_X$ corresponding to the largest eigenvalue denoted by $\lambda_1$
+
+$\cdot$ SVD
+
+$$\bm{X} \bm{v}_1 = \sigma_1 \bm{u}_1$$
+
+the same $\bm{v}_1$ is a right singular vector of $\bm{X}$ corresponding to the largest singular value $\sigma_1$
+
+$\cdot$ Then it is simple to show
+
+$$\text{variance related:}\,\,\frac{\sigma_1^2}{N-1} = \lambda_1 \qquad\qquad \text{std dev related:}\,\,\frac{\sigma_1}{\sqrt{N-1}} = \sqrt{\lambda_1}$$
+
+$\cdot$ This also holds for all other $1\leq f \leq F$ sorted $\lambda_f$ vs. $\sigma_f$ and their corresponding $\bm{v}_f$
+
+
+\end{frame}
+
 \begin{frame}[t]{Principal Component Analysis (PCA)}
 
-PCA is typically applied on mean-free data
+PCA is typically applied on \textbf{mean-free} data
 
 $\cdot$ for an $N \times F$ full-column rank matrix $\bm{X}$ we ensure that each column is mean-free by
 $$\bm{X}_{N \times F} \leftarrow \bm{X}_{N \times F} - \frac{1}{N} \bm{1}_{N \times N} \bm{X}_{N \times F}$$
@@ -2707,9 +2736,9 @@ $$\bm{X}_{N \times F} \leftarrow \bm{X}_{N \times F} - \frac{1}{N} \bm{1}_{N \ti
 $\cdot$ for an $F \times N$ full-row rank matrix $\bm{X}$ we ensure that each row is mean-free by
 $$\bm{X}_{F \times N} \leftarrow \bm{X}_{F \times N} - \frac{1}{N} \bm{X}_{F \times N} \bm{1}_{N \times N}$$
 
-PCA is often additionally performed on unit-variance preprocessed data, cf. function zscore()
+PCA is often additionally (especially if features have different physical units!) performed on \textbf{unit-variance} preprocessed data, cf. function zscore()
 
-this then yields a total variance of $$\mathrm{trace}(\mathrm{cov}(\mathrm{zscore}(\bm{X})))= F$$
+$\cdot$ this normalization yields a total variance of $$\mathrm{trace}(\mathrm{cov}(\mathrm{zscore}(\bm{X})))= F$$
 
 which the PCA spreads over the principal component (PC) scores
 
@@ -2717,7 +2746,7 @@ which the PCA spreads over the principal component (PC) scores
 
 
 
-\begin{frame}[t]{Ex08: Principal Component Analysis (PCA) via SVD}
+\begin{frame}[t]{PCA via SVD}
 
 $\cdot$ for $\bm{X}_c \in\mathbb{R}$, $\bm{X}_c = \bm{X}_r^\mathrm{T}$, $\bm{F}_c = \bm{F}_r^\mathrm{T}$, SVD matrices $\bm{U} \bm{\Sigma} \bm{V}^\mathrm{T}$ for $\bm{X}_c$
 
@@ -2805,9 +2834,10 @@ PC loadings $\bm{L} = \bm{V} $
 
 
 
-\begin{frame}[t]{Ex08: Principal Component Analysis (PCA) via Covariance}
+\begin{frame}[t]{PCA via Covariance}
 
-$\cdot$ for $\bm{X}_c \in\mathbb{R}$, $\bm{X}_c = \bm{X}_r^\mathrm{T}$, $\bm{F}_c = \bm{F}_r^\mathrm{T}$, SVD matrices $\bm{U} \bm{\Sigma} \bm{V}^\mathrm{T}$ for $\bm{X}_c$
+$\cdot$ full-column rank $\bm{X}_c \in\mathbb{R}$,\,$\bm{X}_c = \bm{X}_r^\mathrm{T}$, $\bm{F}_c = \bm{F}_r^\mathrm{T}$;\,
+symmetric positive definite covariance matrix $\bm{C}_X$
 
 $\cdot$ PC scores are ortho\underline{gonal} and variance-sorted, PC loadings are ortho\underline{normal}
 
@@ -2845,7 +2875,7 @@ $
 \begin{minipage}[t]{0.49\textwidth}
 covariance matrix $\bm{C}_X = \frac{1}{N-1}\bm{X}_c^\mathrm{T}\bm{X}_c$
 
-diagonalization (with SVD) $\bm{C}_X = \bm{V} \bm{\Lambda} \bm{V}^\mathrm{T}$
+(sorted!) diagonalization $\bm{C}_X = \bm{V} \bm{\Lambda} \bm{V}^\mathrm{T}$
 
 PC scores $\bm{F}_c = \bm{X}_c \bm{V}$
 
@@ -2856,7 +2886,7 @@ PC loadings $\bm{L} = \bm{V}$
 \begin{minipage}[t]{0.49\textwidth}
 covariance matrix $\bm{C}_X = \frac{1}{N-1}\bm{X}_r\bm{X}_r^\mathrm{T}$
 
-diagonalization (with SVD) $\bm{C}_X = \bm{V} \bm{\Lambda} \bm{V}^\mathrm{T}$
+(sorted) diagonalization $\bm{C}_X = \bm{V} \bm{\Lambda} \bm{V}^\mathrm{T}$
 
 PC scores $\bm{F}_r = \bm{V}^\mathrm{T} \bm{X}_r$
 
@@ -2867,17 +2897,17 @@ PC loadings $\bm{L} = \bm{V}$
 \vspace{0.5em}
 
 %\small
-$\cdot$ an SVD-based diagonalization inherently sorts the eigenvalues in $\bm{\Lambda}$, making the orthogonal PC scores \underline{variance-sorted} (i.e. covariance matrix of $\bm{F}$ is a sorted diagonal matrix)
+$\cdot$ diagonalization with sorted eigenvalues/-vectors in $\bm{\Lambda}, \bm{V}$ of $\bm{C}_X$, making the orthogonal PC scores \underline{variance-sorted} (i.e. covariance matrix of $\bm{F}$ is a sorted diagonal matrix)
 
-$\cdot$ $\bm{F} / \bm{L}$ might exhibit reflections compared to $\bm{F} / \bm{L}$ from SVD-based approach
+$\cdot$ the $\bm{F} / \bm{L}$ here might exhibit reflections compared to the $\bm{F} / \bm{L}$ from SVD-based approach
 
-$\cdot$ SVD / covariance approaches are consistent by itself as calculation of $\bm{F}$ and $\bm{L}$ is linked
+$\cdot$ but SVD / covariance approaches are consistent by itself as calculation of $\bm{F}$ and $\bm{L}$ is linked
 
 \end{frame}
 
 
 
-\begin{frame}[t]{Ex08: Principal Component Analysis (PCA) Feature Representation}
+\begin{frame}[t]{PCA Feature Representation}
 \vspace{-1.5em}
 $\cdot$ for $\bm{X}_c \in\mathbb{R}$, $\bm{X}_c = \bm{X}_r^\mathrm{T}$, $\bm{F}_c = \bm{F}_r^\mathrm{T}$, SVD matrices $\bm{U} \bm{\Sigma} \bm{V}^\mathrm{T}$ for $\bm{X}_c$
 
@@ -2968,7 +2998,7 @@ i.e. take only first $K$ rows of $\bm{F}_r$
 
 
 
-\begin{frame}[t]{Ex08: Principal Component Analysis (PCA) 2D-Data Example}
+\begin{frame}[t]{PCA 2D-Data Example}
 \begin{minipage}[t]{0.49\textwidth}
 \includegraphics[width=\textwidth]{pca_2d_original_data.pdf}
 \end{minipage}
@@ -2978,7 +3008,7 @@ i.e. take only first $K$ rows of $\bm{F}_r$
 \end{minipage}
 \end{frame}
 %%
-\begin{frame}[t]{Ex08: Principal Component Analysis (PCA) 2D-Data Example}
+\begin{frame}[t]{PCA 2D-Data Example}
 \begin{minipage}[t]{0.49\textwidth}
 \includegraphics[width=\textwidth]{pca_2d_pc_data.pdf}
 \end{minipage}
@@ -2988,7 +3018,7 @@ i.e. take only first $K$ rows of $\bm{F}_r$
 \end{minipage}
 \end{frame}
 %%
-\begin{frame}[t]{Ex08: Principal Component Analysis (PCA) 2D-Data Example}
+\begin{frame}[t]{PCA 2D-Data Example}
 \begin{minipage}[t]{0.49\textwidth}
 \includegraphics[width=\textwidth]{pca_2d_truncated_svd.pdf}
 \end{minipage}
@@ -2998,7 +3028,7 @@ i.e. take only first $K$ rows of $\bm{F}_r$
 \end{minipage}
 \end{frame}
 %%
-\begin{frame}[t]{Ex08: Principal Component Analysis (PCA) 2D-Data Example}
+\begin{frame}[t]{PCA 2D-Data Example}
 \begin{minipage}[t]{0.49\textwidth}
 \includegraphics[width=\textwidth]{pca_2d_pc_data.pdf}
 \end{minipage}
@@ -3014,7 +3044,7 @@ i.e. take only first $K$ rows of $\bm{F}_r$
 
 
 
-\begin{frame}[t]{Ex08: Principal Component Analysis (PCA) 3D-Data Example}
+\begin{frame}[t]{PCA 3D-Data Example}
 \begin{minipage}[t]{0.49\textwidth}
 original data cloud in 3D space
 
@@ -3028,7 +3058,7 @@ original data cloud in 3D space
 \end{minipage}
 \end{frame}
 %%
-\begin{frame}[t]{Ex08: Principal Component Analysis (PCA) 3D-Data Example}
+\begin{frame}[t]{PCA 3D-Data Example}
 \begin{minipage}[t]{0.49\textwidth}
 PC data cloud in 3D  space
 
@@ -3042,7 +3072,7 @@ original data cloud in 3D space
 \end{minipage}
 \end{frame}
 %%
-\begin{frame}[t]{Ex08: Principal Component Analysis (PCA) 3D-Data Example}
+\begin{frame}[t]{PCA 3D-Data Example}
 \begin{minipage}[t]{0.49\textwidth}
 data \underline{plane} in 3D space
 
@@ -3056,7 +3086,7 @@ data cloud in 3D space
 \end{minipage}
 \end{frame}
 %%
-\begin{frame}[t]{Ex08: Principal Component Analysis (PCA) 3D-Data Example}
+\begin{frame}[t]{PCA 3D-Data Example}
 \begin{minipage}[t]{0.49\textwidth}
 data cloud in 3D space
 
