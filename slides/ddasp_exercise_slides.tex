@@ -3115,10 +3115,326 @@ Objectives
 \item example with Fourier series, i.e. polynomial regression
 \end{itemize}
 
-no slides so far
+\end{frame}
 
+
+\begin{frame}[t]{Ex09: Bias Variance Trade-Off vs. Model Complexity}
+%
+\vspace{-1em}
+%
+total variance = (model bias$^2$) + (model variance) + (data noise variance)
+%
+\begin{table}[]
+\begin{tabular}{|l|l|l|}
+\hline
+true model &  lowest bias$^2$ &  lowest variance\\\hline
+low model complexity &  high bias$^2$ &  low variance\\\hline
+high model complexity & low bias$^2$ & high variance\\\hline
+optimum model complexity & \multicolumn{2}{l|}{optimum bias$^2$+variance}\\\hline
+\end{tabular}
+\end{table}
+%
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+  width=12cm,
+  height=6cm,
+  legend style={at={(0.015,0.65)}, anchor=north west},
+  xtick={-6,0,6},
+  xticklabels={(too) low, optimum, (too) high},
+  xlabel = {model complexity / \# of non-zero model parameters},
+  ytick={0,1},
+  yticklabels={low, high},
+  ylabel = {bias$^2$ / variance},
+]
+\addplot[domain=-6:6, C0, ultra thick, samples=32] {1-1/(1+exp(-x))};
+\addplot[domain=-6:6, C1, ultra thick, samples=32] {1/(1+exp(-x))};
+\addlegendentry{bias$^2$}
+\addlegendentry{variance}
+\end{axis}
+\end{tikzpicture}
+\end{center}
+%
+\end{frame}
+
+
+
+
+
+\begin{frame}[t]{Bias Variance Trade-Off vs. Regularisation}
+%
+\vspace{-1em}
+%
+total variance = (model bias$^2$) + (model variance) + (data noise variance)
+%
+\begin{table}[]
+\begin{tabular}{|l|l|l|}
+\hline
+true model &  lowest bias$^2$ &  lowest variance\\\hline
+high regularisation &  high bias$^2$ &  low variance\\\hline
+low regularisation & low bias$^2$ & high variance\\\hline
+optimum regularisation & \multicolumn{2}{l|}{optimum bias$^2$+variance}\\\hline
+\end{tabular}
+\end{table}
+%
+\vspace{-0.5em}
+%
+\begin{center}
+\includegraphics[width=0.8\textwidth]{../bias_variance_plots/bias_var_l2_regularisation.png}
+\end{center}
+%
+\end{frame}
+
+
+
+
+
+
+
+
+\begin{frame}[t]{Bias Variance Trade-Off: Intro Example}
+%
+\vspace{-1em}
+%
+$\cdot$ ground truth model ($N=1+4=5$ features) with full column rank $M \times N$ matrix, $M>N$
+$$\bm{x}_1 = \frac{2\pi}{M} \cdot 0,\quad\bm{x}_2 = \frac{2\pi}{M} \cdot 1,\quad\dots,\quad\bm{x}_M = \frac{2\pi}{M} \cdot (M-1)$$
+$$
+\bm{X}_t =
+\begin{bmatrix}
+1 & \cos(\bm{x}_1) & \sin(2\bm{x}_1) & \cos(5\bm{x}_1) & \cos(6\bm{x}_1) \\
+1 & \cos(\bm{x}_2) & \sin(2\bm{x}_2) & \cos(5\bm{x}_2) & \cos(6\bm{x}_2)\\
+\vdots & \vdots & \vdots & \vdots & \vdots\\
+1 & \cos(\bm{x}_M) & \sin(2\bm{x}_M) & \cos(5\bm{x}_M) & \cos(6\bm{x}_M)\\
+\end{bmatrix}\qquad
+\bm{\beta}_t =
+\begin{bmatrix}
+3\\2\\1\\\nicefrac{1}{2}\\\nicefrac{1}{4}
+\end{bmatrix}
+\qquad
+\bm{t} = \bm{X}_t \bm{\beta}_t
+$$
+
+$\cdot$ mean-free, fixed variance noise $\bm{n}$ $\rightarrow$ $l$ measurements, $1 \leq l \leq L$
+$$\bm{y}^{(l)} = \bm{t} + \bm{n}^{(l)}$$
+
+$\cdot$ OLS with a model design matrix $\bm{X}$ and the $l$-th data set $\bm{y}^{(l)}$
+\begin{align*}
+&\hat{\bm{\beta}}^{(l)} = \quad\,\,\,\,(\bm{X}^\mathrm{T} \bm{X})^{-1} \bm{X}^\mathrm{T} \bm{y}^{(l)}\\
+\hat{\bm{y}}^{(l)} = \bm{X}\cdot &\hat{\bm{\beta}}^{(l)} = \bm{X}\cdot (\bm{X}^\mathrm{T} \bm{X})^{-1} \bm{X}^\mathrm{T} \bm{y}^{(l)}
+\end{align*}
+
+$\cdot$ measurement: $\bm{y}_m^{(l)}$ is $m$-th entry of vector $\bm{y}^{(l)}$,\quad prediction: $\hat{\bm{y}}_m^{(l)}$ is $m$-th entry of vector $\hat{\bm{y}}^{(l)}$
 
 \end{frame}
+
+\begin{frame}[t]{Bias Variance Trade-Off: Math}
+%
+\vspace{-1em}
+%
+$\cdot$ mean of all predictions $\rightarrow$ 1st order raw moment
+$$
+\begin{bmatrix}
+|\\\tilde{\bm{y}}\\|
+\end{bmatrix}
+=
+\frac{1}{L}
+\left(
+\begin{bmatrix}
+|\\\hat{\bm{y}}^{(1)}\\|
+\end{bmatrix}
++\begin{bmatrix}
+|\\\hat{\bm{y}}^{(2)}\\|
+\end{bmatrix}
++
+\dots
++
+\begin{bmatrix}
+|\\\hat{\bm{y}}^{(L)}\\|
+\end{bmatrix}
+\right)
+$$
+%
+$\cdot$ \underline{bias$^2$}: how much deviates mean of all predictions from the truth data $\rightarrow$ 2nd order moment
+$$
+\begin{bmatrix}
+|\\\bm{e}_b\\|
+\end{bmatrix}=
+\begin{bmatrix}
+|\\\bm{t}\\|
+\end{bmatrix}-
+\begin{bmatrix}
+|\\\tilde{\bm{y}}\\|
+\end{bmatrix}
+\qquad
+\text{bias}^2 = \frac{1}{M}\bm{e}_b^\mathrm{T} \bm{e}_b = \frac{1}{M} \sum\limits_{m=1}^{M} (\bm{t}_m - \tilde{\bm{y}}_m)^2
+$$
+%
+$\cdot$ mean of squared deviations w.r.t. data $\rightarrow$ 2nd order centralized moment
+$$
+\begin{bmatrix}
+|\\\bm{v}\\|
+\end{bmatrix}
+=
+\frac{1}{L}
+\left(
+\begin{bmatrix}
+|\\(\hat{\bm{y}}^{(1)}-\tilde{\bm{y}})^2\\|
+\end{bmatrix}
++\begin{bmatrix}
+|\\(\hat{\bm{y}}^{(2)}-\tilde{\bm{y}})^2\\|
+\end{bmatrix}
++
+\dots
++
+\begin{bmatrix}
+|\\(\hat{\bm{y}}^{(L)}-\tilde{\bm{y}})^2\\|
+\end{bmatrix}
+\right)
+$$
+%
+$\cdot$ \underline{variance}: we want a single number for outcome of $\bm{v}$ $\rightarrow$ 1st order raw moment (=mean)
+$$
+\text{variance} = \frac{1}{M} \sum\limits_{m=1}^{M} \bm{v}_m
+$$
+
+\end{frame}
+
+
+
+
+\begin{frame}[t]{Bias Variance Trade-Off: Essence of Example}
+%
+\vspace{-1em}
+%
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+  width=12cm,
+  height=6cm,
+  legend style={at={(0.015,0.65)}, anchor=north west},
+  xtick={-6,0,6},
+  xticklabels={too simple, robust, too complex},
+  xlabel = {model complexity / \# of non-zero model parameters},
+  ytick={0,1},
+  yticklabels={low, high},
+  ylabel = {bias$^2$ / variance},
+]
+\addplot[domain=-6:6, C0, ultra thick, samples=32] {1-1/(1+exp(-x))};
+\addplot[domain=-6:6, C1, ultra thick, samples=32] {1/(1+exp(-x))};
+\addlegendentry{bias$^2$}
+\addlegendentry{variance}
+\end{axis}
+\end{tikzpicture}
+\end{center}
+%
+\begin{align*}
+\bm{X} =
+\begin{bmatrix}
+1 & \bm{x}_1\\
+1 & \bm{x}_2\\
+\vdots & \vdots\\
+1 & \bm{x}_M
+\end{bmatrix}
+%
+\qquad\qquad
+\bm{X} =
+\begin{bmatrix}
+1 & \cos(\bm{x}_1) & \sin(2\bm{x}_1)\\
+1 & \cos(\bm{x}_2) & \sin(2\bm{x}_2)\\
+\vdots & \vdots & \vdots\\
+1 & \cos(\bm{x}_M) & \sin(2\bm{x}_M)
+\end{bmatrix}
+%
+\qquad\qquad
+\bm{X}=?
+\end{align*}
+
+\end{frame}
+
+
+
+
+\begin{frame}[t]{Example: True Data}
+\centering
+\includegraphics[width=0.8\textwidth]{../bias_variance_plots/true_data.png}
+\end{frame}
+
+\begin{frame}[t]{Example: True Model}
+\centering
+\includegraphics[width=1\textwidth]{../bias_variance_plots/true_model.png}
+\end{frame}
+
+\begin{frame}[t]{Example: Model Too Simple}
+\centering
+\includegraphics[width=1\textwidth]{../bias_variance_plots/too_simple_model.png}
+\end{frame}
+
+\begin{frame}[t]{Example: Model Too Complex}
+\centering
+\includegraphics[width=1\textwidth]{../bias_variance_plots/too_complex_model.png}
+\end{frame}
+
+\begin{frame}[t]{Example: Robust Model}
+\centering
+\includegraphics[width=1\textwidth]{../bias_variance_plots/robust_model.png}
+\end{frame}
+
+
+\begin{frame}[t]{Empirical Correlation Coefficient $R^2$ Between $\mathbf{y}$ and  $\hat{\mathbf{y}}$}
+\vspace{-1em}
+$\cdot$ measured $\bm{y}^{(l)}$, predicted $\hat{\bm{y}}^{(l)}$
+
+$\cdot$ we calculate all for the $l$-th data set, but we omit index $l$:
+
+- Sum of Squares \textbf{Error} (SS\textbf{E})
+$$\mathrm{SSE} = \sum_{m=1}^{M} (\bm{y}_m - \hat{\bm{y}}_m)^2 = (\bm{y} - \bm{X}\hat{\bm{\beta}})^\mathrm{T} (\bm{y} - \bm{X}\hat{\bm{\beta}})$$
+
+- mean of measured data
+$$\bar{{y}} = \frac{1}{M} \sum_{m=1}^{M} \bm{y}_m$$
+
+- Sum of Squares \textbf{Total} (SS\textbf{T})
+$$\mathrm{SST} = \sum_{m=1}^{M} (\bm{y}_m - \bar{{y}})^2$$
+
+- Sum of Squares (due to) \textbf{Regression} (SS\textbf{R})
+$$\mathrm{SSR} = \sum_{m=1}^{M} (\hat{\bm{y}}_m - \bar{{y}})^2$$
+
+$$\mathrm{SST} = \mathrm{SSR} + \mathrm{SSE}$$
+
+\end{frame}
+
+\begin{frame}[t]{Empirical Correlation Coefficient $R^2$ Between $\mathbf{y}$ and  $\hat{\mathbf{y}}$}
+\vspace{-1em}
+$$\mathrm{SST} = \mathrm{SSR} + \mathrm{SSE}$$
+
+$\cdot$ empirical correlation coefficient or coefficient of determination $0 \leq R^2 \leq 1$
+
+$$R^2 = \frac{\mathrm{SSR}}{\mathrm{SST}} = \frac{\mathrm{SST}-\mathrm{SSE}}{\mathrm{SST}} = 1^2 - \frac{\mathrm{SSE}}{\mathrm{SST}}$$
+
+$\cdot$ normalise for independence w.r.t. number of data samples $M$ and number of features $N$
+$$R_\text{adjusted}^2 = 1^2 - \frac{\frac{\mathrm{SSE}}{M-N}}{\frac{\mathrm{SST}}{M-1}}$$
+
+$\cdot$ $R_\text{adjusted}^2$ holds for models with intercept!
+
+\vspace{1em}
+
+$\cdot$ hence: measured $\bm{y}^{(l)}$, model design matrix $\bm{X}$, fitted $\hat{\bm{\beta}}^{(l)}$, predicted $\hat{\bm{y}}^{(l)}$ $\rightarrow$ $R_\text{adjusted}^{2,(l)}$
+
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \subsection{Exercise 10}
 \begin{frame}{Ex 10: Gradient Descent}
