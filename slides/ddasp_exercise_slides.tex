@@ -3436,12 +3436,12 @@ $\cdot$ hence: measured $\bm{y}^{(l)}$, model design matrix $\bm{X}$, fitted $\h
 
 
 
-\subsection{Exercise 10}
-\begin{frame}{Ex 10: Gradient Descent}
+\subsection{Exercise TBA}
+\begin{frame}{Ex TBA: Gradient Descent}
 
 Objectives
 \begin{itemize}
-\item least Squares: closed form vs. numerical via gradient descent (i.e. first order approach)
+\item least squares: closed form vs. numerical via gradient descent (i.e. first order approach)
 \item local vs. global minima, saddle points
 \item crucial parameter settings for learning rate, number of iterations and init values
 \item improvements of plain GD: momentum
@@ -3461,9 +3461,9 @@ no slides so far
 
 \begin{frame}[t]{Output Layer for Regression Model}
 
-$\cdot$ Output layer exhibits $i=1 \dots K$ neurons
+$\cdot$ Output layer exhibits $K$ perceptrons with indexing $1 \leq i \leq K$
 
-$\cdot$ Activation function $\sigma(\cdot)$ for $i\text{-th}$ neuron: \underline{linear}
+$\cdot$ Activation function $\sigma(\cdot)$ for $i\text{-th}$ perceptron: \underline{linear}
 
 $$\sigma(z_i) = z_i$$
 
@@ -3477,9 +3477,9 @@ $$\frac{\partial \sigma(z_i)}{\partial z_i} = 1$$
 
 \begin{frame}[t]{Output Layer for Binary Classification Model}
 
-$\cdot$ Output layer exhibits two neurons with shared input weights, hence acting on same $z$
+$\cdot$ Output layer exhibits two perceptrons with shared input weights, hence acting on same $z$
 
-$\cdot$ Activation functions $\sigma(\cdot)_{1,2}$ for the two neurons: \underline{sigmoid} / complementary sigmoid
+$\cdot$ Activation functions $\sigma(\cdot)_{1,2}$ for the two perceptrons: \underline{sigmoid} vs. complementary sigmoid
 
 $$\sigma_1(z) = \frac{1}{1+\e^{-z}} = \frac{\e^{z}}{\e^{z}+1} \qquad\qquad \sigma_2(z) = 1-\sigma_1(z) = \frac{1}{1 + \e^{z}} = \frac{\e^{-z}}{\e^{-z}+1}$$
 
@@ -3491,8 +3491,8 @@ $$\sigma_1(z) = \frac{1}{1+\e^{-z}} = \frac{\e^{z}}{\e^{z}+1} \qquad\qquad \sigm
     xmax = 6,
     ymax = 1,
     ytick = {0,0.25,0.5,0.75,1},
-    ylabel={act fcn output $\sigma(z)$},
-    xlabel={act fcn input $z$},
+    ylabel={activation function output $\sigma(z)$},
+    xlabel={activation function input $z$},
     ]
     \addplot [domain=-6:6,samples=128, ultra thick, C0] {exp(x)/(exp(x)+1)}
         node [pos=1, below left] {$\sigma_1(z)$};
@@ -3513,9 +3513,9 @@ $$\frac{\partial \sigma_1(z)}{\partial z} = \frac{\e^{z}}{(\e^{z}+1)^2} = \sigma
 
 \begin{frame}[t]{Output Layer for Binary Classification Model}
 
-$\cdot$ Output layer exhibits a single neuron
+$\cdot$ Output layer exhibits a single perceptron
 
-$\cdot$ Activation function $\sigma(\cdot)$ for this single output neuron: \underline{sigmoid}
+$\cdot$ Activation function $\sigma(\cdot)$ for this single output perceptron: \underline{sigmoid}
 
 $$\sigma(z) = \frac{1}{1+\e^{-z}} = \frac{\e^{z}}{\e^{z}+1}$$
 
@@ -3527,8 +3527,8 @@ $$\sigma(z) = \frac{1}{1+\e^{-z}} = \frac{\e^{z}}{\e^{z}+1}$$
     xmax = 6,
     ymax = 1,
     ytick = {0,0.25,0.5,0.75,1},
-    xlabel={act fcn input $z$},
-    ylabel={act fcn output $\sigma(z)$},
+    xlabel={activation function input $z$},
+    ylabel={activation function output $\sigma(z)$},
     ]
     \addplot [domain=-6:6,samples=128, ultra thick, C0] {exp(x)/(exp(x)+1)}
         node [pos=1, below left] {$\sigma(z)$};
@@ -3540,7 +3540,7 @@ $\cdot$ Derivative
 
 $$\frac{\partial \sigma(z)}{\partial z} = \frac{\e^{z}}{(\e^{z}+1)^2} = \sigma(z) \cdot (1-\sigma(z))$$
 
-$\cdot$ Well known as \underline{binary logistic regression} for a model with the output layer only, but no other (non-linear, hidden) layers $\rightarrow$ cf. textbooks on generalized linear models (GLMs)
+$\cdot$ Well known as \underline{binary logistic regression} for a model with a single output layer only, but no other (non-linear, hidden) layers $\rightarrow$ cf. textbooks on generalized linear models (GLMs)
 
 \end{frame}
 
@@ -3548,27 +3548,35 @@ $\cdot$ Well known as \underline{binary logistic regression} for a model with th
 
 \begin{frame}[t]{Output Layer for Multi-Class Classification Model}
 
-$\cdot$ Output layer exhibits $i=1 \dots K$ neurons for $K$ mutually exclusive classes
+$\cdot$ Output layer exhibits $K$ perceptrons with indexing $1 \leq i \leq K$ for $K$ mutually exclusive classes
 
-$\cdot$ Activation function $\sigma(\cdot)$ for $i\text{-th}$ neuron: \underline{softmax}
+$\cdot$ Activation function $\sigma(\cdot)$ for $i\text{-th}$ perceptron: \underline{softmax}
 
 $$
 \sigma(z_i) = \frac{\e^{z_i}}{\sum\limits_{i'=1}^{K} \e^{z_{i'}}} \qquad \text{hence, }\sum\limits_{i=1}^{K} \sigma(z_i) = 1
-\text{, which couples the neurons}
+\text{, this normalisation couples the perceptrons}
 $$
-%which couples the neurons in the output layer
+%which couples the perceptrons in the output layer
 
-$\cdot$ Derivatives to set up the Jacobian matrix
-
-$$\frac{\partial \sigma(z_i)}{\partial z_i} = \frac{\e^{z_i}}{\left(\sum\limits_{i'=1}^{K} \e^{z_{i'}}\right)^2} \cdot \left(\sum\limits_{i'=1, i' \neq i}^{K} \e^{z_{i'}}\right)=
+$\cdot$ Hence, Jacobian matrix needed to set up all partial derivatives
+\begin{align*}
+&\frac{\partial \sigma(z_i)}{\partial z_i} = \frac{\e^{z_i}}{\left(\sum\limits_{i'=1}^{K} \e^{z_{i'}}\right)^2} \cdot \left(\sum\limits_{i'=1, i' \neq i}^{K} \e^{z_{i'}}\right)=
 \frac{\e^{z_i}}{\left(\sum\limits_{i'=1}^{K} \e^{z_{i'}}\right)} \cdot
 \frac{\left(\sum\limits_{i'=1, i' \neq i}^{K} \e^{z_{i'}}\right)}{\left(\sum\limits_{i'=1}^{K} \e^{z_{i'}}\right)}=
 \sigma(z_i) \cdot(1-\sigma(z_i))
-$$
+\\
+&\frac{\partial \sigma(z_i)}{\partial z_j} = - \sigma(z_i) \cdot \sigma(z_j)\qquad \text{if} \quad i \neq j
+\end{align*}
 
-$$\frac{\partial \sigma(z_i)}{\partial z_j} = - \sigma(z_i) \cdot \sigma(z_j)\qquad \text{if} \quad i \neq j$$
+% $$\frac{\partial \sigma(z_i)}{\partial z_i} = \frac{\e^{z_i}}{\left(\sum\limits_{i'=1}^{K} \e^{z_{i'}}\right)^2} \cdot \left(\sum\limits_{i'=1, i' \neq i}^{K} \e^{z_{i'}}\right)=
+% \frac{\e^{z_i}}{\left(\sum\limits_{i'=1}^{K} \e^{z_{i'}}\right)} \cdot
+% \frac{\left(\sum\limits_{i'=1, i' \neq i}^{K} \e^{z_{i'}}\right)}{\left(\sum\limits_{i'=1}^{K} \e^{z_{i'}}\right)}=
+% \sigma(z_i) \cdot(1-\sigma(z_i))
+% $$
+%
+% $$\frac{\partial \sigma(z_i)}{\partial z_j} = - \sigma(z_i) \cdot \sigma(z_j)\qquad \text{if} \quad i \neq j$$
 
-$\cdot$ Well known as \underline{multinomial logistic regression} for a model with the output layer only, but no other (non-linear, hidden) layers $\rightarrow$ cf. textbooks on generalized linear models (GLMs)
+$\cdot$ Well known as \underline{multinomial logistic regression} for a model with a single output layer only, but no other (non-linear, hidden) layers $\rightarrow$ cf. textbooks on generalized linear models (GLMs)
 
 
 \end{frame}
@@ -3578,11 +3586,11 @@ $\cdot$ Well known as \underline{multinomial logistic regression} for a model wi
 
 Loss is about `comparing` train/val/test data $\bm{y}, y$ against model prediction data $\hat{\bm{y}}, \hat{y}$
 
-$\cdot$ \textcolor{C0}{Regression} with least squares for predicted data sample $\hat{y}_i = \sigma_\text{\textcolor{C0}{linear}}(z_i)$; $\bm{y}\in\mathbb{R}, \hat{\bm{y}}\in\mathbb{R}$
+$\cdot$ \textcolor{C0}{Regression} with least squares for predicted data sample $\hat{y}_i = \sigma_\text{\textcolor{C0}{linear}}(z_i)$; \quad $\bm{y}\in\mathbb{R}, \hat{\bm{y}}\in\mathbb{R}$
 
 $$\mathcal{L}(\bm{y}, \hat{\bm{y}}) = \sum\limits_{i=1}^{K} (y_i-\hat{y}_i)^2$$
 
-$\cdot$ \textcolor{C0}{Binary classification} for predicted data sample $\hat{y} = \sigma_\text{\textcolor{C0}{sigmoid}}(z)$; $y \in \{0,1\}, 0 \leq \hat{y}\in\mathbb{R} \leq 1$
+$\cdot$ \textcolor{C0}{Binary classification} for predicted data sample $\hat{y} = \sigma_\text{\textcolor{C0}{sigmoid}}(z)$; \quad $y \in \{0,1\}, 0 \leq \hat{y}\in\mathbb{R} \leq 1$
 
 $$\mathcal{L}(y, \hat{y}) = -\left[y \log_\e(\hat{y}) + (1-y)\log_\e(1-\hat{y})\right]$$
 
@@ -3604,17 +3612,84 @@ $$
 
 
 
-\subsection{Exercise 11}
+\subsection{Exercise 10}
 
-\begin{frame}{Ex11: Non-Linear Model Introduction}
+\begin{frame}{Ex10: Non-Linear Model Introduction}
 Objectives
 \begin{itemize}
 \item XOR is a classification problem, which cannot be handled by linear algebra
 \item introduce two nonlinearities: add bias, non-linear activation function
-\item neuron / perceptron concept
+\item perceptron concept
 \item general architecture of non-linear models
 \end{itemize}
 \end{frame}
+
+
+
+
+\begin{frame}[t]{Recap Logical Mappings...Simple Classification Models}
+
+Logical AND
+\begin{align*}
+\bm{X} =
+\begin{bmatrix}
+0 & 0\\
+0 & 1\\
+1 & 0\\
+1 & 1
+\end{bmatrix}\qquad
+\bm{y} =
+\begin{bmatrix}
+0\\
+0\\
+0\\
+1
+\end{bmatrix}
+\end{align*}
+
+
+Logical OR
+\begin{align*}
+\bm{X} =
+\begin{bmatrix}
+0 & 0\\
+0 & 1\\
+1 & 0\\
+1 & 1
+\end{bmatrix}\qquad
+\bm{y} =
+\begin{bmatrix}
+0\\
+1\\
+1\\
+1
+\end{bmatrix}
+\end{align*}
+
+
+Logical XOR
+\begin{align*}
+\bm{X} =
+\begin{bmatrix}
+0 & 0\\
+0 & 1\\
+1 & 0\\
+1 & 1
+\end{bmatrix}\qquad
+\bm{y} =
+\begin{bmatrix}
+0\\
+1\\
+1\\
+0
+\end{bmatrix}
+\end{align*}
+
+\end{frame}
+
+
+
+
 
 
 \begin{frame}[t]{Linear Model for XOR (...is not working)}
@@ -3637,7 +3712,7 @@ XOR mapping well known as
 \end{bmatrix}
 \end{align*}
 Simple linear model with least squares error solution
-$$\bm{X} \bm{\theta} = \bm{y} \rightarrow \hat{\bm{\theta}} = (\bm{X}^\mathrm{T} \bm{X})^{-1} \bm{X}^\mathrm{T} \bm{y}
+$$\bm{X} \bm{\theta} = \bm{y} \quad\rightarrow\quad \hat{\bm{\theta}} = (\bm{X}^\mathrm{T} \bm{X})^{-1} \bm{X}^\mathrm{T} \bm{y}
 =
 \frac{1}{3}\cdot
 \begin{bmatrix}
@@ -3716,7 +3791,7 @@ $$\hat{\bm{\theta}} = (\bm{X}^\mathrm{T} \bm{X})^{-1} \bm{X}^\mathrm{T} \bm{y}
 0
 \end{bmatrix}
 $$
-Prediction
+Prediction (again useless for XOR)
 \begin{align*}
 \bm{X} \hat{\bm{\theta}} =
 \frac{1}{2}
@@ -3841,7 +3916,7 @@ Prediction
 
 \begin{frame}[t]{A Non-Linear Model for XOR}
 
-$\cdot$ weight matrix and bias vector to represent neurons \textcolor{C0}{1} and \textcolor{C3}{2}
+$\cdot$ weight matrix and bias vector to represent perceptrons \textcolor{C0}{1} and \textcolor{C3}{2}
 $$
 \bm{W}_\text{layer 1} =
 \begin{bmatrix}
@@ -3857,7 +3932,7 @@ b_{\textcolor{C3}{2}}
 \end{bmatrix}
 $$
 
-$\cdot$ weight vector and bias scalar to represent neuron \textcolor{C1}{3}
+$\cdot$ weight vector and bias scalar to represent perceptron \textcolor{C1}{3}
 $$
 \bm{W}_\text{layer 2} =
 \begin{bmatrix}
@@ -3900,7 +3975,7 @@ a_3 = \hat{y} = \bm{W}_\text{layer 2}^\mathrm{T}
 
 $\cdot$ solution known from book Goodfellow et al. (2016): Deep Learning. MIT Press, Ch. 6.1
 
-$\cdot$ weight matrix and bias vector to represent neurons \textcolor{C0}{1} and \textcolor{C3}{2}
+$\cdot$ weight matrix and bias vector to represent perceptrons \textcolor{C0}{1} and \textcolor{C3}{2}
 $$
 \bm{W}_\text{layer 1} =
 \begin{bmatrix}
@@ -3916,7 +3991,7 @@ b_{\textcolor{C3}{2}} = -1
 \end{bmatrix}
 $$
 
-$\cdot$ weight vector and bias scalar to represent neuron \textcolor{C1}{3}
+$\cdot$ weight vector and bias scalar to represent perceptron \textcolor{C1}{3}
 $$
 \bm{W}_\text{layer 2} =
 \begin{bmatrix}
@@ -4011,47 +4086,47 @@ What could be another model architecture and/or loss function for the given prob
 
 
 
-\subsection{Exercise 12}
+\subsection{Exercise 11}
 
-\begin{frame}{Ex12: Binary Classification}
+\begin{frame}{Ex11: Binary Classification}
 Objectives
 \begin{itemize}
-\item binary classifier as most simple non-linear model using sigmoid activation function
+\item binary classifier as very simple non-linear model using sigmoid activation function
 \item check ingredients on that model: architecture, output activation function, an appropriate loss function (sigmoid), forward and back propagation, gradient descent
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Recap: Modeling Non-Linearity with Bias and Activation Function}
-%
-\begin{flushright}
-\begin{tikzpicture}
-  %sig_out = [exp(-1), 0.95]
-  %sig_in = log(sig_out./(1-sig_out))
-  %wx = [3 1]
-  %bias = sig_in - wx
-  %wx + bias
-  %sigmoid(wx + bias) == sig_out
-  %function zo = sigmoid(zi)
-  %    zo = exp(zi) ./ (1+exp(zi));
-  %end
-\coordinate (wx) at (3,1);
-\coordinate (bias) at (-3.54132485461292, 1.94443897916644);
-\coordinate (wxbias) at ($(wx)+(bias)$); % must match the point:
-%\coordinate (sigmoid_in) at (-0.541324854612918,2.94443897916644);
-\coordinate (sigmoid_out) at (0.367879441171442,0.95);
-%
-\draw[-{Latex[length=2mm]}] (-2.5,0) -- (2.5,0)node[below]{$\textcolor{C2}{\tilde{z}_1}, \textcolor{C0}{z_1}, \textcolor{C3}{a_1}$};
-\draw[-{Latex[length=2mm]}] (0,0) -- (0,3.75)node[right]{$\textcolor{C2}{\tilde{z}_2}, \textcolor{C0}{z_2}, \textcolor{C3}{a_2}$};
-%
-\draw[-{Latex[length=2mm]}, thick, C2] (0,0) -- (wx)node[below, right]{$\bm{W}^\mathrm{T} \bm{x}$};
-\draw[-{Latex[length=2mm]}, thick, dashed, C7] (wx) -- (wxbias);
-\draw[-{Latex[length=2mm]}, thick, C7] (0,0) -- (bias)node[above, left]{$\bm{b}$};
-\draw[-{Latex[length=2mm]}, thick, dashed, C2] (bias) -- (wxbias);
-\draw[-{Latex[length=2mm]}, thick, C0] (0,0) -- (wxbias)node[left, above]{$\bm{W}^\mathrm{T} \bm{x}+\bm{b}$};
-\draw[-{Latex[length=3mm]}, ultra thick, C3] (0,0) -- (sigmoid_out)node[above, right]{$\sigma(\bm{W}^\mathrm{T} \bm{x}+\bm{b})$};
-\end{tikzpicture}
-\end{flushright}
-\end{frame}
+% \begin{frame}{Recap: Modeling Non-Linearity with Bias and Activation Function}
+% %
+% \begin{flushright}
+% \begin{tikzpicture}
+%   %sig_out = [exp(-1), 0.95]
+%   %sig_in = log(sig_out./(1-sig_out))
+%   %wx = [3 1]
+%   %bias = sig_in - wx
+%   %wx + bias
+%   %sigmoid(wx + bias) == sig_out
+%   %function zo = sigmoid(zi)
+%   %    zo = exp(zi) ./ (1+exp(zi));
+%   %end
+% \coordinate (wx) at (3,1);
+% \coordinate (bias) at (-3.54132485461292, 1.94443897916644);
+% \coordinate (wxbias) at ($(wx)+(bias)$); % must match the point:
+% %\coordinate (sigmoid_in) at (-0.541324854612918,2.94443897916644);
+% \coordinate (sigmoid_out) at (0.367879441171442,0.95);
+% %
+% \draw[-{Latex[length=2mm]}] (-2.5,0) -- (2.5,0)node[below]{$\textcolor{C2}{\tilde{z}_1}, \textcolor{C0}{z_1}, \textcolor{C3}{a_1}$};
+% \draw[-{Latex[length=2mm]}] (0,0) -- (0,3.75)node[right]{$\textcolor{C2}{\tilde{z}_2}, \textcolor{C0}{z_2}, \textcolor{C3}{a_2}$};
+% %
+% \draw[-{Latex[length=2mm]}, thick, C2] (0,0) -- (wx)node[below, right]{$\bm{W}^\mathrm{T} \bm{x}$};
+% \draw[-{Latex[length=2mm]}, thick, dashed, C7] (wx) -- (wxbias);
+% \draw[-{Latex[length=2mm]}, thick, C7] (0,0) -- (bias)node[above, left]{$\bm{b}$};
+% \draw[-{Latex[length=2mm]}, thick, dashed, C2] (bias) -- (wxbias);
+% \draw[-{Latex[length=2mm]}, thick, C0] (0,0) -- (wxbias)node[left, above]{$\bm{W}^\mathrm{T} \bm{x}+\bm{b}$};
+% \draw[-{Latex[length=3mm]}, ultra thick, C3] (0,0) -- (sigmoid_out)node[above, right]{$\sigma(\bm{W}^\mathrm{T} \bm{x}+\bm{b})$};
+% \end{tikzpicture}
+% \end{flushright}
+% \end{frame}
 
 
 \begin{frame}[t]{Binary Classification aka Binary Logistic Regression}
@@ -4100,7 +4175,7 @@ Objectives
 \end{tikzpicture}
 \end{center}
 
-$\cdot$ Activation function $\sigma(\cdot)$ for this single output neuron: \underline{sigmoid}
+$\cdot$ Activation function $\sigma(\cdot)$ for this single output perceptron: \underline{sigmoid}
 
 $$\hat{y} = \sigma(z) = \frac{1}{1+\e^{-z}} = \frac{\e^{z}}{\e^{z}+1}\qquad\qquad
 \frac{\partial \sigma(z)}{\partial z} = \frac{\e^{z}}{(\e^{z}+1)^2} = \sigma(z) \cdot (1-\sigma(z))
@@ -4111,7 +4186,7 @@ $$
 
 \begin{frame}[t]{Loss Function For Binary Logistic Regression / Binary Cross Entropy}
 
-$\cdot$ Loss function for $y\in\{0,1\}$ and predicted output $\textcolor{C0}{\hat{y}} \in\mathbb{R},\,\,\,0 \leq \textcolor{C0}{\hat{y}} \leq 1$ / empirical risk
+$\cdot$ Loss function $\mathcal{L}$ for $y\in\{0,1\}$ and predicted output $0 \leq \textcolor{C0}{\hat{y}} \in\mathbb{R} \leq 1$ / empirical risk $\mathcal{R}$
 
 $$\mathcal{L}_n(y, \textcolor{C0}{\hat{y}}) = -\left[y_n \log_\e(\textcolor{C0}{\hat{y}_n}) + (1-y_n) \log_\e(1-\textcolor{C0}{\hat{y}_n})\right]
 \qquad\quad
@@ -4188,10 +4263,11 @@ $\textcolor{C0}{\hat{y}_n} \approx 1 \rightarrow \,?$
 
 
 \begin{frame}{Model Training / Solve Minimization Problem by Gradient Descent}
-
+%
 \begin{align*}
 \operatorname*{argmin}_{\bm{w}, b} \mathcal{R} =
-&\operatorname*{argmin}_{\bm{w}, b} \frac{1}{N} \sum\limits_{n=1}^N -\left[y_n \log_\e(\textcolor{C0}{\hat{y}_n}) + (1-y_n) \log_\e(1-\textcolor{C0}{\hat{y}_n})\right]=\\
+&\operatorname*{argmin}_{\bm{w}, b} \frac{1}{N} \sum\limits_{n=1}^N \mathcal{L}_n(y, \textcolor{C0}{\hat{y}}) =
+\operatorname*{argmin}_{\bm{w}, b} \frac{1}{N} \sum\limits_{n=1}^N -\left[y_n \log_\e(\textcolor{C0}{\hat{y}_n}) + (1-y_n) \log_\e(1-\textcolor{C0}{\hat{y}_n})\right]=\\
 &\operatorname*{argmin}_{\bm{w}, b} \frac{1}{N} \sum\limits_{n=1}^N -\left[y_n \log_\e(\textcolor{C0}{\sigma\left(\bm{w}^\mathrm{T}\bm{x}_n + b\right)}) + (1-y_n) \log_\e(1-\textcolor{C0}{\sigma\left(\bm{w}^\mathrm{T}\bm{x}_n + b\right)})\right]
 \end{align*}
 
@@ -4203,7 +4279,7 @@ $\cdot$ randomly init weights $\bm{w}, b$ to be used as actual state
 
 2. calc empirical risk $\mathcal{R} = J(\bm{w}, b)$ (and store intermediate results for back prop)
 
-3. evaluate gradient
+3. get gradient of $J$ and numerically evaluate all those required derivatives
 $$\left[
 \frac{\partial J}{\partial w_1}\bigg|_{w_1=w_{1,\text{act}}},
 \dots,
@@ -4220,7 +4296,7 @@ $\cdot$ repeat steps 1 to 4 until a given stop criterion is fullfilled
 
 \begin{frame}[t]{First Derivative of Loss / Empirical Risk}
 
-Loss / empirical risk
+Loss $\mathcal{L}$ / empirical risk $\mathcal{R} = J(\bm{w},b)$
 $$\mathcal{L}_n(y, \textcolor{C0}{\hat{y}}) = -\left[y_n \log_\e(\textcolor{C0}{\hat{y}_n}) + (1-y_n) \log_\e(1-\textcolor{C0}{\hat{y}_n})\right]
 \qquad\quad
 J(\bm{w},b) = \frac{1}{N} \sum\limits_{n=1}^N \mathcal{L}_n(y, \textcolor{C0}{\hat{y}})
@@ -4233,7 +4309,8 @@ $$
 \frac{1}{N} \sum\limits_{n=1}^N \frac{\partial \mathcal{L}_n(y, \textcolor{C0}{\hat{y}})}{\partial \bm{w}\cdots\partial b}
 $$
 %
-We need to analytically know these derivatives as we will use them in GD
+We need to analytically know these derivatives for numerical evaluation with actual states, cf. step 4 on previous slide
+4, hence we need to manually write down the equations for
 $$
 \frac{\partial \mathcal{L}_n(y, \textcolor{C0}{\hat{y}})}{\partial \bm{w}\cdots\partial b} =
 -\frac{\partial
@@ -4255,7 +4332,7 @@ $$
 %
 Check for $w_1$
 \begin{align*}
-&z = \zeta(w_1) = \bm{w}^\mathrm{T}\bm{x} + b\\
+&z = \zeta(w_1) = \bm{w}^\mathrm{T}\bm{x} + b = w_1 x_1 + w_2 x_2 + \cdots + w_F x_F + b\\
 &\textcolor{C0}{\hat{y}} = \sigma(z) = \sigma(\zeta(w_1)) = \sigma\left(\bm{w}^\mathrm{T}\bm{x} + b\right)
 \end{align*}
 %
@@ -4341,7 +4418,7 @@ For GD we not only use the loss of one data sample, but rather need the empirica
 
 
 \begin{frame}{Binary Classification: Numerical Example for GD Update}
-
+\vspace{-0.5cm}
 \begin{minipage}[]{0.39\textwidth}
 %
 \begin{align*}
@@ -4365,7 +4442,7 @@ x_1\\x_2\\x_3
 1\\2\\3
 \end{bmatrix}
 \quad
-y=0\\
+y=-1\\
 &\bm{w}_\text{act} =
 \begin{bmatrix}
 w_1\\w_2\\w_3
@@ -4375,7 +4452,7 @@ w_1\\w_2\\w_3
 1\\\frac{1}{2}\\\frac{1}{3}
 \end{bmatrix}
 \quad
-b_\text{act}=1
+b_\text{act}=\frac{1}{4}
 \end{align*}
 %
 \end{minipage}
@@ -4401,7 +4478,7 @@ b_\text{act}=1
 \end{tikzpicture}
 %
 
-for new state / for GD update: ?
+GD update / new state ??
 %
 \pause
 % clear all; clc; format long g
@@ -4431,12 +4508,13 @@ for new state / for GD update: ?
 % round(dLdw3,prec)
 % round(dLdb,prec)
 \begin{align*}
-&\frac{\partial \mathcal{L}}{\partial \textcolor{C0}{\hat{y}}}\bigg|_{\hat{y}(w_{:,\text{act}}, b_{\text{act}})} = 55.59815\quad
-\frac{\partial \textcolor{C0}{\hat{y}}}{\partial z}\bigg|_{z(w_{:,\text{act}}, b_{\text{act}})}= 0.0176627\\
-&\frac{\partial \mathcal{L}}{\partial w_1}\bigg|_{w_{1,\text{act}}} = 0.9820138\quad
-\frac{\partial \mathcal{L}}{\partial w_2}\bigg|_{w_{2,\text{act}}} = 1.9640276\\
-&\frac{\partial \mathcal{L}}{\partial w_3}\bigg|_{w_{3,\text{act}}} = 2.9460414\quad
-\frac{\partial \mathcal{L}}{\partial b}\bigg|_{b_{\text{act}}} = 0.9820138
+&z_\text{act} = 3.25 \quad \hat{y}_\text{act} = \hat{y}(w_{:,\text{act}}, b_{\text{act}}) = 0.962673\\
+&\frac{\partial \mathcal{L}}{\partial \textcolor{C0}{\hat{y}}}\bigg|_{\hat{y}(w_{:,\text{act}}, b_{\text{act}})} = 54.619454\quad
+\frac{\partial \textcolor{C0}{\hat{y}}}{\partial z}\bigg|_{z(w_{:,\text{act}}, b_{\text{act}})}= 0.035933\\
+&\frac{\partial \mathcal{L}}{\partial w_1}\bigg|_{w_{1,\text{act}}} = 1.962673\quad
+\frac{\partial \mathcal{L}}{\partial w_2}\bigg|_{w_{2,\text{act}}} = 3.925346\\
+&\frac{\partial \mathcal{L}}{\partial w_3}\bigg|_{w_{3,\text{act}}} = 5.888019\quad
+\frac{\partial \mathcal{L}}{\partial b}\bigg|_{b_{\text{act}}} = 1.962673
 \end{align*}
 
 
@@ -4446,13 +4524,14 @@ for new state / for GD update: ?
 
 
 
-\subsection{Exercise 13}
+\subsection{Exercise 12}
 
-\begin{frame}{Ex13: Binary Classification with Hidden Layer Model / Multivariate Chain Rule / Metrics}
+\begin{frame}{Ex12: Binary Classification with Hidden Layer Model / Multivariate Chain Rule / Metrics}
 Objectives
 \begin{itemize}
 \item binary classification model with hidden layers means more complexity, more back prop effort
-\item metrics for binary classification: 2x2 confusion matrix
+\item back prop pathes for a multi-label classification with sigmoid outputs
+\item metrices for binary classification from the 2x2 confusion matrix
 \end{itemize}
 \end{frame}
 
@@ -4604,89 +4683,6 @@ $};
 \end{frame}
 
 
-
-\begin{frame}[t]{Confusion Matrix for Binary Classification}
-%
-\begin{center}
-\begin{tikzpicture}[scale=1.25]
-\tikzstyle{mtxi}=[draw, shape=rectangle,minimum size=1.5cm]
-\tikzstyle{mtxo}=[draw=none, shape=rectangle,minimum size=0.5cm]
-\node[mtxi, fill=C2!75, align=center](tn) at (-0.75,+0.75){$\textcolor{C0}{0} | \textcolor{C3}{0}$\\TN\\\textcolor{C3}{0},\textcolor{C0}{0}};
-\node[mtxi, align=center](fp) at (+0.75,+0.75){$\textcolor{C0}{1} | \textcolor{C3}{0}$\\FP\\\textcolor{C3}{0},\textcolor{C0}{1}};
-\node[mtxi, align=center](fn) at (-0.75,-0.75){$\textcolor{C0}{0} | \textcolor{C3}{1}$\\FN\\\textcolor{C3}{1},\textcolor{C0}{0}};
-\node[mtxi, fill=C2!75, align=center](tp) at (+0.75,-0.75){$\textcolor{C0}{1} | \textcolor{C3}{1}$\\TP\\\textcolor{C3}{1},\textcolor{C0}{1}};
-%
-\node[mtxo, align=center](realtrue) at (-1.5,+0.75){$\textcolor{C3}{0}$};
-\node[mtxo, align=center](realfalse) at (-1.5,-0.75){$\textcolor{C3}{1}$};
-\node[mtxo, align=center](predtrue) at (-0.75,+1.5){$\textcolor{C0}{0}$};
-\node[mtxo, align=center](predfalse) at (+0.75,1.5){$\textcolor{C0}{1}$};
-%
-\node[mtxo, align=center, rotate=90](reallbl) at (-1.75,0){\textcolor{C3}{real} class};
-\node[mtxo, align=center](predlbl) at (0,1.75){\textcolor{C0}{predicted} class};
-%
-\node[mtxo, align=left](realfalse) at (2.25,+0.75){$\text{R}_0 = \text{TN}+\text{FP}$};
-\node[mtxo, align=left](realtrue) at (2.25,-0.75){$\text{R}_1 = \text{FN}+\text{TP}$};
-%
-\node[mtxo, align=center](predfalse) at (-0.75,-1.75){$\text{P}_0 =$\\$\text{TN}+\text{FN}$};
-\node[mtxo, align=center](predtrue) at (+0.75,-1.75){$\text{P}_1 =$\\$\text{FP}+\text{TP}$};
-%
-\end{tikzpicture}
-\end{center}
-%
-\begin{align*}
-&\text{ACC}=\frac{\text{TN}+\text{TP}}{\text{R}_0+\text{R}_1}
-\qquad
-\text{TNR}=\frac{\text{TN}}{\text{R}_0}
-\qquad
-\text{TPR}=\frac{\text{TP}}{\text{R}_1}
-\\
-&\text{ACC}=\frac{\text{TN}+\text{TP}}{\text{P}_0+\text{P}_1}
-\qquad
-\text{NPV}=\frac{\text{TN}}{\text{P}_0}
-\qquad
-\text{PPV}=\frac{\text{TP}}{\text{P}_1}
-\end{align*}
-%
-\end{frame}
-
-
-
-\begin{frame}[t]{Binary Classification Metrics}
-%
-$\cdot$ TNR = specificity / selectivity, NPV = ?, TPR = sensitivity / recall, PPV = precision
-
-$\cdot$ metric based on TNR and TPR
-
-$\cdot$ metric based on TNR and NPV and/or TPR and PPV
-
-$\cdot$ TPR vs. PPV extrem cases
-\begin{align*}
-&\text{TPR}=\frac{\text{TP}}{\text{R}_1}=\frac{\text{TP}}{\text{TP}+\text{FN}}
-&\text{PPV}=\frac{\text{TP}}{\text{P}_1}=\frac{\text{TP}}{\text{TP}+\text{FP}}\\
-&\text{TPR}\approx 0: \text{FN} \gg \text{TP},\,\,\, \text{TP} \approx 0
-&\text{PPV}\approx 0: \text{FP} \gg \text{TP},\,\,\, \text{TP} \approx 0\\
-&\text{TPR}\approx 1: \text{TP} \gg \text{FN},\,\,\, \text{FN} \approx 0
-&\text{PPV}\approx 1: \text{TP} \gg \text{FP},\,\,\, \text{FP} \approx 0\\
-\end{align*}
-%
-$\cdot$ $\text{TPR}\approx 1$ and $\text{PPV}\approx 0$: few FN but many FP (e.g. overestimation of infections)
-
-$\cdot$ $\text{TPR}\approx 0$ and $\text{PPV}\approx 1$: few FP but many FN (e.g. underestimation of infections)
-
-$\cdot$ a potentially meaningful(?!) average (harmonic mean)
-$$
-\left(\frac{\frac{1}{\text{TPR}} + \frac{1}{\text{PPV}}}{2}\right)^{-1}
-=
-2 \cdot \frac{\text{TPR}\cdot\text{PPV}}{\text{TPR}+\text{PPV}}
-=
-2 \cdot \frac{\text{recall}\cdot\text{precision}}{\text{recall}+\text{precision}}
-=F_1\,\,\,\text{score}
-$$
-
-\end{frame}
-
-
-
 \begin{frame}[label=MultiLabelClassification]{Multi-Label Classification with Hidden Layer and Sigmoid Output Model}
 %
 \vspace{-0.25cm}
@@ -4811,9 +4807,95 @@ x_1\cdot
 
 
 
-\subsection{Exercise 14}
 
-\begin{frame}{Ex14: Multi-Class Classification with Softmax Output Layer}
+\begin{frame}[t]{Confusion Matrix for Binary Classification}
+%
+\begin{center}
+\begin{tikzpicture}[scale=1.25]
+\tikzstyle{mtxi}=[draw, shape=rectangle,minimum size=1.5cm]
+\tikzstyle{mtxo}=[draw=none, shape=rectangle,minimum size=0.5cm]
+\node[mtxi, fill=C2!75, align=center](tn) at (-0.75,+0.75){$\textcolor{C0}{0} | \textcolor{C3}{0}$\\TN\\\textcolor{C3}{0},\textcolor{C0}{0}};
+\node[mtxi, align=center](fp) at (+0.75,+0.75){$\textcolor{C0}{1} | \textcolor{C3}{0}$\\FP\\\textcolor{C3}{0},\textcolor{C0}{1}};
+\node[mtxi, align=center](fn) at (-0.75,-0.75){$\textcolor{C0}{0} | \textcolor{C3}{1}$\\FN\\\textcolor{C3}{1},\textcolor{C0}{0}};
+\node[mtxi, fill=C2!75, align=center](tp) at (+0.75,-0.75){$\textcolor{C0}{1} | \textcolor{C3}{1}$\\TP\\\textcolor{C3}{1},\textcolor{C0}{1}};
+%
+\node[mtxo, align=center](realtrue) at (-1.5,+0.75){$\textcolor{C3}{0}$};
+\node[mtxo, align=center](realfalse) at (-1.5,-0.75){$\textcolor{C3}{1}$};
+\node[mtxo, align=center](predtrue) at (-0.75,+1.5){$\textcolor{C0}{0}$};
+\node[mtxo, align=center](predfalse) at (+0.75,1.5){$\textcolor{C0}{1}$};
+%
+\node[mtxo, align=center, rotate=90](reallbl) at (-1.75,0){\textcolor{C3}{real} class};
+\node[mtxo, align=center](predlbl) at (0,1.75){\textcolor{C0}{predicted} class};
+%
+\node[mtxo, align=left](realfalse) at (2.25,+0.75){$\text{R}_0 = \text{TN}+\text{FP}$};
+\node[mtxo, align=left](realtrue) at (2.25,-0.75){$\text{R}_1 = \text{FN}+\text{TP}$};
+%
+\node[mtxo, align=center](predfalse) at (-0.75,-1.75){$\text{P}_0 =$\\$\text{TN}+\text{FN}$};
+\node[mtxo, align=center](predtrue) at (+0.75,-1.75){$\text{P}_1 =$\\$\text{FP}+\text{TP}$};
+%
+\end{tikzpicture}
+\end{center}
+%
+\begin{align*}
+&\text{ACC}=\frac{\text{TN}+\text{TP}}{\text{R}_0+\text{R}_1}
+\qquad
+\text{TNR}=\frac{\text{TN}}{\text{R}_0}
+\qquad
+\text{TPR}=\frac{\text{TP}}{\text{R}_1}
+\\
+&\text{ACC}=\frac{\text{TN}+\text{TP}}{\text{P}_0+\text{P}_1}
+\qquad
+\text{NPV}=\frac{\text{TN}}{\text{P}_0}
+\qquad
+\text{PPV}=\frac{\text{TP}}{\text{P}_1}
+\end{align*}
+%
+\end{frame}
+
+
+
+\begin{frame}[t]{Binary Classification Metrics}
+%
+$\cdot$ TNR = specificity / selectivity, NPV = ?, TPR = sensitivity / recall, PPV = precision
+
+$\cdot$ metric based on TNR and TPR
+
+$\cdot$ metric based on TNR and NPV and/or TPR and PPV
+
+$\cdot$ TPR vs. PPV extrem cases
+\begin{align*}
+&\text{TPR}=\frac{\text{TP}}{\text{R}_1}=\frac{\text{TP}}{\text{TP}+\text{FN}}
+&\text{PPV}=\frac{\text{TP}}{\text{P}_1}=\frac{\text{TP}}{\text{TP}+\text{FP}}\\
+&\text{TPR}\approx 0: \text{FN} \gg \text{TP},\,\,\, \text{TP} \approx 0
+&\text{PPV}\approx 0: \text{FP} \gg \text{TP},\,\,\, \text{TP} \approx 0\\
+&\text{TPR}\approx 1: \text{TP} \gg \text{FN},\,\,\, \text{FN} \approx 0
+&\text{PPV}\approx 1: \text{TP} \gg \text{FP},\,\,\, \text{FP} \approx 0\\
+\end{align*}
+%
+$\cdot$ $\text{TPR}\approx 1$ and $\text{PPV}\approx 0$: few FN but many FP (e.g. overestimation of infections)
+
+$\cdot$ $\text{TPR}\approx 0$ and $\text{PPV}\approx 1$: few FP but many FN (e.g. underestimation of infections)
+
+$\cdot$ a potentially meaningful(?!) average (harmonic mean)
+$$
+\left(\frac{\frac{1}{\text{TPR}} + \frac{1}{\text{PPV}}}{2}\right)^{-1}
+=
+2 \cdot \frac{\text{TPR}\cdot\text{PPV}}{\text{TPR}+\text{PPV}}
+=
+2 \cdot \frac{\text{recall}\cdot\text{precision}}{\text{recall}+\text{precision}}
+=F_1\,\,\,\text{score}
+$$
+
+\end{frame}
+
+
+
+
+
+
+\subsection{Exercise 13}
+
+\begin{frame}{Ex13: Multi-Class Classification with Softmax Output Layer}
 Objectives
 \begin{itemize}
 \item a potential (often used) multi-class classification with hidden layers
@@ -4950,7 +5032,7 @@ $$
 
 
 
-\againframe{MultiLabelClassification}
+%\againframe{MultiLabelClassification}
 %
 \begin{frame}{Multi-Class Classification with Hidden Layer and Softmax Output Model}
 %
@@ -5101,6 +5183,87 @@ $$
 
 \end{frame}
 
+
+\begin{frame}
+for example $K=2$ classes:
+
+pre-activation softmax output layer $$z_1, z_2$$
+
+post-activation softmax output layer $$\hat{y}_1, \hat{y}_2$$
+
+ground truth variables (one-hot encoded, $\in\{0,1\}$) $$y_1, y_2,\quad y_1+y_2=1$$
+
+loss function CCE
+$$\mathcal{L} = -\left(y_1 \log_\e(\hat{y}_1) + y_2 \log_\e(\hat{y}_2)\right)
+\rightarrow\qquad
+\frac{\partial \mathcal{L}}{\hat{y}_1} = -\frac{y_1}{\hat{y}_1}
+\qquad
+\frac{\partial \mathcal{L}}{\hat{y}_2} = -\frac{y_2}{\hat{y}_2}
+$$
+
+softmax equation
+$$
+\hat{y}_1 = \frac{\e^{z_1}}{\e^{z_1}+\e^{z_2}}
+\qquad
+\hat{y}_2 = \frac{\e^{z_2}}{\e^{z_1}+\e^{z_2}}
+$$
+
+Jacobian matrix
+$$
+\begin{bmatrix}
+\frac{\partial \hat{y}_1}{\partial z_1} & \frac{\partial \hat{y}_1}{\partial z_2}\\
+\frac{\partial \hat{y}_2}{\partial z_1} & \frac{\partial \hat{y}_2}{\partial z_2}
+\end{bmatrix}
+=
+\begin{bmatrix}
+\hat{y}_1 (1-\hat{y}_1) & -\hat{y}_1 \hat{y}_2\\
+-\hat{y}_2 \hat{y}_1 & \hat{y}_2 (1-\hat{y}_2)
+\end{bmatrix}
+$$
+\end{frame}
+
+
+\begin{frame}
+recap loss derivative
+$$
+\frac{\partial \mathcal{L}}{\hat{y}_1} = -\frac{y_1}{\hat{y}_1}
+\qquad
+\frac{\partial \mathcal{L}}{\hat{y}_2} = -\frac{y_2}{\hat{y}_2}
+$$
+recap Jacobian matrix
+$$
+\begin{bmatrix}
+\frac{\partial \hat{y}_1}{\partial z_1} & \frac{\partial \hat{y}_1}{\partial z_2}\\
+\frac{\partial \hat{y}_2}{\partial z_1} & \frac{\partial \hat{y}_2}{\partial z_2}
+\end{bmatrix}
+=
+\begin{bmatrix}
+\hat{y}_1 (1-\hat{y}_1) & -\hat{y}_1 \hat{y}_2\\
+-\hat{y}_2 \hat{y}_1 & \hat{y}_2 (1-\hat{y}_2)
+\end{bmatrix}
+$$
+pre-activation handling requires
+$$
+\frac{\partial \mathcal{L}}{\partial z_{\textcolor{C1}{1}}} = \sum\limits_{j=1}^{K=2} \frac{\partial \mathcal{L}}{\partial \hat{y}_j} \frac{\partial \hat{y}_j}{\partial z_{\textcolor{C1}{1}}}
+\qquad
+\frac{\partial \mathcal{L}}{\partial z_{\textcolor{C2}{2}}} = \sum\limits_{j=1}^{K=2} \frac{\partial \mathcal{L}}{\partial \hat{y}_j} \frac{\partial \hat{y}_j}{\partial z_{\textcolor{C2}{2}}}
+$$
+in detail for $z_{\textcolor{C2}{1}}$:
+$$
+\frac{\partial \mathcal{L}}{\partial z_{\textcolor{C1}{1}}}
+=
+\frac{\partial \mathcal{L}}{\partial \hat{y}_1} \frac{\partial \hat{y}_1}{\partial z_{\textcolor{C1}{1}}}+\frac{\partial \mathcal{L}}{\partial \hat{y}_2} \frac{\partial \hat{y}_2}{\partial z_{\textcolor{C1}{1}}}
+$$
+insert from above:
+$$
+\frac{\partial \mathcal{L}}{\partial z_{\textcolor{C1}{1}}}
+=
+(-\frac{y_1}{\hat{y}_1})\cdot\hat{y}_1 (1-\hat{y}_1) +
+(-\frac{y_2}{\hat{y}_2})\cdot(-\hat{y}_2 \hat{y}_1)
+=
+-y_1(1-\hat{y}_1) + y_2 \hat{y}_2 = y_1 \hat{y}_1 + y_2 \hat{y}_1 - y_1
+$$
+\end{frame}
 
 
 
@@ -5410,15 +5573,15 @@ $};
 \begin{frame}[t]{Music Genre Classification with Softmax / Categorical Cross Entropy}
 \begin{center}
 $
-\def\K{0.4}
+\def\K{0.5}
 \def\F{2}
 \def\N{5}
 \def\rank{0.999999}
-\drawmatrix[fill=none, height=\F, width=\N]{X}_\mathtt{F \times N}
-\drawmatrix[fill=none, height=\K, width=\N]{Y}_\mathtt{K \times N}
+\drawmatrix[fill=none, height=\F, width=\N]{X^T}_\mathtt{F \times N}
+\drawmatrix[fill=none, height=\K, width=\N]{Y^T}_\mathtt{K \times N}
 $
 \end{center}
-
+ 
 \only<1>{
 $\cdot$ feature design
 }
