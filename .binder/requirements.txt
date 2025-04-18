@@ -1,6 +1,6 @@
 torch
 torchvision
-complextorch>1.2.0
+complextorch>=1.1.4,<1.2.0
 tensorflow>=2.18
 keras-tuner
 scikit-learn
