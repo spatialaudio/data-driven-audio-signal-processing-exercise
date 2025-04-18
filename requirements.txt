@@ -1,11 +1,11 @@
 torch
 torchvision
 complextorch
-tensorflow
+tensorflow>=2.18
 keras-tuner
 scikit-learn
 statsmodels
-numpy
+numpy>=2.0
 scipy
 matplotlib
 ipympl
