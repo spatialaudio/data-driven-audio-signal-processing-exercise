@@ -5,6 +5,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{bm}
 \usepackage{amsmath}
+\usepackage{nicefrac}
 \usepackage{trfsigns}
 \usepackage{xcolor}
 \usetikzlibrary{arrows.meta}
@@ -30,10 +31,10 @@
 \def\lengthvec{3};
 
 \path (0,0) +(90:\lengthvec+2) coordinate (T);
-\draw (T) node[above]{Forward Problem with SVD of $\bm{A}$};
+\draw (T) node[above]{Inverse Problem with SVD of $\bm{A}$};
 
 \path (0,0) +(90:\lengthvec+1) coordinate (G);
-\draw (G) node[above]{$\bm{A}_{M \times N} = \bm{U}_{M \times M} \bm{\Sigma}_{M \times N} \bm{V}_{N \times N}^\mathrm{H}$};
+\draw (G) node[above]{$\bm{A}^+_{N \times M} = \bm{V}_{N \times N} \bm{\Sigma}^+_{N \times M} \bm{U}_{M \times M}^\mathrm{H}$};
 
 \draw[draw=black, rotate around={45:(u_space)}, C0] (u_space) rectangle ++(\lengthrect,\lengthrect);
 \draw[draw=black, rotate around={225:(u_space)}, C4] (u_space) rectangle ++(\lengthrect,\lengthrect);
@@ -62,7 +63,7 @@
 \draw (col_space) node[above]{column space: $\text{Range}(\bm{A})$};
 
 \path (u_space) +(90:\lengthvec-1) coordinate (col_space_dim);
-\draw (col_space_dim) node[above]{dim: $R$ = rank of $\bm{A}$};
+\draw (col_space_dim) node[above]{dim: $R$ = rank$(\bm{A})$};
 
 \path (u_space) +(270:\lengthvec) coordinate (left_null_space);
 \draw (left_null_space) node[above]{left null space: $\text{Null}(\bm{A}^\mathrm{H})$};
@@ -72,7 +73,7 @@
 
 % V space stuff:
 \path (v_space) +(45:\lengthvec) coordinate (v1);
-\draw[-{Latex[length=3mm]}, C2, thick] (v_space) -- (v1) node[right]{$\bm{v}_1$};
+\draw[-{Latex[length=3mm]}, C2, thick] (v_space) -- (v1) node[left]{$\bm{v}_1$};
 
 \path (v_space) +(135:\lengthvec) coordinate (vr);
 \draw[-{Latex[length=3mm]}, C2, thick] (v_space) -- (vr) node[left]{$\bm{v}_R$};
@@ -87,7 +88,7 @@
 \draw (row_space) node[above]{row space: $\text{Range}(\bm{A}^\mathrm{H})$};
 
 \path (v_space) +(90:\lengthvec-1) coordinate (row_space_dim);
-\draw (row_space_dim) node[above]{dim: $R$ = rank of $\bm{A}$};
+\draw (row_space_dim) node[above]{dim: $R$ = rank$(\bm{A})$};
 
 \path (v_space) +(270:\lengthvec) coordinate (null_space);
 \draw (null_space) node[above]{null space: $\text{Null}(\bm{A})$};
@@ -95,37 +96,34 @@
 \path (v_space) +(270:\lengthvec+1) coordinate (null_space_dim);
 \draw (null_space_dim) node[above]{dim: $N-R$};
 
-% row to column
 \path (u_space) +(135:\lengthvec-1) coordinate (u1s);
+\path (u_space) +(225:2) coordinate (b_lns);
+\path  (b_lns) +(135:2) coordinate (b);
+
 \draw[-{Latex[length=3mm]}] (u_space) -- (u1s) node[right]{$\sigma_1 \bm{u}_1$};
-\draw[-{Latex[length=2.5mm]}, dashed] (v1) -- node[below]{$\bm{A} \bm{v}_1=\sigma_1 \bm{u}_1$}(u1s);
+\draw[-{Latex[length=3mm]}] (u_space) -- (b_lns) node[right]{$\bm{e}$};
 
+\draw[C7, thin] (b_lns) -- (b);
+\draw[C7, thin] (b) -- (u1s);
 
+\draw[-{Latex[length=3mm]}] (u_space) -- (b) node[below]{$\bm{b}$};
 
-\path (vr1) +(45:\lengthvec) coordinate (x_ns);
-\draw[C7, thin] (vr1) -- (x_ns);
+\draw[-{Latex[length=2.5mm]}, dashed] (b) node[left=2cm, above=1cm]{$\bm{v}_1 = \bm{A}^+ \bm{b}$} -- (v1);
+\draw[-{Latex[length=2.5mm]}, dashed] (u1s) node[left=2.5cm, above=0.35cm]{$\bm{v}_1 = \bm{A}^+ (\sigma_1 \bm{u}_1)$} -- (v1);
 
-\path (v1) +(-45:\lengthvec) coordinate (x);
-\draw[C7, thin] (v1) -- (x);
+\draw[-{Latex[length=2.5mm]}, dashed] (b_lns) -- node[above]{$\bm{A}^+ \bm{e}=\bm{0}$}(v_space);
 
-\draw[-{Latex[length=3mm]}] (v_space) -- (x) node[right]{$\bm{x}=\bm{v}_1 + \bm{v}_{R+1}$};
-
-\draw[-{Latex[length=2.5mm]}, dashed] (x) -- node[below]{$\bm{A} \bm{x}=\sigma_1 \bm{u}_1$} (u1s);
-
-% null to zero vec
-\draw[-{Latex[length=2.5mm]}, dashed] (vr1) -- node[below]{$\bm{A} \bm{v}_{R+1}=\bm{0}$}(u_space);
 
 \path (-0.25,0) +(-90:\lengthvec+2.5) coordinate (S);
 \draw (S) node[above]
 {
 $
-\bm{\Sigma}=
+\bm{\Sigma}^+=
 \begin{bmatrix}
-\sigma_1 &  0&  & 0\\
-0 & \ddots &  & \vdots\\
- &  & \sigma_R &  \\
-0 &  \cdots &  & 0\\
-0 & \cdots & & 0
+\nicefrac{1}{\sigma_1} &  0&  & 0 & 0\\
+0 & \ddots &  & \vdots & \vdots\\
+ &  & \nicefrac{1}{\sigma_R} & & \\
+0 &  \cdots &  & 0 & 0
 \end{bmatrix}
 $};
 
