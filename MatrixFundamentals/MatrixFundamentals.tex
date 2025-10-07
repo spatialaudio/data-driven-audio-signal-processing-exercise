@@ -1,31 +1,26 @@
-\documentclass{sigsys_ue_template}
-\usepackage{caption}
+\documentclass[a4paper, 11pt]{scrartcl}
+\usepackage[margin=2.5cm
+%,showframe%
+]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{fouriernc}
+\usepackage[english]{babel}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
 \usepackage{subcaption}
-%\printanswers
-\renewcommand{\Date}{WS 2025/26}
-%\renewcommand{\Session}{01}
-\renewcommand{\Topic}{Matrix Fundamentals}
+\usepackage{bm}
+\usepackage{amsmath}
+%\usepackage{amsfonts}
+%\usepackage{amssymb}
 
 \begin{document}
-
-% \footnotesize
-% \noindent
-% Tutorial for Selected Topics in Audio Signal Processing (Data-Driven Methods in Signal Processing)
-%
-% \noindent Module Number: \# 24512
-%
-% \noindent Prof. Dr.-Ing. Sascha Spors, Professur Signaltheorie und digitale Signalverarbeitung,
-% Institut für Nachrichtentechnik (INT), Fakultät für Informatik und Elektrotechnik (IEF), Universität Rostock
-%
-% \noindent Lecturer: Dr.-Ing. Frank Schultz, frank.schultz@uni-rostock, +49 381 498 7334, AE-26 \#309
-% \normalsize
-
-%\TopField
-%\begin{questions}
-%\input{task_template}
-%\newpage
-%\input{task_template}
-%\end{questions}
+\pagestyle{fancy}
+\fancyhf{} % clr
+\fancyhead[L]{Data-Driven Methods in Signal Processing (Module \#24512)}
+\fancyhead[R]{Tutorial: Matrix Fundamentals}
+\fancyfoot[L]{frank.schultz@uni-rostock.de, INT, IEF}
+\fancyfoot[C]{\thepage}
+\fancyfoot[R]{WS 2025/26}
 
 \section{Reduced Row Echelon Form of a Matrix}
 \label{sec:rref}
