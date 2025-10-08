@@ -1,0 +1,14 @@
+[project]
+name = "data-driven-audio-signal-processing-exercise"
+license = "MIT"
+version = "0.1.0"
+description = "Data Driven Signal Processing - A Tutorial with Computational Examples"
+readme = "README.md"
+authors = [{ name = "Frank Schultz", github = "fs446" }]
+requires-python = ">=3.13"
+dependencies = ["torch", "torchvision", "tensorflow", "keras-tuner", "scikit-learn",
+  "statsmodels", "numpy", "scipy", "matplotlib", "ipympl", "librosa", "soundfile",
+  "pyloudnorm", "ipykernel"]
+
+[project.urls]
+Repository = "https://github.com/spatialaudio/data-driven-audio-signal-processing-exercise"
