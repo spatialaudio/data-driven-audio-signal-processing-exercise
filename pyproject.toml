@@ -6,9 +6,22 @@ description = "Data Driven Signal Processing - A Tutorial with Computational Exa
 readme = "README.md"
 authors = [{ name = "Frank Schultz", github = "fs446" }]
 requires-python = ">=3.13"
-dependencies = ["torch", "torchvision", "tensorflow", "keras-tuner", "scikit-learn",
-  "statsmodels", "numpy", "scipy", "matplotlib", "ipympl", "librosa", "soundfile",
-  "pyloudnorm", "ipykernel"]
+dependencies = [
+  "ipykernel",
+  "ipympl",
+  "keras-tuner",
+  "librosa",
+  "matplotlib",
+  "numpy",
+  "pyloudnorm",
+  "scikit-learn",
+  "scipy",
+  "soundfile",
+  "statsmodels",
+  "tensorflow",
+  "torch",
+  "torchinfo",
+  "torchvision"]
 
 [project.urls]
 Repository = "https://github.com/spatialaudio/data-driven-audio-signal-processing-exercise"

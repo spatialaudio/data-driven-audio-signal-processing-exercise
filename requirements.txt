@@ -1,5 +1,6 @@
 torch
 torchvision
+torchinfo
 tensorflow
 keras-tuner
 scikit-learn
