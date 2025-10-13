@@ -2,7 +2,7 @@
 torch
 torchvision
 torchinfo
-tensorflow
+tensorflow-cpu
 keras-tuner
 scikit-learn
 statsmodels
