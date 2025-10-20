@@ -4,7 +4,6 @@ zentorch==5.1.0
 torchvision
 torchinfo
 tensorflow==2.19.0
-zentf==5.1.0
 keras-tuner
 scikit-learn
 statsmodels

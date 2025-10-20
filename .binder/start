@@ -1,8 +1,0 @@
-#!/bin/bash
-
-# set environment vars
-export TF_ENABLE_ZENDNN_OPTS=1
-export TF_ENABLE_ONEDNN_OPTS=0
-
-# container entrypoint
-exec "$@"
