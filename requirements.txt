@@ -8,7 +8,7 @@ zentf==5.1.0
 keras-tuner
 scikit-learn
 statsmodels
-numpy
+numpy>=2.0.0
 scipy
 matplotlib
 ipympl
