@@ -223,18 +223,18 @@ print("Layer 8 (Flatten): (None, ", n7 * n7 * 160, "), ", sep="", end="")
 print("Param #: 0")  # no learning param
 
 
-model.add(keras.layers.Dense(100, activation="relu"))
+model.add(keras.layers.Dense(units=100, activation="relu"))
 print("Layer 9 (Dense): (None, 100), ", sep="", end="")
 print("Param #:", n7 * n7 * 160 * 100 + 100)
 
 
-model.add(keras.layers.Dense(110, activation="relu"))
+model.add(keras.layers.Dense(units=110, activation="relu"))
 print("Layer 10 (Dense): (None, 110), ", sep="", end="")
 print("Param #:", 100 * 110 + 110)
 
 
 # 9 classes to predict
-model.add(keras.layers.Dense(9, activation="softmax"))
+model.add(keras.layers.Dense(units=9, activation="softmax"))
 print("Layer 11 (Dense): (None, 9), ", sep="", end="")
 print("Param #:", 110 * 9 + 9)
 
