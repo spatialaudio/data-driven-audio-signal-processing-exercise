@@ -19,6 +19,7 @@ dependencies = [
   "soundfile",
   "statsmodels",
   "tensorflow",
+  "tensorboard",
   "torch",
   "torchinfo",
   "torchvision"]

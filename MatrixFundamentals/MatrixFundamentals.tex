@@ -12,6 +12,21 @@
 \usepackage{amsmath}
 %\usepackage{amsfonts}
 %\usepackage{amssymb}
+\usepackage{trfsigns}
+\usepackage{xcolor}
+
+%matplotlib colors:
+%https://matplotlib.org/stable/tutorials/colors/colors.html
+\definecolor{C0}{HTML}{1f77b4}
+\definecolor{C1}{HTML}{ff7f0e}
+\definecolor{C2}{HTML}{2ca02c}
+\definecolor{C3}{HTML}{d62728}
+\definecolor{C4}{HTML}{9467bd}
+\definecolor{C5}{HTML}{8c564b}
+\definecolor{C6}{HTML}{e377c2}
+\definecolor{C7}{HTML}{7f7f7f}
+\definecolor{C8}{HTML}{bcbd22}
+\definecolor{C9}{HTML}{17becf}
 
 \begin{document}
 \pagestyle{fancy}
@@ -20,7 +35,7 @@
 \fancyhead[R]{Tutorial: Matrix Fundamentals}
 \fancyfoot[L]{frank.schultz@uni-rostock.de, INT, IEF}
 \fancyfoot[C]{\thepage}
-\fancyfoot[R]{WS 2025/26}
+\fancyfoot[R]{WS 2026/27}
 
 \section{Reduced Row Echelon Form of a Matrix}
 \label{sec:rref}
@@ -42,9 +57,12 @@ $$
 0 & 0 & 0
 \end{bmatrix}
 $$
-shall be discussed in the following. $\bm{R}_0$ indicates two pivots. This tells us that matrix $\bm{A}$ exhibits rank $r=2$. The rank is also equal to the number of independent columns and to the number of independent rows of both matrices. In other words: the column rank and the row rank are always equal and identical to the matrix rank $r$.
+shall be discussed in the following. $\bm{R}_0$ indicates two pivots (i.e. the two $1$).
+This tells us that matrix $\bm{A}$ exhibits rank $r=2$.
+The rank is equal to the number of independent columns and to the number of independent rows of both matrices.
+In other words: the column rank and the row rank are always equal and identical to the matrix rank $r$.
 %
-The two matrix factorisations
+The two following matrix factorisations
 $$
 \bm{A} =
 \begin{bmatrix}
@@ -95,14 +113,14 @@ $$
 =
 \bm{C} \bm{R}_p \bm{P}
 $$
-utilise the pivot columns of $\bm{A}$ for setting up $\bm{C}$ and the first $r=2$ rows of $\bm{R}_0$ for $\bm{R}$ (direct order) and for $\bm{R}_p$ (permuted order, undone by the permutation matrix $\bm{P}$).
+utilise the pivot columns of $\bm{A}$ for setting up $\bm{C}$ and the first $r=2$ rows of $\bm{R}_0$ for $\bm{R}$ (direct order) and for $\bm{R}_p$ (permuted order, which is then undone by the permutation matrix $\bm{P}$).
 %
 Matrix $\bm{A}$ exhibits $M=4$ rows and $N=3$ columns.
 %
 Due to $r<M$ and $r<N$ the matrix $\bm{A}$ is rank-deficient.
 
 \section{Four Subspaces of a Matrix}
-The matrix $\bm{A}$ spans four subspaces, i.e. two images (a.k.a ranges) and two kernels. These subspaces are strictly linked.
+The matrix $\bm{A}$ spans four subspaces, i.e. two images (a.k.a ranges) and two kernels. These four subspaces are strictly linked and fundamentally explain the matrix $\bm{A}$.
 %
 The first subspace is the column space of $\bm{A}$ / image of $\bm{A}$ / range of $\bm{A}$ defined as
 $$
@@ -127,36 +145,43 @@ $$
 \text{LN}(\bm{A}) = \text{Null}(\bm{A}^\mathrm{T}) = \{\bm{y} \in \mathbb{R}^M \, | \, \bm{A}^\mathrm{T}\bm{y}=\bm{0}\},\qquad
 \text{dim}(\text{LN}(\bm{A})) = M-r.
 $$
-The four subspaces fulfil
+The highly important facts hold:
 \begin{align*}
 &\text{CS}(\bm{A}) \perp \text{LN}(\bm{A}),
 &\text{dim}(\text{CS}(\bm{A})) + \text{dim}(\text{LN}(\bm{A})) = M,\\
 &\text{RS}(\bm{A}) \perp
 \text{NS}(\bm{A}),
 &\text{dim}(\text{RS}(\bm{A})) + \text{dim}(\text{NS}(\bm{A})) = N,\\
-&&\text{dim}(\text{CS}(\bm{A})) = \text{dim}(\text{RS}(\bm{A})) = r.
+&&\text{dim}(\text{CS}(\bm{A})) \equiv \text{dim}(\text{RS}(\bm{A})) = r.
 \end{align*}
-These fundamental facts need to be known when doing machine learning with linear models, such as using the widely adopted ordinary least squares (OLS).
+These need to be known when doing machine learning with linear models, such as using the widely adopted ordinary least squares (OLS) or ridge regression.
 %
 \newpage
 %
-With these given subspace definitions, we might check the above numerical example:
+With the given subspace definitions, we might check the above numerical example:
 \begin{itemize}
 \item matrix $\bm{C}$ is a basis for the column space of $\bm{A}$, i.e. a basis for $\text{CS}(\bm{A})$
 \item matrix $\bm{R}^\mathrm{T}$ is a basis for the row space of $\bm{A}$, i.e. a basis for $\text{RS}(\bm{A})$
-\item the matrix $(\bm{R}_p \bm{P})^\mathrm{T} = \bm{P}^\mathrm{T} \bm{R}_p^\mathrm{T}$ is a basis (actually the same) for the row space of $\bm{A}$
+\item matrix $\bm{R}_p^\mathrm{T}$ is also a basis for the row space of $\bm{A}$, i.e. a basis for $\text{RS}(\bm{A})$
 \end{itemize}
-The above factorisations are hence known as column * row space matrix factorisation, because column space and row space are nicely encoded in the matrices. These subspaces were directly extracted from the pivot columns of $\bm{A}$ and from the pivot rows of the reduced row echelon form $\bm{R}_0$. This provides a deeper insight to the Gauss-Jordan elimination.
+The above factorisations are hence known as column $\times$ row space matrix factorisation,
+because column space and row space are nicely encoded in the matrices.
+These subspaces were directly extracted from the pivot columns of $\bm{A}$ and
+from the pivot rows of the reduced row echelon form $\bm{R}_0$.
+This provides a deeper insight to the essence of the Gauss-Jordan elimination.
 
-\section{Singular Value Decomposition of a Matrix}
-The singular value decomposition (SVD) is by far the most important matrix factorisation, because it tells us in the most elegant way, what a matrix can do and cannot do. The SVD is typically notated with the following matrix letters
+\section{Singular Value Decomposition (SVD) of a Matrix}
+The singular value decomposition (SVD) is by far the most important matrix factorisation,
+because it tells us in the most elegant way, what a matrix can do and what it cannot do in terms of a
+forward and its inverse problem.
+The SVD is typically notated with the following matrix letters
 $$
 \bm{A} = \bm{U} \bm{\Sigma} \bm{V}^\mathrm{T} \qquad\text{or}\qquad
 \bm{A} = \bm{U} \bm{S} \bm{V}^\mathrm{T}.
 $$
-In what follows, we should check, that $\bm{U}$ and $\bm{V}$ contain orthonormal bases for all the four subspaces, by manually calculating the SVD for the given numerical example.
+In what follows, we should check, that $\bm{U}$ and $\bm{V}$ contain orthonormal bases for all the four subspaces, by manually calculating the SVD for the given numerical example of $\bm{A}$.
 
-The SVD is based on solving eigenwert problems for the symmetrical, positive (semi)-definite matrices $\bm{A}^\mathrm{T} \bm{A}$ and $\bm{A} \bm{A}^\mathrm{T}$. Hence,
+The SVD is based on solving two eigenwert problems for the symmetrical, positive (semi)-definite matrices $\bm{A}^\mathrm{T} \bm{A}$ and $\bm{A} \bm{A}^\mathrm{T}$. Hence, initially we set up
 $$
 \bm{A}^\mathrm{T} \bm{A} =
 \begin{bmatrix}
@@ -202,6 +227,7 @@ $$
 \end{bmatrix}
 =\bm{A}_u
 $$
+We recall, that the eigenvalues of symmetrical matrices are $\geq 0$.
 
 \subsection{Eigenwert Problem for Matrix $\bm{A}_v = \bm{A}^\mathrm{T} \bm{A}$}
 
@@ -362,9 +388,9 @@ Hence, the eigenwert problem actually solved towards the so called spectral theo
 $$
 \bm{A}_v = \bm{V}
 \begin{bmatrix}
-9 & 0 & 0\\
-0 & 1 & 0\\
-0 & 0 & 0
+\lambda_1=9 & 0 & 0\\
+0 & \lambda_2=1 & 0\\
+0 & 0 & \lambda_3=0
 \end{bmatrix}
 \bm{V}^\mathrm{T},
 $$
@@ -382,9 +408,11 @@ $$
 \lambda_3 = 0,\,\,\,
 \lambda_4 = 0
 $$
-Note the fundamental and general fact: $\bm{A}_v$ and $\bm{A}_u$ have the same non-zero(!) eigenvalues.
+Note the fundamental and general fact: $\bm{A}_v$ and $\bm{A}_u$ share the same non-zero(!) eigenvalues.
 In our example this is $\lambda_1=9$ and $\lambda_2=1$.
-We get these two non-zero eigenvalues because matrix $\bm{A}$ (and also $\bm{A} \bm{A}^\mathrm{T}$) has rank $r=2$.
+We get these two non-zero eigenvalues because matrix $\bm{A}$ (and also $\bm{A} \bm{A}^\mathrm{T}$
+and also $\bm{A}^\mathrm{T} \bm{A}$
+) has rank $r=2$.
 We furthermore have the repeated eigenvalue $\lambda_3 = \lambda_4 = 0$, but we can find two distinct eigenvectors for this double eigenvalue. This tells us that  $\bm{A}_u$ is diagonalizable (note: all symmetric matrices are diagonalizable, this is one of the key ideas of the spectral theorem).
 
 $$
@@ -475,7 +503,7 @@ $$
 =
 [\hat{\bm{u}}_3 \quad \hat{\bm{u}}_4]
 \end{align*}
-These eigenvectors were directly chosen to be orthonormal (i.e. unit length), because the vectors are comparably simple numbered. Note that allocating
+These eigenvectors were directly chosen to be orthonormal (i.e. unit length), because the vectors are comparably simply numbered. Note that allocating
 $$[\hat{\bm{u}}_3 \quad \hat{\bm{u}}_4] =
 \begin{bmatrix}
 0 & 0\\
@@ -484,7 +512,7 @@ $$[\hat{\bm{u}}_3 \quad \hat{\bm{u}}_4] =
 0 & 1
 \end{bmatrix}
 $$
-is also possible, and is probably even more intuitive to span the preliminary $\mathbb{R}^M$ orthonormal basis
+is also possible, and this choice is probably even more intuitive to span the \underline{preliminary} $\mathbb{R}^M$ orthonormal basis
 $$
 \bm{U}_\text{prelim}
 =
@@ -499,11 +527,12 @@ $$
 0 & 0 & 0 & 1
 \end{bmatrix}.
 $$
-This accidentally yields the identity matrix due to the rather simple matrix $\bm{A}$.
+In our example, this accidentally(!) yields the identity matrix due to the rather simple matrix $\bm{A}$.
 
 \subsection{Singular Value Matrix}
 
-SVD theory tells us that the singular value matrix $\bm{\Sigma}$ has the same shape and the same rank as $\bm{A}$. Thus, in our example $\bm{\Sigma}$ is a $4 \times 3$ matrix with rank $r=2$. The square root of the non-zero, decreasingly sorted eigenvalues (we have already done this above) are put into the diagonal of $\bm{\Sigma}$, all other entries are zero. Hence, in our example
+SVD theory tells us that the singular value matrix $\bm{\Sigma}$ has the same shape and the same rank as $\bm{A}$. Thus, in our example $\bm{\Sigma}$ is a $4 \times 3$ matrix with rank $r=2$. The square root of the non-zero, decreasingly sorted eigenvalues (we have already done this above) are put onto the diagonal of $\bm{\Sigma}$, all other entries are zero. Hence, in our example
+the singular value matrix is
 $$
 \bm{\Sigma}=
 \begin{bmatrix}
@@ -520,10 +549,10 @@ $$
 0 & 0 & 0
 \end{bmatrix},
 $$
-for which the matrix rank $r=2$ can be deduced immediately (two independent columns, two independent rows, two pivots).
+for which the matrix rank $r=2$ can be deduced immediately (this means: two independent columns, two independent rows, two pivots in $\bm{\Sigma}$).
 
-\subsection{Row and Column Space in the SVD}
-Due to $\bm{V}^\mathrm{T} \bm{V} = \bm{I}$ we get
+\subsection{Tight Link Between Row and Column Space in the SVD}
+Due to $\bm{V}^\mathrm{T} \bm{V} = \bm{I}$, the right multiplication with $\bm{V}$ yields
 $$
 \bm{A} = \bm{U} \bm{\Sigma} \bm{V}^\mathrm{T}
 \rightarrow
@@ -531,7 +560,7 @@ $$
 \rightarrow
 \bm{A} \bm{V} = \bm{U} \bm{\Sigma}.
 $$
-In order that this holds, we need to set up a tight link between the $\hat{\bm{v}}$ and corresponding $\hat{\bm{u}}$ vectors. Due to rank $r=2$ we have to ensure this for two singular values and potentially need to adapt polarity of the preliminary set up $\hat{\bm{u}}_1$ and $\hat{\bm{u}}_2$.
+In order that this holds, we need to set up a tight link between the already calculated $\hat{\bm{v}}$ and their exactly corresponding $\hat{\bm{u}}$ vectors. Due to rank $r=2$ we have to ensure this for the two non-zero singular values and hence potentially need to adapt polarity of the preliminary set up $\hat{\bm{u}}_1$ and $\hat{\bm{u}}_2$.
 
 $$\bm{A} \hat{\bm{v}}_1 = \sigma_1 \hat{\bm{u}}_1
 \rightarrow
@@ -562,9 +591,10 @@ $$
 0 & 0 & 0 & 1
 \end{bmatrix}.
 $$
-In literature the vectors get dedicated names. Very often the column vectors in $\bm{U}$ are called left singular vectors and the column vectors in $\bm{V}$ are called right singular vectors, probably due to the sequence in the $\bm{A} = \bm{U} \bm{\Sigma} \bm{V}^\mathrm{T}$ SVD equation. On the next pages these singular vectors are linked to the four subspaces. A dedicated name, which supports this important link would be meaningful, such as e.g. the \textit{column space singular vectors} and so on.
+In the literature the vectors in $\bm{U}$ and $\bm{V}$ get dedicated names.
+Very often the column vectors in $\bm{U}$ are called left singular vectors and the column vectors in $\bm{V}$ are called right singular vectors, probably due to the sequence in the $\bm{A} = \bm{U} \bm{\Sigma} \bm{V}^\mathrm{T}$ SVD equation. On the next pages these singular vectors are linked to the four subspaces. A dedicated name, which supports this important link would be meaningful, such as e.g. the \textit{column space singular vectors} and so on.
 
-\subsubsection{Full SVD}
+\subsection{Full SVD}
 The \underline{full SVD} for our example reads
 $$
 \bm{A} =
@@ -596,8 +626,134 @@ $$
 \end{bmatrix}^\mathrm{T}
 = \bm{U} \bm{\Sigma} \bm{V}^\mathrm{T}
 $$
-\subsubsection{Reduced SVD}
-Because, we do not need to calculate the stuff that is related to the zero rows and zero columns in $\bm{\Sigma}$, the so called \underline{reduced SVD} form is often applied (especially in numerical practice). For our example the reduced SVD reads
+
+\subsection{Uniqueness / Non-Uniqueness of the SVD}
+This simple example allows to point out an important fact about the $\bm{U}$, $\bm{V}$ matrices.
+These bases are \underline{not unique}, but rather allow for polarity inversion and complex-valued rotation.
+
+Example 1: By polarity inversion of e.g. the first and second columns equally in $\bm{U}$ and(!) $\bm{V}$,
+we also get a valid SVD of $\bm{A}$:
+$$
+\bm{A} =
+\begin{bmatrix}
+2 & \sqrt{5} & 0\\
+0 & 0 & 1\\
+0 & 0 & 0\\
+0 & 0 & 0
+\end{bmatrix}
+=
+\begin{bmatrix}
+\textcolor{C3}{+1} & 0 & 0 & 0\\
+0 & \textcolor{C3}{-1} & 0 & 0\\
+0 & 0 & 1 & 0\\
+0 & 0 & 0 & 1
+\end{bmatrix}
+\,
+\begin{bmatrix}
+3 & 0 & 0\\
+0 &  1 & 0\\
+0 & 0 & 0\\
+0 & 0 & 0
+\end{bmatrix}
+\,
+\begin{bmatrix}
+\textcolor{C3}{+}\frac{2}{3} & 0 & \frac{\sqrt{5}}{3}\\
+\textcolor{C3}{+}\frac{\sqrt{5}}{3} & 0 & -\frac{2}{3}\\
+0 & \textcolor{C3}{-1} & 0
+\end{bmatrix}^\mathrm{T}
+= \bm{U} \bm{\Sigma} \bm{V}^\mathrm{T}
+$$
+
+Example 2: Matlab and Python probably will operate with the identity matrix $\bm{U}$
+$$
+\bm{A} =
+\begin{bmatrix}
+2 & \sqrt{5} & 0\\
+0 & 0 & 1\\
+0 & 0 & 0\\
+0 & 0 & 0
+\end{bmatrix}
+=
+\begin{bmatrix}
+\textcolor{C3}{+1} & 0 & 0 & 0\\
+0 & +1 & 0 & 0\\
+0 & 0 & 1 & 0\\
+0 & 0 & 0 & 1
+\end{bmatrix}
+\,
+\begin{bmatrix}
+3 & 0 & 0\\
+0 &  1 & 0\\
+0 & 0 & 0\\
+0 & 0 & 0
+\end{bmatrix}
+\,
+\begin{bmatrix}
+\textcolor{C3}{+}\frac{2}{3} & 0 & \frac{\sqrt{5}}{3}\\
+\textcolor{C3}{+}\frac{\sqrt{5}}{3} & 0 & -\frac{2}{3}\\
+0 & +1 & 0
+\end{bmatrix}^\mathrm{T}
+= \bm{U} \bm{\Sigma} \bm{V}^\mathrm{T}
+$$
+
+Example 3: Complex-valued rotation with any angle $\phi\in\mathbb{R}$ of e.g. the second column
+in $\bm{V}$ and(!) $\bm{U}$ yields the (now complex-valued) SVD of $\bm{A}$:
+%
+$$
+\bm{A} =
+\begin{bmatrix}
+2 & \sqrt{5} & 0\\
+0 & 0 & 1\\
+0 & 0 & 0\\
+0 & 0 & 0
+\end{bmatrix}
+=
+\begin{bmatrix}
+-1 & 0 & 0 & 0\\
+0 & \textcolor{C3}{\e^{\im\phi}} & 0 & 0\\
+0 & 0 & 1 & 0\\
+0 & 0 & 0 & 1
+\end{bmatrix}
+\,
+\begin{bmatrix}
+3 & 0 & 0\\
+0 &  1 & 0\\
+0 & 0 & 0\\
+0 & 0 & 0
+\end{bmatrix}
+\,
+\begin{bmatrix}
+-\frac{2}{3} & 0 & \frac{\sqrt{5}}{3}\\
+-\frac{\sqrt{5}}{3} & 0 & -\frac{2}{3}\\
+0 & \textcolor{C3}{\e^{\im\phi}} & 0
+\end{bmatrix}^\mathrm{\textcolor{C3}{H}}
+= \bm{U} \bm{\Sigma} \bm{V}^\mathrm{\textcolor{C3}{H}}
+$$
+We recall that $\bm{V}^\mathrm{\textcolor{C3}{H}} = (\bm{V}^\mathrm{T})^*$, i.e. transpose plus complex-conjugate
+and the imaginary unit $\im$ with $\im^2 \equiv -1$.
+
+We see:
+The matrix $\bm{\Sigma}$ never changed in all SVD versions, it is unique for the matrix $\bm{A}$.
+The matrices $\bm{U}$ and $\bm{V}$ are not unique, but all valid SVD pairs for
+$\bm{U}$ and $\bm{V}$ fulfill
+$$
+\bm{U} \bm{U}^{-1} = \bm{I},\quad
+\bm{U}^{-1} \bm{U} = \bm{I},\quad
+\bm{U} \bm{U}^\mathrm{H} = \bm{I},\quad
+\bm{U}^\mathrm{H} \bm{U} = \bm{I}\quad
+\text{due to} \quad \bm{U}^{-1} = \bm{U}^\mathrm{H},$$
+$$
+\bm{V} \bm{V}^{-1} = \bm{I},\quad
+\bm{V}^{-1} \bm{V} = \bm{I},\quad
+\bm{V} \bm{V}^\mathrm{H} = \bm{I},\quad
+\bm{V}^\mathrm{H} \bm{V} = \bm{I}\quad
+\text{due to} \quad \bm{V}^{-1} = \bm{V}^\mathrm{H}.$$
+This tells us that $\bm{U}$ and $\bm{V}$ are orthonormal for real numbers and unitary for complex numbers.
+Orthonormal vectors are probably the most elegant way to set up a basis.
+
+
+\subsection{Reduced SVD}
+Because, we do not need to calculate the stuff that is related to the zero rows and zero columns in $\bm{\Sigma}$, the so called \underline{reduced SVD} form is often given (especially in numerical practice and for very large matrices). For our example a reduced SVD reads
 $$
 \bm{A} =
 \begin{bmatrix}
@@ -624,19 +780,23 @@ $$
 -\frac{\sqrt{5}}{3} & 0\\
 0 & 1
 \end{bmatrix}^\mathrm{T}
-= \bm{U}_\text{red} \bm{\Sigma}_\text{red} \bm{V}_\text{red}^\mathrm{T},
+= \bm{U}_\text{red} \,\,\, \bm{\Sigma}_\text{red} \,\,\, \bm{V}_\text{red}^\mathrm{T},
 $$
-where all reduced SVD matrices exhibit rank $r=2$, by intention the very same as the matrix $\bm{A}$.
-
+where all reduced SVD matrices exhibit rank $r=2$, which is by intention precisely the rank of the matrix $\bm{A}$.
+%
 We recall that
 $$
 \text{dim}(\text{CS}(\bm{A})) = \text{dim}(\text{RS}(\bm{A})) = r = 2.
 $$
 Hence,
-$\bm{U}_\text{red}$ contains a orthonormal basis for the column space (in $\mathbb{R}^M=\mathbb{R}^4$) and $\bm{V}_\text{red}$ contains a orthonormal basis for the row space (in $\mathbb{R}^N=\mathbb{R}^3$).
+$\bm{U}_\text{red}$ contains an orthonormal basis for the column space (two vectors in $\mathbb{R}^M=\mathbb{R}^4$) and $\bm{V}_\text{red}$ contains an orthonormal basis for the row space (two vectors in $\mathbb{R}^N=\mathbb{R}^3$).
 %
-\subsubsection{Sum-Of-Outer Products}
-Due to the orthonormal basis $\bm{U}$ and $\bm{V}$, one \textit{row space singular vector} is exclusively connected to one \textit{column space singular vector} by its dedicated singular value $\sigma$. We actually used this fact above to calculate the proper corresponding $\hat{\bm{u}}$ vector from the given $\hat{\bm{v}}$ vector. This fact can also be utilised to bring the SVD in another, very often used formulation, i.e. the \underline{sum of outer products}
+\subsection{Sum-Of-Outer Products}
+Due to the orthonormal basis $\bm{U}$ and $\bm{V}$,
+one \textit{row space singular vector} (system input)
+is exclusively connected to one \textit{column space singular vector} (system output)
+by its dedicated singular value $\sigma$ (system gain).
+We actually used this fact above to calculate the proper corresponding $\hat{\bm{u}}$ vector from the given $\hat{\bm{v}}$ vector. This fact can also be utilised to bring the SVD in another, very often used formulation, i.e. the \underline{sum of outer products}
 $$
 \bm{A} = \sum_{i=1}^{r=2} \sigma_i \cdot \hat{\bm{u}}_i \hat{\bm{v}}_i^\mathrm{T}=
 3\cdot
@@ -669,10 +829,10 @@ $$
 \end{bmatrix}
 =\bm{A}.
 $$
-Each outer product $\sigma_i \cdot \hat{\bm{u}}_i \hat{\bm{v}}_i^\mathrm{T}$ represents one rank-1 matrix. With our chosen simple example, the rank 1 is nicely and immediately seen without calculus. The two rank-1 matrices sum up to the rank-2 matrix $\bm{A}$.
+Each outer product $\sigma_i \cdot \hat{\bm{u}}_i \hat{\bm{v}}_i^\mathrm{T}$ represents one rank-1 matrix. With our chosen simple example, the rank 1 is nicely and immediately seen without explicit checks. The two rank-1 matrices sum up to the rank-2 matrix $\bm{A}$.
 
 \subsection{Null and Left Null Space in the SVD}
-The orthonormal basis $\bm{V}$ and the reduced $\bm{V}_\text{red}$ obviously differ by
+The orthonormal basis $\bm{V}$ and the reduced $\bm{V}_\text{red}$ obviously differ by the column
 $$
 \hat{\bm{v}}_3 =
 \begin{bmatrix}
@@ -681,12 +841,12 @@ $$
 0
 \end{bmatrix}
 $$
-in our example. By definition of an orthonormal basis
+in our example. By definition of an orthonormal basis, we have
 $$
-\hat{\bm{v}}_3 \perp \hat{\bm{v}}_2,\quad
-\hat{\bm{v}}_3 \perp \hat{\bm{v}}_1.
+\hat{\bm{v}}_1 \perp \hat{\bm{v}}_2,\quad
+\hat{\bm{v}}_1 \perp \hat{\bm{v}}_3.
 $$
-Recall that $\text{dim}(\text{RS}(\bm{A})) = r = 2$ and $N=3$ and that
+Now, recall that $\text{dim}(\text{RS}(\bm{A})) = r = 2$ and number of columns $N=3$ and that
 \begin{align*}
 &\text{RS}(\bm{A}) \perp
 \text{NS}(\bm{A}),
@@ -694,10 +854,10 @@ Recall that $\text{dim}(\text{RS}(\bm{A})) = r = 2$ and $N=3$ and that
 \end{align*}
 This tells us $\text{dim}(\text{NS}(\bm{A})) = 1$, i.e. one vector spans the null space of $\bm{A}$. Further, this vector needs to be orthogonal to the row space.
 %
-Hence, the singular vector $\hat{\bm{v}}_3$ must contain the basis of the null space. It is accidentally just this one vector (plus the trivial zero vector) in our example. For other matrices the null space basis might have many more vectors or even only the zero vector.
+Hence, the singular vector $\hat{\bm{v}}_3$ must contain the basis of the null space of $\bm{A}$. It is accidentally just this one vector (plus the trivial zero vector) in our example. For other matrices the null space basis might have many more vectors or even only the zero vector.
 
-The same thoughts yield the left null space.
-The orthonormal basis $\bm{U}$ and the reduced $\bm{U}_\text{red}$ differ by
+The same thoughts yield the so called left null space.
+The orthonormal basis $\bm{U}$ and the reduced $\bm{U}_\text{red}$ differ by the two columns
 $$
 \hat{\bm{u}}_3 =
 \begin{bmatrix}
@@ -710,12 +870,16 @@ $$
 $$
 for which by definition of an orthonormal basis
 $$
+\hat{\bm{u}}_1 \perp \hat{\bm{u}}_2,\quad
 \hat{\bm{u}}_1 \perp \hat{\bm{u}}_3,\quad
-\hat{\bm{u}}_2 \perp \hat{\bm{u}}_4\dots
+\hat{\bm{u}}_1 \perp \hat{\bm{u}}_4,\quad
+\hat{\bm{u}}_2 \perp \hat{\bm{u}}_3,\quad
+\hat{\bm{u}}_2 \perp \hat{\bm{u}}_4,\quad
+\hat{\bm{u}}_3 \perp \hat{\bm{u}}_4\quad\rightarrow\quad
 \bm{U}^\mathrm{T} \bm{U} = \bm{I}
 $$
 holds.
-Recall that $\text{dim}(\text{CS}(\bm{A})) = r = 2$ and $M=4$ and that
+Recall that $\text{dim}(\text{CS}(\bm{A})) = r = 2$ and number of rows $M=4$ and that
 \begin{align*}
 &\text{CS}(\bm{A}) \perp
 \text{LN}(\bm{A}),
@@ -723,15 +887,15 @@ Recall that $\text{dim}(\text{CS}(\bm{A})) = r = 2$ and $M=4$ and that
 \end{align*}
 This tells us $\text{dim}(\text{LN}(\bm{A})) = 2$, i.e. two vectors span the left null space of $\bm{A}$ and these vectors need to be orthogonal to the column space.
 %
-Hence, the singular vectors $[\hat{\bm{u}}_3 \quad \hat{\bm{u}}_4]$ contain the basis of the left null space.
+Hence, the singular vectors $[\hat{\bm{u}}_3 \quad \hat{\bm{u}}_4]$ contain the basis of the left null space of $\bm{A}$.
 %Again it might be just the zero vector that spans the left null space, or in the case of a tall/thin, full column rank (i.e. $M \gg N=R$) the left null space has a very large dimension.
 
-For our numerical example, it is simple to check that we found the correct null space and the correct left null space basis:
+For our numerical example, it is simple to check that we found the correct null space basis and the correct left null space basis:
 $$
 \bm{A} \hat{\bm{v}}_3 =
 \begin{bmatrix}
 0\\0\\0\\0
-\end{bmatrix},\quad
+\end{bmatrix},\qquad\quad
 \bm{A}^\mathrm{T} \hat{\bm{u}}_3 =
 \begin{bmatrix}
 0\\0\\0
@@ -748,7 +912,7 @@ $$
 0\\0\\0
 \end{bmatrix}.
 $$
-In Fig.~\ref{fig:four_subspaces} the four subspaces being encoded in the $\bm{V}$ and $\bm{U}$ matrices are schematically depicted for the forward mapping $\bm{A} \bm{v}$.
+In Fig.~\ref{fig:four_subspaces} the four subspaces being encoded in the $\bm{V}$ and $\bm{U}$ matrices are schematically depicted for the forward mapping $\bm{A} \bm{x}$.
 
 \subsection{Swap Subspaces = Transpose of the Matrix}
 The roles of the subspaces swap for transposed matrices. This simply follows from the above definition formulas for these subspaces. In terms of the SVD, a matrix transpose results in swaping the roles of the $\bm{U}$ and $\bm{V}$ matrices. For $\bm{A}^\mathrm{T}$, now $\bm{V}$ contains the bases for column space and left null space and $\bm{U}$ contains the bases for row space and null space. The singular values remain the same and  connect the dedicated row space and column space singular vectors.
@@ -781,7 +945,7 @@ $$
 = \bm{V} \bm{\Sigma}^\mathrm{T} \bm{U}^\mathrm{T}
 $$
 
-
+\newpage
 \section{SVD-Derived Projectors to the Four Subspaces}
 
 Projection matrices can be straightforwardly obtained from SVD's $\bm{V}$ and $\bm{U}$ matrices.
@@ -796,7 +960,7 @@ $$
 \bm{U}_\text{CS} & \bm{V}_\text{LN}
 \end{bmatrix}.
 $$
-In our example this yields
+In our example this yields (note again: $\bm{A}$, $\bm{V}_\text{RS}$, $\bm{U}_\text{CS}$ have rank 2, recall the dimension formulae and the reduced SVD)
 $$
 \bm{V}_\text{RS}=
 \bm{V}_\text{red}=
@@ -829,7 +993,7 @@ $$
 0 & 1
 \end{bmatrix}
 $$
-Then the projectors are given by
+Then the unique(?!) projectors are given by
 $$
 \bm{P}_\text{RS} = \bm{V}_\text{RS} \bm{V}_\text{RS}^\mathrm{T}, \qquad
 \bm{P}_\text{NS} = \bm{V}_\text{NS} \bm{V}_\text{NS}^\mathrm{T}, \qquad
@@ -837,7 +1001,7 @@ $$
 \bm{P}_\text{LN} = \bm{U}_\text{LN} \bm{U}_\text{LN}^\mathrm{T}.
 $$
 %A full-rank, square matrix (and thus invertible) matrix yields the identity matrix for $\bm{P}_\text{RS} = \bm{P}_\text{CS} = \bm{I}$, since the projectors to the null spaces $\bm{P}_\text{NS} = \bm{P}_\text{CS} = \bm{0}$ yield the zero matrix.
-For our example
+For our example these read
 $$
 \bm{P}_\text{RS}
 =
@@ -875,19 +1039,18 @@ $$
 $$
 Because we have a very simple $\bm{U}$ basis, the latter two projectors are also very simple.
 These projections are thus very intuitive.
-Real data matrices typically exhibit crazy numbered projection matrices; so we need to be very confident
-with these concepts.
+Real data matrices typically exhibit crazy numbered projection matrices.
 
-Projection matrices are always idempotent, i.e.
+Projection matrices are always idempotent, i.e. it holds
 $$
 \bm{P}_\text{RS} \bm{P}_\text{RS} = \bm{P}_\text{RS},\qquad
 \bm{P}_\text{NS} \bm{P}_\text{NS} = \bm{P}_\text{NS},\qquad
 \bm{P}_\text{CS} \bm{P}_\text{CS} = \bm{P}_\text{CS},\qquad
 \bm{P}_\text{LN} \bm{P}_\text{LN} = \bm{P}_\text{LN},
 $$
-which just tells us that, stuff being projected again and again and again to a subspace will always remain in this subspace. Further note, that projection matrices have only eigenvalues $\in \{0,1\}$.
+which just tells us that, stuff being projected again and again and again to a subspace will always remain in this subspace. We further note, that projection matrices have only eigenvalues $\lambda \in \{0,1\}$.
 
-With these projectors, firstly we double check the row space basis $\bm{R}^\mathrm{T}$ found in Sec.~\ref{sec:rref}
+With these projectors, firstly we double check the row space basis $\bm{R}^\mathrm{T}$ that was found in Sec.~\ref{sec:rref}
 $$
 \bm{P}_\text{RS} \bm{R}^\mathrm{T}
 =
@@ -929,10 +1092,17 @@ $$
 0 & 0
 \end{bmatrix}
 $$
-The results are as expected. The row space projection is actually an eigenwert problem for matrix $\bm{P}_\text{RS}$ and its two eigenvectors in $\bm{R}^\mathrm{T}$. The null space projection yields zero-vectors.
-Thus, $\bm{R}^\mathrm{T}$ is indeed a row space basis.
+The results are as expected.
+%
+The row space projection is an eigenwert problem for matrix $\bm{P}_\text{RS}$
+and its two eigenvectors in $\bm{R}^\mathrm{T}$ weighted with corresponding $\lambda=1$.
+%
+The null space projection is an eigenwert problem for matrix $\bm{P}_\text{NS}$
+and its two eigenvectors in $\bm{R}^\mathrm{T}$ weighted with corresponding $\lambda=0$.
+%
+As the null space projection yields zero-vectors, $\bm{R}^\mathrm{T}$ is indeed a row space basis for $\bm{A}$.
 
-Secondly, we double check the column space basis $\bm{C}$ found in Sec.~\ref{sec:rref}
+Secondly, we double check the column space basis $\bm{C}$ that was found in Sec.~\ref{sec:rref}
 $$
 \bm{P}_\text{CS} \bm{C}
 =
@@ -976,16 +1146,17 @@ $$
 0 & 0
 \end{bmatrix}
 $$
-The column space projection is again an eigenwert problem for matrix $\bm{P}_\text{CS}$ and its two eigenvectors in $\bm{C}$. The left null space projection yields zero-vectors.
-Thus, $\bm{C}$ is indeed a column space basis.
+The column space projection is an eigenwert problem for matrix $\bm{P}_\text{CS}$ and its two eigenvectors in $\bm{C}$ weighted with corresponding $\lambda=1$.
+The left null space projection is an eigenwert problem for matrix $\bm{P}_\text{LNS}$ and its two eigenvectors in $\bm{C}$ weighted with corresponding $\lambda=0$.
+As the left null space projection yields zero-vectors, $\bm{C}$ is indeed a column space basis for $\bm{A}$.
 
 \section{SVD-Derived Pseudo-Inverse}
 
-The pseudo-inverse $\bm{A}^+$ of the matrix $\bm{A}$ is generally given as
-$$\bm{A}^+ = \bm{V} \bm{\Sigma}^+ \bm{U}^\mathrm{T}$$
+The pseudo-inverse $\bm{A}^+$ of the matrix $\bm{A}=\bm{U}\bm{\Sigma}\bm{V}^\mathrm{H}$ is generally given as
+$$\bm{A}^+ = \bm{V} \bm{\Sigma}^+ \bm{U}^\mathrm{H}$$
 with $\bm{\Sigma}^+$ being the transposed matrix of $\bm{\Sigma}$ and having all non-zero(!) \underline{singular values inverted}.
 %
-For our numerical example this yields
+For our numerical, real-valued example this yields
 $$
 \bm{A}^+ =
 \begin{bmatrix}
@@ -1014,12 +1185,16 @@ $$
 \end{bmatrix}^\mathrm{T}
 = \bm{V} \bm{\Sigma}^+ \bm{U}^\mathrm{T}
 $$
-We see that the pseudo-inverse $\bm{A}^+$ exhibits swapped subspaces compared to $\bm{A}$. This is the same like in the transpose operation. However, the pseudo-inverse additionally inverts the singular values.
-This is due to the concept of an inverse problem: we want to make things unhappen that occurred in the forward problem.
+We see that the pseudo-inverse $\bm{A}^+$ exhibits swapped subspaces compared to $\bm{A}$.
+This is the same like in the transpose operation.
+However, the pseudo-inverse \underline{additionally inverts} the singular values of $\bm{A}$.
+This is due to the concept of an inverse problem: we want to undo things that occurred in the forward problem.
 This works for a row space vector, such as in our example
 $$
 \bm{A} \hat{\bm{v}}_1 = \sigma_1 \hat{\bm{u}}_1 \rightarrow
-\bm{A}^+ \bm{A} \hat{\bm{v}}_1 = \hat{\bm{v}}_1,
+\bm{A}^+ \bm{A} \hat{\bm{v}}_1 = \hat{\bm{v}}_1,\qquad
+\bm{A} \hat{\bm{v}}_2 = \sigma_2 \hat{\bm{u}}_2 \rightarrow
+\bm{A}^+ \bm{A} \hat{\bm{v}}_2 = \hat{\bm{v}}_2
 $$
 but this will not work for any null space vector, such as in our example
 $$
@@ -1033,21 +1208,23 @@ $$
 0\\0\\0
 \end{bmatrix} \neq \hat{\bm{v}}_3
 $$
-The pseudo-inverse undoes column space mappings only. Zero vectors map  $\bm{0}^N \leftrightarrow \bm{0}^M$.
+The pseudo-inverse can only undo row to column space mappings. Zero vectors map  $\bm{0}^N \leftrightarrow \bm{0}^M$.
 %
 If we look at the inverse problem alone, we see that for our numerical example
 $$
 \bm{A}^+ (\sigma_1 \hat{\bm{u}}_1) = \hat{\bm{v}}_1,\qquad
+%
+\bm{A}^+ (\sigma_2 \hat{\bm{u}}_2) = \hat{\bm{v}}_2,\qquad
 %
 \bm{A}^+ [\hat{\bm{u}}_3 \quad \hat{\bm{u}}_4] =
 \begin{bmatrix}
 0&0\\0&0\\0&0
 \end{bmatrix}.
 $$
-Stuff from column space is inversely mapped to row space. Stuff from the left null space can not be properly inverted. Where and how should this go to? The only meaningful inverse mapping appears to be the zero vector $\bm{0}^N$.
-Fig.~\ref{fig:pseudo_inverse_four_subspaces} might be a helpful visualisation of these inverse mappings $\bm{A}^+ \bm{u}$.
+Stuff from column space is inversely mapped to row space. Stuff from the left null space can not be properly inverted. Where and how should this go to? The only meaningful inverse appears to be a mapping to the zero vector $\bm{0}^N$.
+Fig.~\ref{fig:pseudo_inverse_four_subspaces} might be a helpful visualisation of these inverse mappings $\bm{A}^+ \bm{b}$.
 
-Finally, it is straightforward to show that $\bm{A}^+ \bm{A}$ is another derivation for the projector to the row space of $\bm{A}$. We just insert the SVD matrices and simplify with $\bm{U}^\mathrm{T} \bm{U}=\bm{I}$
+Finally, it is straightforward to show that $\bm{A}^+ \bm{A}$ is just another derivation for the projector to the row space of $\bm{A}$. We insert the SVD matrices and simplify with the fact $\bm{U}^\mathrm{T} \bm{U}=\bm{I}$
 $$
 \bm{A}^+ \bm{A} =
 \bm{V} \bm{\Sigma}^+ \bm{U}^\mathrm{T} \cdot
@@ -1066,7 +1243,7 @@ $$
 \bm{V}_\text{RS} \bm{V}_\text{RS}^\mathrm{T}
 =\bm{P}_\text{RS}
 $$
-With $\bm{V}^\mathrm{T} \bm{V}=\bm{I}$ the same calculus can be performed for the projector to the column space $\bm{A} \bm{A}^+$:
+With $\bm{V}^\mathrm{T} \bm{V}=\bm{I}$ the projector to the column space $\bm{A} \bm{A}^+$ is equivalently obtained:
 $$
 \bm{A} \bm{A}^+ =
 \bm{U} \bm{\Sigma} \bm{V}^\mathrm{T} \cdot
@@ -1099,19 +1276,32 @@ $$
 \begin{subfigure}[b]{1\textwidth}
 \centering
 \includegraphics[width=0.79\textwidth]{../slides/pseudo_inverse_four_subspaces.pdf}
-\caption{The inverse problem maps from column space to row space and from left null space to zero vector. The singular values are inverted. The pseudo-inverse of $\bm{A}$ is generally $\bm{A}^+ = \bm{V} \bm{\Sigma}^+ \bm{U}^\mathrm{T}$.}
+\caption{The inverse problem maps from column space to row space and from left null space to zero vector. The singular values are inverted. The pseudo-inverse of $\bm{A}$ is generally $\bm{A}^+ = \bm{V} \bm{\Sigma}^+ \bm{U}^\mathrm{H}$.}
 \label{fig:pseudo_inverse_four_subspaces}
 \end{subfigure}
 \caption{
 The four subspaces of a matrix encoded in the orthonormal SVD bases $\bm{V}$ (left, $\mathbb{R}^N$) and $\bm{U}$ (right, $\mathbb{R}^M$).
-The forward (top) and the inverse (bottom) problem is schematically depicted with Gilbert Strang's 2D visualisation style.
-Special cases of pseudo-inverses are: the left-inverse for tall, thin, full column rank $\bm{A}$ (i.e. $M\gg N=R$), the right-inverse for wide, short, full row rank $\bm{A}$ (i.e. $N\gg M=R$) and the exact-inverse for square, full rank $\bm{A}$ (i.e. $M=N=R$).
+The forward (top) and the inverse (bottom) problem is schematically depicted with Gilbert Strang's 2D visualisation approach.
+\\Special cases of pseudo-inverses are: the left-inverse for tall, thin, full column rank $\bm{A}$ (i.e. $M\gg N=R$), the right-inverse for wide, short, full row rank $\bm{A}$ (i.e. $N\gg M=R$) and the exact-inverse for square, full rank $\bm{A}$ (i.e. $M=N=R$).
 }
 \label{fig:SVD_subspaces}
 \end{figure}
 
 \section*{Exercise / Home Work Assignment}
-We should perform all of the above ideas and concepts for the three matrices
+Learning new things is about thoroughly thinking about the new things in our own style and pace.
+Textbooks are a good choice to support this approach, as (older) textbooks have undergone profound quality checks, such that
+we can assume the content to be valid and true.
+Further, material that accompanies university lectures and tutorials is typically of very high quality and nearly error-free.
+This way we shared research knowledge over centuries, probably with some success.
+\\\\\noindent Learning new things is probably not about consuming too much AI generated content.
+
+1. This content has---by the idea of statistics-driven text generation---no quality control,
+such that we need to check validity on our own. But this can become rather tricky, if we just want to learn the new things, right?
+
+2. Interaction with an AI is probably a nice and new way, but too much content and too fast interaction prevents us from really thinking about on our own.
+
+3. Human interaction is probably even more efficient. Feel free to attend the lectures and tutorial in presence and ask many questions.
+\\\\\noindent In this spirit and mindset, we could think about all of the above ideas and concepts for the three matrices
 $$
 \bm{A}_1 =
 \begin{bmatrix}
@@ -1137,10 +1327,14 @@ $$
 $$
 While some results are comparably nice numbered scalars and vectors, many results are already too crazy for manual paper calculus.
 %
-Hence, it is highly recommended to implement all this in a small re-useable script or notebook using either Python/Numpy, Julia or Matlab (Julia in a Pluto notebook is very elegant for pure matrix calculus).
+Hence, it is highly recommended to implement all this in a small re-useable script or notebook using either Python/Numpy, Julia or Matlab. Using Julia in a Pluto notebook is very elegant for pure matrix algebra.
 %
-It is actually not about the specific numbers within the results, but about understanding the fundamentals behind these numbers.
+It is actually not about the specific numbers of the actual results, but about understanding the fundamentals behind these numbers.
 %
-The numbers in practical data are even more crazy and the problems are even more complicated, so we should manage to be very confident with this toy data given above.
+The numbers in practical data are even more crazy and the problems are even more complicated, so we should manage to be very confident with this toy examples.
+\\\\\noindent Again: With AI we might solve this task within seconds, but then neither the AI nor we have really understood, what is actually going on.
+\textbf{Think for yourself}.
+It might be a little pain in the beginning, but it is highly rewarding,
+once the brain begins to process and understand. Consuming (a)social media will by far not compete with this special feeling of happiness.
 
 \end{document}

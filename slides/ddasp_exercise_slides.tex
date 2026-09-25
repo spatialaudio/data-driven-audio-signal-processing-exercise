@@ -57,8 +57,8 @@
 \author[Schultz, Spors]{%
     \underline{\href{https://orcid.org/0000-0002-3010-0294}{Frank Schultz}}, \href{https://orcid.org/0000-0001-7225-9992}{Sascha Spors}}
 
-\date[Winter Term 2025/26]{%\raisebox{0mm}{\includegraphics[width=4.6cm]{logo.png}}\\
-  Tutorial -- Winter Term 2025/26\\
+\date[Winter Term 2026/27]{%\raisebox{0mm}{\includegraphics[width=4.6cm]{logo.png}}\\
+  Tutorial -- Winter Term 2026/27\\
   \tiny \url{https://github.com/spatialaudio/data-driven-audio-signal-processing-exercise}}
 
 \institute[]{Research Group Signal Processing and Virtual Acoustics\\
@@ -348,9 +348,9 @@ the matrix is acting onto the $m$-th eigenvector as
 
 $$\bm{A} \bm{q}_m = \lambda_m \bm{q}_m$$
 
-$\textcolor{C0}{\bm{\Lambda}\in\mathbb{R}}$
+purely real eigenvalues $\textcolor{C0}{\bm{\Lambda}\in\mathbb{R}}$
 
-$\bm{Q}\in\mathbb{R}$ if $\bm{A}\in\mathbb{R}$, $\bm{Q}\in\mathbb{C}$ if $\bm{A}\in\mathbb{C}$
+$\bm{Q}\in\mathbb{R}$ if $\bm{A}\in\mathbb{R}$, \qquad $\bm{Q}\in\mathbb{C}$ if $\bm{A}\in\mathbb{C}$
 
 if $\lambda_m=0$ we get $\bm{A} \bm{q}_m = 0 \cdot \bm{q}_m = \bm{0}$, i.e. $\bm{A}$ is a singular matrix, i.e. $\bm{A}$ is a non-full rank matrix
 
@@ -363,16 +363,16 @@ rank of matrix $\bm{A}$ is $R$ == number of non-zero eigenvalues
 
 \begin{frame}[t]{Matrix Factorization from Eigenwert Problem for Symmetric Matrix}
 
-for a \textcolor{C0}{\underline{normal}} matrix $\bm{A}$ (i.e. it holds $\bm{A}^H \bm{A} = \bm{A} \bm{A}^H$)
+for a \textcolor{C3}{\underline{normal}} matrix $\bm{A}$ (i.e. it holds $\bm{A}^H \bm{A} = \bm{A} \bm{A}^H$, note: every Hermitian is normal)
 
-and a dedicated \underline{unitary} matrix $\bm{Q}$ (i.e. it holds $\bm{Q} \bm{Q}^H = \bm{I}$, $\bm{Q}^H \bm{Q} = \bm{I}$)
+and a dedicated \textcolor{C3}{\underline{unitary}} matrix $\bm{Q}$ (i.e. it holds $\bm{Q} \bm{Q}^H = \bm{I}$, $\bm{Q}^H \bm{Q} = \bm{I}$)
 
-special case of diagonalization, known as \underline{spectral theorem}:
+special case of diagonalization, known as \textcolor{C3}{\underline{spectral theorem}}:
 $$\bm{A} = \bm{Q} \bm{\Lambda} \bm{Q}^{-1} = \bm{Q} \bm{\Lambda} \bm{Q}^{H}$$
 
-with $M$ independent, \underline{orthonormal} eigenvectors as columns in $\bm{Q}$
+with $M$ independent, \underline{orthonormal} eigenvectors as columns in $\textcolor{C3}{\bm{Q} \in\mathbb{R} \,\,\,\text{or}\,\,\, \bm{Q} \in\mathbb{C}}$
 
-with the corresponding eigenvalues $\textcolor{C0}{\lambda\in\mathbb{R}/\mathbb{C}}$ in the diagonal matrix $\bm{\Lambda}$
+with the corresponding eigenvalues in $\textcolor{C3}{\bm{\Lambda} \in\mathbb{R} \,\,\,\text{or}\,\,\, \bm{\Lambda} \in\mathbb{C}}$
 
 %i.e. diagonalization in terms of orthonormal eigenvectors in $\bm{Q}$ and eigenvalues in $\bm{\Lambda}\in\mathbb{C}$
 

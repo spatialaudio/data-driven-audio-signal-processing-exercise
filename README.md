@@ -6,8 +6,6 @@ This tutorial accompanies the lecture [Data Driven Audio Signal Processing](http
 
 Jupyter notebooks can be accessed via the services
 
-- **dynamic** version using **mybinder**: https://mybinder.org/v2/gh/spatialaudio/data-driven-audio-signal-processing-exercise/dev?labpath=index.ipynb
-- **static** version using **nbviewer**: https://nbviewer.org/github/spatialaudio/data-driven-audio-signal-processing-exercise/blob/dev/index.ipynb
 - **sources** (tex, ipynb) at: https://github.com/spatialaudio/data-driven-audio-signal-processing-exercise
 
 ## Versions / Tags
@@ -16,13 +14,14 @@ Jupyter notebooks can be accessed via the services
 - [v0.2](https://github.com/spatialaudio/data-driven-audio-signal-processing-exercise/releases/tag/v0.2) for winter term 2022/23
 - [v0.3](https://github.com/spatialaudio/data-driven-audio-signal-processing-exercise/releases/tag/v0.3) for winter term 2023/24, many beamer tex slides added, CI
 - [v0.4](https://github.com/spatialaudio/data-driven-audio-signal-processing-exercise/releases/tag/v0.4) winter term 2024/25, smaller mods due to API changes, PCA example on exam grades, slides
-- [v0.5](https://github.com/spatialaudio/data-driven-audio-signal-processing-exercise/releases/tag/v0.5) winter term 2025/26, TBD
+- no version for winter term 2025/26
+- [v0.5](https://github.com/spatialaudio/data-driven-audio-signal-processing-exercise/releases/tag/v0.5) winter term 2026/27, TBD
 
 ## Branch Conventions
 
 - the **default branch** of the repository is `dev` and this is used for development
 - the `dev` branch contains notebooks with cleared outputs for convenient diff handling
-- the `main` branch contains notebooks with rendered outputs, which is maintained from time to time
+- the `main` branch contains notebooks with probably rendered outputs, which might be maintained from time to time
 - do **not** rely on `main` branch as this is hard reset from time to time
 - probably in future we rename `main` to somewhat less confusing
 

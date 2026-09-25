@@ -39,7 +39,7 @@ print(x.shape, f.shape, y.shape)
 for nw in range(10):
     tmp = 0
     for ch_i in range(3):
-        tmp += x[0, 0 + nw : 5 + nw, 0:5, ch_i] * f[:, :, ch_i, 0]
+        tmp += x[0, 0+nw:5+nw, 0:5, ch_i] * f[:, :, ch_i, 0]
     print(tmp.shape, np.allclose(np.sum(tmp), y[0, nw, 0, 0].numpy()))
 print("\n")
 
@@ -47,11 +47,13 @@ print("\n")
 print("1x1 Convolution case for conv2d")
 # comparably small width/height but very deep feature map
 x = tf.constant(
-    np.random.randint(low=-100, high=100, size=(1, 9, 9, 1024)), dtype=tf.int32
+    np.random.randint(low=-100, high=100, size=(1, 9, 9, 1024)),
+    dtype=tf.int32
 )
 # 16 instances of 1x1 deep filters
 f = tf.constant(
-    np.random.randint(low=-100, high=100, size=(1, 1, 1024, 16)), dtype=tf.int32
+    np.random.randint(low=-100, high=100, size=(1, 1, 1024, 16)),
+    dtype=tf.int32
 )
 # leads to 1x1 Convolution
 y = tf.nn.conv2d(x, f, strides=1, padding="VALID")
