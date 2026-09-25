@@ -1,9 +1,10 @@
 --extra-index-url https://download.pytorch.org/whl/cpu
-torch==2.7.0
-zentorch==5.1.0
+torch==2.14.0
+zentorch
 torchvision
 torchinfo
-tensorflow==2.19.0
+tensorflow==2.21.0
+tensorboard
 keras-tuner
 scikit-learn
 statsmodels
