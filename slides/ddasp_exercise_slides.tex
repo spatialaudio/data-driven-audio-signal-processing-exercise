@@ -68,9 +68,13 @@ University of Rostock, Rostock, Germany}
 
 \begin{document}
 \maketitle
+
+\section{Section I: Organisation and Introduction}
+
 %
 %
 %
+\subsection{Organisational Matters}
 \input{orga}
 %
 %
@@ -148,20 +152,22 @@ University of Rostock, Rostock, Germany}
 \begin{frame}{Resources}
   highly recommended web resources
   \begin{itemize}
-    \item MIT course 18065 \href{https://ocw.mit.edu/courses/18-065-matrix-methods-in-data-analysis-signal-processing-and-machine-learning-spring-2018/}{Matrix Methods in Data Analysis, Signal Processing, and Machine Learning} by Gilbert Strang
+    \item MIT course 18.065 \href{https://ocw.mit.edu/courses/18-065-matrix-methods-in-data-analysis-signal-processing-and-machine-learning-spring-2018/}{Matrix Methods in Data Analysis, Signal Processing, and Machine Learning} by Gilbert Strang
     \item Steven L. Brunton, J. Nathan Kutz, Data Driven Science \& Engineering, Cambridge, 2019.
     \href{http://www.databookuw.com/databook.pdf}{free ebook draft},
     \href{http://www.databookuw.com/}{video lectures},
     \href{https://github.com/dylewsky/Data_Driven_Science_Python_Demos}{Python tutorials}
-    \item Aur\'{e}lien G\'{e}ron, Hands-On Machine Learning with SciKit \& TensorFlow, 1st/2nd ed. O'Reilly, 2017/2019.
-    \href{https://github.com/ageron/handson-ml2}{Python tutorials}
+    \item Aur\'{e}lien G\'{e}ron, Hands-On Machine Learning with Scikit-Learn and PyTorch, O'Reilly, 2025.
+    \href{https://github.com/ageron/handson-mlp}{Python tutorials}
+    \item Aur\'{e}lien G\'{e}ron, Hands-On Machine Learning with SciKit \& TensorFlow, 3rd ed. O'Reilly, 2022.
+    \href{https://github.com/ageron/handson-ml3}{Python tutorials}
     \item \href{https://playground.tensorflow.org}{A Neural Network Playground---TensorFlow}
     \item courses by Andrew Ng at \url{https://www.deeplearning.ai/} and/or at \url{https://www.coursera.org/}
   \end{itemize}
 \end{frame}
 
 \begin{frame}{Textbooks on Statistics}
-    ML deals with stuff that is actually known for many decades (at least the (generalized) linear models part), so if we are really
+    ML deals with stuff that is actually known for many decades (at least the generalized linear models part), so if we are really
     serious about to learn it deeply, we should think over concepts on
     statistical signal processing, maximum-likelihood, Bayesian vs. frequentist
     statistics, generalized linear models, hierarchical models ... ...
@@ -183,7 +189,6 @@ University of Rostock, Rostock, Germany}
 
 
 %\begin{comment}
-\section{Section I: Introduction}
 
 \subsection{Exercise 01}
 \begin{frame}{Ex01: Introduction}
@@ -221,28 +226,31 @@ Objectives
 
 
 \begin{frame}{We Can Do Machine Learning with a Linear Model}
-linear algebra\footnote{we should do ourselves a favour and read at least one of the linear algebra textbooks by Gilbert Strang}
-is THE tool to handle linear models
+We deal with linear combinations.
+
+Hence, linear algebra\footnote{don't miss the linear algebra textbooks by Gilbert Strang}
+is THE tool to handle linear models.
+
 \begin{center}
 $
 \def\Mic{3}
 \def\LS{1}
 \drawmatrix[fill=none, height=\Mic, width=0]y_\mathtt{M \times 1} =
 \drawmatrix[fill=none, height=\Mic, width=\LS]X_\mathtt{M \times N}
-\drawmatrix[fill=none, height=\LS, width=0]\theta_\mathtt{M \times 1} +
+\drawmatrix[fill=none, height=\LS, width=0]w_\mathtt{M \times 1} +
 \drawmatrix[fill=none, height=\Mic, width=0]n_\mathtt{M \times 1}
 $
 \end{center}
 \vspace{5mm}
 \begin{equation*}
-\bm{y} = \bm{X} \,\,\, \bm{\theta} + \bm{n}
+\bm{y} = \bm{X} \,\,\, \bm{w} + \bm{n}
 \end{equation*}
 
 $\bm{y}$ output data
 
 $\bm{X}$ features as columns in a feature matrix
 
-$\bm{\theta}$ model parameters (which we want to learn)
+$\bm{w}$ model parameters / model's weights (which we want to learn)
 
 $\bm{n}$ noise (included in the measured output data)
 
@@ -251,17 +259,17 @@ $\bm{n}$ noise (included in the measured output data)
 
 \begin{frame}{Audio Toy Example for Linear Regression and SVD}
 Consider the following linear combinations
-$$\bm{X} \bm{\theta} + \bm{n} = \bm{y}$$
-where $\bm{\theta}=[\theta_0, \theta_1, \theta_2, ..., \theta_{N-1}]^\mathrm{T}$ are typical variables for the model parameter vector.
+$$\bm{X} \bm{w} + \bm{n} = \bm{y}$$
+where $\bm{w}=[w_0, w_1, w_2, ..., w_{N-1}]^\mathrm{T}$ are weights collected in the model parameter vector.
 %
 \begin{itemize}
 \item $\bm{X}_{M \times N}$ matrix with $M$ audio samples for each column, $n$-th column represents the $n$-th audiotrack
-\item $\bm{\theta}_{N \times 1}$ column vector of scalar values that represent a dedicated gain for each audiotrack
-\item $\bm{n}_{M \times 1}$ column vector that represents an $M$-sample long noise signal added to the mixdown $\bm{X} \bm{\theta}$
+\item $\bm{w}_{N \times 1}$ column vector of scalar values that represent a dedicated gain for each audiotrack
+\item $\bm{n}_{M \times 1}$ column vector that represents an $M$-sample long noise signal added to the mixdown $\bm{X} \bm{w}$
 \item $\bm{y}_{M \times 1}$ audio signal with $M$ samples as a result of the linear combination plus noise
 \end{itemize}
 %
-Let us assume that i) we know $\bm{X}$ (i.e. the individual audio tracks) and $\bm{y}$ (i.e. the noise-corrupted final mixdown), ii) that we do not know the noise $\bm{n}$ and iii) that we want to estimate the 'real world' mixing gains $\bm{\theta}$
+Let us assume that i) we know $\bm{X}$ (i.e. the individual audio tracks) and $\bm{y}$ (i.e. the noise-corrupted final mixdown), ii) that we do not know the noise $\bm{n}$ and iii) that we want to estimate the 'real world' mixing gains $\bm{w}$
 % sketch Xb=y
 \end{frame}
 
@@ -278,6 +286,215 @@ Objectives
 \item SVD as a fundamental matrix factorization
 \end{itemize}
 \end{frame}
+
+
+
+\begin{frame}{Matrix Factorizations}
+
+\begin{center}
+$
+\def\M{1}
+\def\N{1}
+\def\rank{0.9999}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times M} =
+\drawmatrix[fill=none, bbox height=\M, bbox width=\M, height=\M, width=\rank\N]X_\mathtt{M \times M}
+\drawmatrix[diag]\Lambda_\mathtt{M \times M}
+\drawmatrix[bbox height=\N, bbox width=\N, height=\N, width=\rank\N]{X}_\mathtt{M \times M}^{-1}
+$
+%\end{center}
+
+%\begin{center}
+$
+\def\M{1}
+\def\N{1}
+\def\rank{0.9999}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times M} =
+\drawmatrix[bbox height=\M, bbox width=\M, height=\M, width=\rank\N]{Q}_\mathtt{M \times M}
+\drawmatrix[diag]\Lambda_\mathtt{M \times M}
+\drawmatrix[bbox height=\N, bbox width=\N, height=\N, width=\rank\N]{Q}_\mathtt{M \times M}^\mathrm{T}
+$
+\end{center}
+
+\vspace{3em}
+
+\begin{center}
+$
+\def\M{2}
+\def\N{1}
+\def\rank{0.9}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\N]U_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}
+\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}^\mathrm{T}
+$
+
+$
+\def\M{1}
+\def\N{2}
+\def\rank{0.6}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\M]U_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\M, width=\rank\M]\Sigma_\mathtt{M \times N}
+\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\M]{V}_\mathtt{N \times N}^\mathrm{T}
+$
+\end{center}
+
+\end{frame}
+
+\begin{frame}{Eigenwert Problem of Symmetric Matrices A' A and A A'}
+
+\begin{flushleft}
+$
+\def\M{1}
+\def\N{2}
+\drawmatrix[fill=none, height=\M, width=\N]{A^\mathrm{T}}_\mathtt{N \times M}
+\drawmatrix[fill=none, height=\N, width=\M]A_\mathtt{M \times N}
+=
+\drawmatrix[bbox height=\M, bbox width=\M, height=\M, width=\rank\M]{A^\mathrm{T}A}_\mathtt{N \times N}
+$
+
+$
+\def\M{2}
+\def\N{1}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N}
+\drawmatrix[fill=none, height=\N, width=\M]{A^\mathrm{T}}_\mathtt{N \times M}
+=
+\drawmatrix[bbox height=\M, bbox width=\M, height=\M, width=\M]{AA^\mathrm{T}}_\mathtt{M \times M}
+$
+\end{flushleft}
+
+\vspace{2em}
+
+\begin{flushleft}
+$
+\def\M{2}
+\def\N{1}
+\def\rank{0.999999}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\N]U_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}
+\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}^\mathrm{T}
+$
+\end{flushleft}
+
+\end{frame}
+
+
+
+
+\begin{frame}{Eigenwert Problem of Symmetric Matrices A' A --> SVD}
+
+SVD problem: let us assume that we already know an SVD of $\bm{A}$, then due to $\bm{U}^\mathrm{T} \bm{U} = \bm{I}$
+$$
+\bm{A}^\mathrm{T} \bm{A}
+= (\bm{U}\bm{\Sigma}\bm{V}^\mathrm{T})^\mathrm{T} (\bm{U}\bm{\Sigma}\bm{V}^\mathrm{T})
+= \bm{V} \bm{\Sigma}^\mathrm{T} \bm{U}^\mathrm{T} \bm{U} \bm{\Sigma} \bm{V}^\mathrm{T}
+= \bm{V} \bm{\Sigma}^\mathrm{T} \bm{\Sigma} \bm{V}^\mathrm{T}
+$$
+
+Eigenwert problem:
+
+$\bm{A}^\mathrm{T} \bm{A}$ has the same rank $R$ as $\bm{A}$
+
+$\bm{A}^\mathrm{T} \bm{A}$ is symmetric, hence orthonormal eigenvector base $\bm{Q}_v$, all eigenvalues $\lambda$ are real
+
+$\bm{A}^\mathrm{T} \bm{A}$ is positive (semi)-definite, hence all $\lambda \geq 0$
+
+diagonalisation with the sorted non-zero eigenvalues $\lambda_1 > \lambda_2 > ... > \lambda_R$:
+$$
+\bm{A}^\mathrm{T} \bm{A} = \bm{Q}_v \bm{\Lambda} \bm{Q}^\mathrm{T}_v,\qquad
+\bm{\Lambda} =
+\begin{bmatrix}
+\lambda_1 & & &\\
+& \lambda_2 & &\\
+&  & \lambda_R&\\
+&  & & \bm{0}
+\end{bmatrix}=
+\begin{bmatrix}
+\sigma^2_1 & & &\\
+& \sigma^2_2 & &\\
+&  & \sigma^2_R&\\
+&  & & \bm{0}
+\end{bmatrix}=
+\bm{\Sigma}^\mathrm{T} \bm{\Sigma}
+$$
+We see $\bm{A}^\mathrm{T} \bm{A} = \bm{V} \bm{\Sigma}^\mathrm{T} \bm{\Sigma} \bm{V}^\mathrm{T} = \bm{Q}_v \bm{\Lambda} \bm{Q}^\mathrm{T}_v$,
+thus
+$\bm{Q}_v = \bm{V}$
+and the $i$-th non-zero so called singular value given by
+$$\sigma_i = \sqrt{\lambda_i}>0, \in \mathbb{R}$$
+
+The eigenwert problem $\bm{A} \bm{A}^\mathrm{T} = \bm{Q}_u \bm{\Sigma}  \bm{\Sigma}^\mathrm{T} \bm{Q}_u^\mathrm{T}$
+has the same eigenvalues $\lambda_1...\lambda_R$ set up in $\bm{\Sigma}  \bm{\Sigma}^\mathrm{T}$.
+\end{frame}
+
+
+
+\begin{frame}{SVD: V to U Mapping}
+
+For any $i=1...R$, the SVD forward problem goes as
+
+"right singular vector is mapped to weighted left singular vector" (names of these vectors are pretty standardised but can be misleading in this equation):
+$$\bm{A} \bm{v}_i = \sigma_i \bm{u}_i$$
+Hence, any \underline{orthonormal} input linear combination yields an output linear combination
+$$\bm{A} \left(\sum_i c_i \cdot \bm{v}_i\right) = \sum_i c_i \cdot \sigma_i \bm{u}_i$$
+
+The yet unkown $\bm{u}_i$ is found as (this approach is textbook-style, don't do this for real problems)
+$$\frac{\bm{A} \bm{v}_i}{\sigma_i} = \bm{u}_i$$
+linked to the very $\bm{v}_i$ and its $\sigma_i$. (Note: we cannot directly use $\bm{Q}_u$ as $\bm{U}$, but the vectors in $\bm{U}$ and $\bm{Q}_u$ can be linked via
+complex-valued rotation / polarity inversion. We just must use the correct $\bm{u}_i$.)
+%
+The remaining vectors $\bm{u}_{R+1}...\bm{u}_{M}$ are not linked to any $\bm{v}$, there are no singular values that can map $\bm{v}$ to $\bm{u}$.
+The remaining vectors $\bm{u}_{R+1}...\bm{u}_{M}$ therefore can be freely chosen
+towards an $M \times M$ orthonormal basis $\bm{U}$ (e.g. use Gram-Schmidt).
+
+\end{frame}
+
+\begin{frame}{Orthonormal V / Orthonormal U}
+
+We have orthonormal $\bm{v}$ by above introduced eigenproblem for $\bm{A}^\mathrm{T} \bm{A}$, i.e. it holds
+$$
+\bm{v}^\mathrm{T}_i \bm{v}_j =
+\begin{cases}
+1& i = j\\
+0& i\neq j
+\end{cases}
+$$
+
+We finally need to show also orthonormal $\bm{u}$ by the inner product $\bm{u}^\mathrm{T}_i \bm{u}_j$ for all singular vectors $i,j=1...R$. This is
+straightforward by
+$$\frac{\bm{A} \bm{v}_i}{\sigma_i} = \bm{u}_i, \quad
+\frac{\bm{A} \bm{v}_j}{\sigma_j} = \bm{u}_j
+\qquad\rightarrow\qquad
+\bm{u}^\mathrm{T}_i \bm{u}_j =
+\frac{\bm{v}^\mathrm{T}_i \bm{A}^\mathrm{T}}{\sigma_i}
+\frac{\bm{A} \bm{v}_j}{\sigma_j}
+$$
+$(\bm{A}^\mathrm{T}\bm{A}) \bm{v}_j = \lambda_j \cdot \bm{v}_j = \sigma_j^2 \cdot \bm{v}_j $ is the now well-known eigenwert problem, hence we can simplify
+$$\bm{u}^\mathrm{T}_i \bm{u}_j =
+\frac{\sigma_j}{\sigma_i} \bm{v}^\mathrm{T}_i \bm{v}_j
+$$
+If $i=j$ the result of this equation is simply $\bm{u}^\mathrm{T}_i \bm{u}_i= \frac{\sigma_i}{\sigma_i} \cdot 1$ and if $i \neq j$ we get
+$\bm{u}^\mathrm{T}_i \bm{u}_j=\frac{\sigma_j}{\sigma_i} \cdot 0$
+q.e.d.
+
+
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -323,7 +540,7 @@ rank of matrix $\bm{A}$ is $R$ == number of non-zero eigenvalues
 
 \begin{frame}{Matrix Factorization from Eigenwert Problem for Symmetric Matrix}
 
-for \textcolor{C0}{\underline{Hermitian}} matrix $\bm{A}_{M \times M} = \bm{A}_{M \times M}^H$
+for \textcolor{C0}{\underline{Hermitian}} matrix $\bm{A}_{M \times M} = \bm{A}_{M \times M}^H = \left((\bm{A}_{M \times M})^*\right)^T$
 
 and a dedicated \underline{unitary} matrix $\bm{Q}$ (i.e. it holds $\bm{Q} \bm{Q}^H = \bm{I}$, $\bm{Q}^H \bm{Q} = \bm{I}$)
 
@@ -405,7 +622,7 @@ $
 
 
 
-\begin{frame}{Generalized Factorization?!}
+\begin{frame}{Generalized Factorization: Singular Value Decomposition (SVD)}
 Over-Determined (tall/thin matrix $\bm{A}$)
 \begin{center}
 $
@@ -597,10 +814,10 @@ singular value matrix $\bm{\Sigma}$
 \begin{frame}{Ex03: SVD and the 4 Matrix Subspaces}
 Objectives
 \begin{itemize}
-\item matrix spans four subspaces
-\item the SVD explains these 4 subspaces with orthonormal bases $\bm{V}$, $\bm{U}$
-\item singular values tell us the 'gain' from input to output singular vectors
-\item rank-1 matrix superposition
+\item a matrix spans four subspaces
+\item the SVD explains these 4 subspaces elegantly within its orthonormal bases $\bm{V}$, $\bm{U}$
+\item non-zero singular values tell us the 'gain' from input to output singular vectors, i.e. mapping from row space to column space
+\item concept of rank-1 matrix superposition
 \end{itemize}
 \end{frame}
 
@@ -735,6 +952,7 @@ $
 
 \vspace{0.75cm}
 
+Matrix $\bm{A}$ acts on single vectors stacked into a matrix:
 $$\bm{A}
 \begin{bmatrix}
 a \textcolor{C2}{\bm{v}_1} & b \textcolor{C2}{\bm{v}_2} & c \textcolor{C2}{\bm{v}_R} & \dots & y \textcolor{C1}{\bm{v}_{N-1}} & z \textcolor{C1}{\bm{v}_N}
@@ -746,6 +964,7 @@ a \sigma_1 \textcolor{C0}{\bm{u}_1} & b \sigma_2 \textcolor{C0}{\bm{u}_2} & c \s
 \rightarrow
 \bm{A} \bm{V} = \bm{\Sigma} \bm{U}
 $$
+Matrix $\bm{A}$ acts on a linear combination:
 $$\bm{A}
 \begin{bmatrix}
 a \textcolor{C2}{\bm{v}_1} + b \textcolor{C2}{\bm{v}_2} + c \textcolor{C2}{\bm{v}_R} + \dots + y \textcolor{C1}{\bm{v}_{N-1}} + z \textcolor{C1}{\bm{v}_N}
@@ -754,17 +973,17 @@ a \textcolor{C2}{\bm{v}_1} + b \textcolor{C2}{\bm{v}_2} + c \textcolor{C2}{\bm{v
 [a \sigma_1 \textcolor{C0}{\bm{u}_1} + b \sigma_2 \textcolor{C0}{\bm{u}_2} + c \sigma_R \textcolor{C0}{\bm{u}_R} + \dots + \bm{0} + \bm{0}]
 $$
 
-\vspace{0.75cm}
+%\vspace{0.75cm}
 
-left singular vectors\quad$\bm{U} = \mathrm{eigvec}(\bm{A}\bm{A}^\mathrm{H})$
-\begin{footnotesize}, order must match to the corresponding singular values\end{footnotesize}
+%left singular vectors\quad$\bm{U} = \mathrm{eigvec}(\bm{A}\bm{A}^\mathrm{H})$
+%\begin{footnotesize}, order must match to the corresponding singular values\end{footnotesize}
 
-right singular vectors $\bm{V} = \mathrm{eigvec}(\bm{A}^\mathrm{H}\bm{A})$
-\begin{footnotesize}, order must match to the corresponding singular values\end{footnotesize}
+%right singular vectors $\bm{V} = \mathrm{eigvec}(\bm{A}^\mathrm{H}\bm{A})$
+%\begin{footnotesize}, order must match to the corresponding singular values\end{footnotesize}
 
-singular value matrix $\bm{\Sigma}$
-\begin{footnotesize}, $\text{min}(M,N)$ singular values on \underline{diagonal} descending order, $R$ of them non-zero
-\end{footnotesize}
+%singular value matrix $\bm{\Sigma}$
+%\begin{footnotesize}, $\text{min}(M,N)$ singular values on \underline{diagonal} descending order, $R$ of them non-zero
+%\end{footnotesize}
 \end{frame}
 
 %\againframe{SVD1}
@@ -921,7 +1140,7 @@ $\bm{A} = \bm{U} \bm{\Sigma} \bm{V}^H =  \sum\limits_{r=1}^{R} \sigma_r \quad \t
 \hspace{0.75cm}
 \textcolor{C2}{row space} $\perp$ \textcolor{C1}{null space}
 
-$\cdot$ Square matrix $\bm{A}$, \quad $M$ rows $=$ $N$ columns, \quad full rank ($r=M=N$), \quad inverse $\bm{A}^\dagger = \bm{A}^{-1}$
+$\cdot$ Square matrix $\bm{A}$, \quad $M$ rows $=$ $N$ columns, \quad full rank ($R=M=N$), \quad inverse $\bm{A}^\dagger = \bm{A}^{-1}$
 \begin{center}
 $
 \def\M{1}
@@ -933,7 +1152,7 @@ $
 \drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}^H
 $
 \end{center}
-$\cdot$ Flat / fat matrix $\bm{A}$, \quad $M$ rows $<$ $N$ columns, \quad full row rank ($r=M$), \quad a right inverse $\bm{A}^{\dagger_r} = \bm{A}^H (\bm{A} \bm{A}^H )^{-1}$
+$\cdot$ Flat / fat matrix $\bm{A}$, \quad $M$ rows $<$ $N$ columns, \quad full row rank ($R=M$), \quad a right inverse $\bm{A}^{\dagger_r} = \bm{A}^H (\bm{A} \bm{A}^H )^{-1}$
 such that $\bm{A} \bm{A}^{\dagger_r} = \bm{I}$ (i.e. projection to row space)
 \begin{center}
 $
@@ -946,7 +1165,7 @@ $
 \drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\M]{V}_\mathtt{N \times N}^H
 $
 \end{center}
-$\cdot$ Tall / thin matrix $\bm{A}$, \quad $M$ rows $>$ $N$ columns, \quad full column rank ($r=N$), \quad a left inverse $\bm{A}^{\dagger_l} = (\bm{A}^H \bm{A})^{-1} \bm{A}^H$ such that $\bm{A}^{\dagger_l} \bm{A} = \bm{I}$ (i.e. projection to row space)
+$\cdot$ Tall / thin matrix $\bm{A}$, \quad $M$ rows $>$ $N$ columns, \quad full column rank ($R=N$), \quad a left inverse $\bm{A}^{\dagger_l} = (\bm{A}^H \bm{A})^{-1} \bm{A}^H$ such that $\bm{A}^{\dagger_l} \bm{A} = \bm{I}$ (i.e. projection to row space)
 \begin{center}
 $
 \def\M{1.4}
@@ -974,7 +1193,7 @@ $\cdot$ not full-rank cases need (a general) pseudo-inverse $\bm{A}^\dagger = \b
 \hspace{0.75cm}
 \textcolor{C2}{row space} $\perp$ \textcolor{C1}{null space}
 
-$\cdot$ Square matrix $\bm{A}$, \quad $M$ rows $=$ $N$ columns, \quad not full-rank ($r<M=N$)
+$\cdot$ Square matrix $\bm{A}$, \quad $M$ rows $=$ $N$ columns, \quad not full-rank ($R<M=N$)
 \begin{center}
 $
 \def\M{1}
@@ -986,7 +1205,7 @@ $
 \drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}^H
 $
 \end{center}
-$\cdot$ Flat / fat matrix $\bm{A}$, \quad $M$ rows $<$ $N$ columns, \quad not full-rank ($r<M$)
+$\cdot$ Flat / fat matrix $\bm{A}$, \quad $M$ rows $<$ $N$ columns, \quad not full-rank ($R<M$)
 \begin{center}
 $
 \def\M{1}
@@ -998,7 +1217,7 @@ $
 \drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\M]{V}_\mathtt{N \times N}^H
 $
 \end{center}
-$\cdot$ Tall / thin matrix $\bm{A}$, \quad $M$ rows $>$ $N$ columns, \quad not full-rank ($r<N$)
+$\cdot$ Tall / thin matrix $\bm{A}$, \quad $M$ rows $>$ $N$ columns, \quad not full-rank ($R<N$)
 \begin{center}
 $
 \def\M{1.4}
@@ -1046,8 +1265,8 @@ $
 \begin{frame}{Ex04: Solving an Inverse Problem == Finding Model Parameters / Projection Matrices}
 Objectives
 \begin{itemize}
-\item solving linear, inverse problem is actually machine learning
-\item left inverse solves least squares error problem
+\item solving linear, inverse problem is actually machine learning, although this is not often called so
+\item left inverse solves a least squares error problem
 \item projections matrices nicely explain the inverse solution
 \end{itemize}
 \end{frame}
@@ -1080,7 +1299,8 @@ left singular vectors in $\bm{U}$
 
 
 \begin{frame}[t]{Solving an Inverse Problem == Finding Model Parameters}
-feature matrix $\bm{X}$ as full column rank with rank $R=2$ (2 independent columns = 2 independent rows = 2 non-zero singular values)
+feature matrix $\bm{X}$ as full column rank with rank $R=2$ (this indicates:
+two independent columns = two independent rows = two non-zero singular values)
 $$
 \bm{X} =
 \begin{bmatrix}
@@ -1108,17 +1328,17 @@ $$
 \bm{U} \bm{\Sigma} \bm{V}^T
 $$
 
-Can we solve for the model parameter vector $\bm{\theta}$ given the feature matrix $\bm{X}$ and the output data vector $\bm{y}$?
+Can we solve for the model parameter vector $\bm{w}$ given the feature matrix $\bm{X}$ and the output data vector $\bm{y}$?
 %
-If no, why? If yes, how?
+If no, why? If yes, why and how?
 $$
-\bm{X} \bm{\theta} = \bm{y}
+\bm{X} \bm{w} = \bm{y}
 \quad \rightarrow \quad
 \begin{bmatrix}
 3 & 0 \\ 0 & 8 \\ 0 & 0
 \end{bmatrix}
 \begin{bmatrix}
-\bm{\theta} \\ |
+\bm{w} \\ |
 \end{bmatrix}=
 \begin{bmatrix}
 -3 \\ 4 \\ 2
@@ -1136,51 +1356,51 @@ $$
 3 & 0 \\ 0 & 8 \\ 0 & 0
 \end{bmatrix}
 \begin{bmatrix}
-\hat{\bm{\theta}} \\ |
+{\bm{w}} \\ |
 \end{bmatrix}=
 \begin{bmatrix}
 -3 \\ 4 \\ 2
 \end{bmatrix}
 $$
 %
-optimization problem in least squares sense: $\min_{\text{wrt }\bm{\theta}} \lVert\bm{e}\rVert_2^2 = \min_{\text{wrt }\bm{\theta}} \lVert\bm{y} - \bm{X} \bm{\theta}\rVert_2^2$
+optimization problem in least squares sense: $\min_{\text{wrt }\bm{w}} \lVert\bm{e}\rVert_2^2 = \min_{\text{wrt }\bm{w}} \lVert\bm{y} - \bm{X} \bm{w}\rVert_2^2$
 %
 
-recall that $\lVert\bm{y} - \bm{X} \bm{\theta}\rVert_2^2 = (\bm{y} - \bm{X} \bm{\theta})^T (\bm{y} - \bm{X} \bm{\theta})$
+recall that $\lVert\bm{y} - \bm{X} \bm{w}\rVert_2^2 = (\bm{y} - \bm{X} \bm{w})^T (\bm{y} - \bm{X} \bm{w})$
 \begin{align*}
-\lVert \bm{y} - \bm{X} \bm{\theta}\rVert_2  &= \sqrt{(-3 - 3\theta_1)^2 + (4-8\theta_2)^2 + (2-0)^2}\\
-J(\theta_1, \theta_2) = \lVert\bm{y} - \bm{X} \bm{\theta}\rVert_2^2 &= (-3 - 3\theta_1)^2 + (4-8\theta_2)^2 + (2-0)^2
+\lVert \bm{y} - \bm{X} \bm{w}\rVert_2  &= \sqrt{(-3 - 3w_1)^2 + (4-8w_2)^2 + (2-0)^2}\\
+J(w_1, w_2) = \lVert\bm{y} - \bm{X} \bm{w}\rVert_2^\textcolor{C3}{2} &= \quad(-3 - 3w_1)^2 + (4-8w_2)^2 + (2-0)^2
 \end{align*}
 %
 $$
-\text{grad} J(\theta_1, \theta_2) =
+\text{grad} J(w_1, w_2) =
 \begin{bmatrix}
-\frac{\partial J}{\partial \theta_1}\\
-\frac{\partial J}{\partial \theta_2}
+\frac{\partial J}{\partial w_1}\\
+\frac{\partial J}{\partial w_2}
 \end{bmatrix}
 =
 \begin{bmatrix}
-2 (-3) (-3 - 3\theta_1)
+2 (-3) (-3 - 3w_1)
 \\
-2 (-8) (4-8\theta_2)
+2 (-8) (4-8w_2)
 \end{bmatrix}
 =
 \begin{bmatrix}
-18 (1 + \theta_1)
+18 (1 + w_1)
 \\
-128 (-\frac{1}{2}+\theta_2)
+128 (-\frac{1}{2}+w_2)
 \end{bmatrix}
 $$
 %
-minimum at $\text{grad} J(\theta_1, \theta_2) = \bm{0}$, hence
+minimum at $\text{grad} J(w_1, w_2) = \bm{0}$, hence
 %
 $$
-\hat{\bm{\theta}}
+\hat{\bm{w}}
 =
 \begin{bmatrix}
-\hat{\theta_1}
+\hat{w_1}
 \\
-\hat{\theta_2}
+\hat{w_2}
 \end{bmatrix}
 =
 \begin{bmatrix}
@@ -1208,15 +1428,15 @@ $$
 
 \begin{frame}[t]{Finding Model Parameters with Subspace Fundamentals}
 
-Can we solve for the model parameter vector $\bm{\theta}$ given the feature matrix $\bm{X}$ and the output data vector $\bm{y}$?
+Can we solve for the model parameter vector $\bm{w}$ given the feature matrix $\bm{X}$ and the output data vector $\bm{y}$?
 %
-If no, why? If yes, how?
+If no, why? If yes, why and how?
 $$
 \begin{bmatrix}
 3 & 0 \\ 0 & 8 \\ 0 & 0
 \end{bmatrix}
 \begin{bmatrix}
-\bm{\theta} \\ |
+\bm{w} \\ |
 \end{bmatrix}=
 \begin{bmatrix}
 -3 \\ 4 \\ 2
@@ -1269,17 +1489,22 @@ $$
 \includegraphics[width=0.5\textwidth]{least_squares_error.pdf}
 \end{center}
 %
-$$\bm{X} \hat{\bm{\theta}} + \bm{e} = \bm{y} \qquad \rightarrow \qquad \bm{e} = \bm{y} - \bm{X} \hat{\bm{\theta}}$$
+$$\bm{X} \hat{\bm{w}} + \bm{e} = \bm{y} \qquad \rightarrow \qquad \bm{e} = \bm{y} - \bm{X} \hat{\bm{w}}$$
 %
 shortest path of $\bm{e}$ to column space means that $\bm{e}$ is orthogonal to column space
 
 hence, $\bm{e}$ must live purely in left null space, i.e. $\bm{X}^T \bm{e} = \bm{0}$ holds, this yields
 %
-$$\bm{X}^T (\bm{y} - \bm{X} \hat{\bm{\theta}}) = \bm{0} \quad \rightarrow \quad \bm{X}^T \bm{y} = \bm{X}^T \bm{X} \hat{\bm{\theta}} \quad \rightarrow \quad
-(\bm{X}^T \bm{X})^{-1} \bm{X}^T \bm{y} = \hat{\bm{\theta}}
+$$\bm{X}^T (\bm{y} - \bm{X} \hat{\bm{w}}) = \bm{0} \quad \rightarrow \quad \bm{X}^T \bm{y} = \bm{X}^T \bm{X} \hat{\bm{w}} \quad \rightarrow \quad
+(\bm{X}^T \bm{X})^{-1} \bm{X}^T \bm{y} = \hat{\bm{w}}
 $$
 
-middle equation: normal equations, right equation: least squares error solution using left inverse $\bm{X}^{\dagger_l} = (\bm{X}^T \bm{X})^{-1} \bm{X}^T$ such that
+middle equation: normal equations, right equation: least squares error solution
+using
+
+the left inverse $\bm{X}^{\dagger_l} = (\bm{X}^T \bm{X})^{-1} \bm{X}^T$
+of $\bm{X}$
+such that left multiplying yields
 $\bm{X}^{\dagger_l} \bm{X} = \bm{I}$
 
 
@@ -1287,20 +1512,20 @@ $\bm{X}^{\dagger_l} \bm{X} = \bm{I}$
 
 
 \begin{frame}{Left Inverse via SVD Mindset}
-we want to solve for ${\bm{\theta}}$, full column rank $\bm{X}_{M \times N}$, rank $R=N$
-$$\bm{X} {\bm{\theta}} = \bm{y}$$
+we want to solve for ${\bm{w}}$, full column rank $\bm{X}_{M \times N}$, rank $R=N$
+$$\bm{X} {\bm{w}} = \bm{y}$$
 apply SVD:
-$$\bm{U} \bm{\Sigma} \bm{V}^\mathrm{H} {\bm{\theta}} = \bm{y}$$
+$$\bm{U} \bm{\Sigma} \bm{V}^\mathrm{H} {\bm{w}} = \bm{y}$$
 get the weights for U space projection:
-$$\bm{U}^\mathrm{H} \bm{U} \bm{\Sigma} \bm{V}^\mathrm{H} {\bm{\theta}} = \bm{U}^\mathrm{H}\bm{y}$$
-invert all singular values and set up $\bm{\Sigma}^{\dagger_l}_{N \times M} = [\mathrm{diag}(1/\sigma_i) \quad \bm{0}]$ such that
+$$\bm{U}^\mathrm{H} \bm{U} \bm{\Sigma} \bm{V}^\mathrm{H} {\bm{w}} = \bm{U}^\mathrm{H}\bm{y}$$
+\underline{invert all non-zero singular values} and set up $\bm{\Sigma}^{\dagger_l}_{N \times M} = [\mathrm{diag}(1/\sigma_r) \quad \bm{0}]$ such that
 $\bm{\Sigma}^{\dagger_l}\bm{\Sigma} = \bm{I}_{N \times N}$
 
 apply $\bm{\Sigma}^{\dagger_l}$ left:
-$$\bm{\Sigma}^{\dagger_l}\bm{\Sigma} \bm{V}^\mathrm{H} {\bm{\theta}} = \bm{\Sigma}^{\dagger_l}\bm{U}^\mathrm{H}\bm{y}$$
+$$\bm{\Sigma}^{\dagger_l}\bm{\Sigma} \bm{V}^\mathrm{H} {\bm{w}} = \bm{\Sigma}^{\dagger_l}\bm{U}^\mathrm{H}\bm{y}$$
 let matrix $\bm{V}$ act on this vector, i.e. map as linear combination into row space in $\bm{V}$
-$$\bm{V} \bm{V}^\mathrm{H} {\bm{\theta}} = \bm{V} \bm{\Sigma}^{\dagger_l}\bm{U}^\mathrm{H}\bm{y}
-\rightarrow \text{this yields our estimator } \hat{\bm{\theta}} = \bm{V} \bm{\Sigma}^{\dagger_l}\bm{U}^\mathrm{H}\bm{y} = \bm{X}^{\dagger_l} \bm{y}$$
+$$\bm{V} \bm{\Sigma}^{\dagger_l}\bm{\Sigma} \bm{V}^\mathrm{H} {\bm{w}} = \bm{V} \bm{V}^\mathrm{H} {\bm{w}} = \bm{w} = \bm{V} \bm{\Sigma}^{\dagger_l}\bm{U}^\mathrm{H}\bm{y}
+\rightarrow \text{this yields our estimator } \hat{\bm{w}} = \bm{V} \bm{\Sigma}^{\dagger_l}\bm{U}^\mathrm{H}\bm{y} = \bm{X}^{\dagger_l} \bm{y}$$
 we might want to show that the left inverse $\bm{X}^{\dagger_l}$ can be written equivalently as
 $$\bm{X}^{\dagger_l} = \bm{V} \bm{\Sigma}^{\dagger_l}\bm{U}^\mathrm{H} = (\bm{X}^\mathrm{H}\bm{X})^{-1} \bm{X}^\mathrm{H}$$
 \end{frame}
@@ -1316,199 +1541,14 @@ $$\bm{X}^{\dagger_l} = \bm{V} \bm{\Sigma}^{\dagger_l}\bm{U}^\mathrm{H} = (\bm{X}
 
 
 
-\begin{frame}[t]{Left Inverse via another SVD Mindset I}
-
-we meanwhile know that for left inverse characteristics $$\bm{X}^{\dagger_l} \bm{X} = \bm{I}$$
-
-this operation is a projection matrix into the row space of $\bm{X}$, because $\bm{X}^{\dagger_l} \bm{X} \bm{\theta} = \bm{I} \bm{\theta}$
-
-we can factorise this with SVD
-
-$$\bm{V} \,\,\bm{?}\,\, \bm{U}^H \bm{U} \bm{\Sigma} \bm{V}^H = \bm{I}$$
-
-\begin{center}
-$
-\def\M{1.8}
-\def\N{1}
-\def\rank{0.999999}
-\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}
-\drawmatrix[fill=none, height=\N, width=\M]?_\mathtt{N \times M}
-\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\N]U^H_\mathtt{M \times M}
-\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\N]U_\mathtt{M \times M}
-\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}
-\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}^H=
-\drawmatrix[diag]I_\mathtt{N \times N}
-$
-\end{center}
-
-\end{frame}
 
 
 
 
-
-\begin{frame}[t]{Left Inverse via another SVD Mindset II}
-
-we meanwhile know that for left inverse characteristics $$\bm{X}^{\dagger_l} \bm{X} = \bm{I}$$
-
-this operation is a projection matrix into the row space of $\bm{X}$, because $\bm{X}^{\dagger_l} \bm{X} \bm{\theta} = \bm{I} \bm{\theta}$
-
-we can factorise this with SVD
-
-$$\bm{V} \,\,\bm{?}\,\, \bm{\Sigma} \bm{V}^H = \bm{I}$$
-
-\begin{center}
-$
-\def\M{1.8}
-\def\N{1}
-\def\rank{0.999999}
-\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}
-\drawmatrix[fill=none, height=\N, width=\M]?_\mathtt{N \times M}
-\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}
-\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\N]{V}_\mathtt{N \times N}^H=
-\drawmatrix[diag]I_\mathtt{N \times N}
-$
-\end{center}
-
-\end{frame}
-
-
-
-
-\begin{frame}[t]{Left Inverse via another SVD Mindset III}
-
-we meanwhile know that for left inverse characteristics $$\bm{X}^{\dagger_l} \bm{X} = \bm{I}$$
-
-this operation is a projection matrix into the row space of $\bm{X}$, because $\bm{X}^{\dagger_l} \bm{X} \bm{\theta} = \bm{I} \bm{\theta}$
-
-we can factorise this with SVD
-
-$$\bm{?}\,\, \bm{\Sigma} = \bm{I}$$
-
-\begin{center}
-$
-\def\M{1.8}
-\def\N{1}
-\def\rank{0.999999}
-\drawmatrix[fill=none, height=\N, width=\M]?_\mathtt{N \times M}
-\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}=
-\drawmatrix[diag]I_\mathtt{N \times N}
-$
-\end{center}
-
-\end{frame}
-
-
-
-
-\begin{frame}[t]{Left Inverse via another SVD Mindset IV}
-
-we meanwhile know that for left inverse characteristics $$\bm{X}^{\dagger_l} \bm{X} = \bm{I}$$
-
-this operation is a projection matrix into the row space of $\bm{X}$, because $\bm{X}^{\dagger_l} \bm{X} \bm{\theta} = \bm{I} \bm{\theta}$
-
-we can factorise this with SVD
-
-$$\bm{\Sigma}^{\dagger_l} \bm{\Sigma} = \bm{I}$$
-
-\begin{center}
-$
-\def\M{1.8}
-\def\N{1}
-\def\rank{0.999999}
-\drawmatrix[fill=none, height=\N, width=\M]{\Sigma^{\dagger_l}}_\mathtt{N \times M}
-\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}=
-\drawmatrix[diag]I_\mathtt{N \times N}
-$
-\end{center}
-
-\end{frame}
-
-
-
-
-\begin{frame}[t]{Left Inverse via another SVD Mindset V}
-
-$$\bm{\Sigma}^{\dagger_l} \bm{\Sigma} = \bm{I}$$
-
-\begin{center}
-$
-\def\M{1.8}
-\def\N{1}
-\def\rank{0.999999}
-\drawmatrix[fill=none, height=\N, width=\M]{\Sigma^{\dagger_l}}_\mathtt{N \times M}
-\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}=
-\drawmatrix[diag]I_\mathtt{N \times N}
-$
-\end{center}
-
-\begin{center}
-$
-\def\M{1.8}
-\def\N{1}
-\def\rank{0.999999}
-\drawmatrix[bbox style={fill=gray!50}, bbox height=\N, bbox width=\M, fill=white, height=\rank\N, width=\rank\N]{\Sigma^T}_\mathtt{N \times M}
-\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}
-=
-\drawmatrix[fill=none, height=\N, width=\N]?_\mathtt{N \times N}
-$
-\end{center}
-\end{frame}
-
-
-
-\begin{frame}[t]{Left Inverse via another SVD Mindset VI}
-
-$$\bm{\Sigma}^{\dagger_l} \bm{\Sigma} = \bm{I}$$
-
-\begin{center}
-$
-\def\M{1.8}
-\def\N{1}
-\def\rank{0.999999}
-\drawmatrix[fill=none, height=\N, width=\M]{\Sigma^{\dagger_l}}_\mathtt{N \times M}
-\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}=
-\drawmatrix[diag]I_\mathtt{N \times N}
-$
-\end{center}
-
-\begin{center}
-$
-\def\M{1.8}
-\def\N{1}
-\def\rank{0.999999}
-\drawmatrix[bbox style={fill=gray!50}, bbox height=\N, bbox width=\M, fill=white, height=\rank\N, width=\rank\N]{\Sigma^T}_\mathtt{N \times M}
-\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\N, width=\rank\N]\Sigma_\mathtt{M \times N}
-=
-\drawmatrix[diag]{\sigma^2}_\mathtt{N \times N}
-$
-\end{center}
-
-\begin{center}
-$
-\def\M{1.8}
-\def\N{1}
-\def\rank{0.999999}
-\drawmatrix[diag]{1/\sigma^2}_\mathtt{N \times N}
-\drawmatrix[bbox style={fill=gray!50}, bbox height=\N, bbox width=\M, fill=white, height=\rank\N, width=\rank\N]{\Sigma^T}_\mathtt{N \times M} =
-\drawmatrix[bbox style={fill=gray!50}, bbox height=\N, bbox width=\M, fill=white, height=\rank\N, width=\rank\N]{\Sigma^{\dagger_l}}_\mathtt{N \times M}
-$
-\end{center}
-
-$$\bm{\Sigma}^{\dagger_l} = (\bm{\Sigma}^T \bm{\Sigma})^{-1} \bm{\Sigma}^T$$
-
-$$\bm{X}^{\dagger_l} = \bm{V} \bm{\Sigma}^{\dagger_l} \bm{U}^H =
-\bm{V} \left[(\bm{\Sigma}^T \bm{\Sigma})^{-1} \bm{\Sigma}^T\right] \bm{U}^H$$
-
-
-\end{frame}
-
-
-
-\begin{frame}{Summary for Left Inverse's SVD Mindset}
+\begin{frame}{Summary for Left Inverse SVD Mindset}
 full column rank $\bm{X}_{M \times N}$, rank $R=N$
 
-forward problem: map row space to column space (+ null space to zero vector) with $\bm{X} \bm{\theta} = \bm{y}$
+forward problem: map row space to column space (+ null space to zero vector) with $\bm{X} \bm{w} = \bm{y}$
 $$
 \bm{X}_{M \times N}
 =
@@ -1526,7 +1566,7 @@ $$
 \end{bmatrix}
 \bm{V}^\mathrm{H}
 $$
-inverse problem: map column space to row space (+ left null space to zero vector) with left inverse $\bm{X}^{\dagger_l} \bm{y} = \bm{\theta}$
+inverse problem: map column space to row space (+ left null space to zero vector) with left inverse $\bm{X}^{\dagger_l} \bm{y} = \bm{w}$
 $$
 \bm{X}^{\dagger_l}_{N \times M}
 =
@@ -1536,10 +1576,10 @@ $$
 =
 \bm{V}
 \begin{bmatrix}
-\frac{\sigma_1}{\sigma_1^2} & 0 & 0 & 0 & 0 & 0\\
-0 & \frac{\sigma_2}{\sigma_2^2} & 0 & 0 & 0 & 0\\
-0 & 0 & \frac{\sigma_i}{\sigma_i^2} & 0 & 0 & 0\\
-0 & 0 & 0 & \frac{\sigma_R}{\sigma_R^2} & 0 & 0\\
+\frac{\sigma_1}{\sigma_1^2}=\frac{1}{\sigma_1} & 0 & 0 & 0 & 0 & 0\\
+0 & \frac{\sigma_2}{\sigma_2^2}=\frac{1}{\sigma_2} & 0 & 0 & 0 & 0\\
+0 & 0 & \frac{\sigma_r}{\sigma_r^2}=\frac{1}{\sigma_r} & 0 & 0 & 0\\
+0 & 0 & 0 & \frac{\sigma_R}{\sigma_R^2}=\frac{1}{\sigma_R} & 0 & 0\\
 \end{bmatrix}
 \bm{U}^\mathrm{H}
 $$
@@ -1572,7 +1612,8 @@ $$
 
 
 \begin{frame}[t]{Left Inverse for Least Squares Error Solution}
-$\bm{X}$ as full column rank with $R=2$ (2 independent columns = 2 independent rows = 2 non-zero singular values)
+$\bm{X}$ as full column rank with $R=2$  (this indicates:
+two independent columns = two independent rows = two non-zero singular values)
 $$
 \bm{X} =
 \begin{bmatrix}
@@ -1624,28 +1665,35 @@ $$
 1 & 0 & 0 \\
 0 & 0 & 1
 \end{bmatrix}
-\right)^T}_{\text{this is not the SVD of } \bm{X}^{\dagger_l} \text{, why?, check the SVD of } \bm{X}^{\dagger_l}}
+\right)^T}_{\text{this is not a SVD of } \bm{X}^{\dagger_l} \text{, why?, check the SVD of } \bm{X}^{\dagger_l}}
 =
 \bm{V} \bm{\Sigma}^{\dagger_l} \bm{U}^T =
 \bm{V} \left[(\bm{\Sigma}^T \bm{\Sigma})^{-1} \bm{\Sigma}^T\right] \bm{U}^T
 $$
 %
-We can solve for optimum $\hat{\bm{\theta}}$ in sense of least squares error, i.e. $\lVert \bm{e} \rVert_2^2 = \lVert \bm{y} - \bm{X} \hat{\bm{\theta}} \rVert_2^2\rightarrow \text{min}$:
+We can solve for optimum $\hat{\bm{w}}$ in sense of least squares error, i.e. $\lVert \bm{e} \rVert_2^2 = \lVert \bm{y} - \bm{X} \hat{\bm{w}} \rVert_2^2\rightarrow \text{min}$:
 $$
+\bm{X}\hat{\bm{w}}=
 \begin{bmatrix}
 3 & 0 \\ 0 & 8 \\ 0 & 0
 \end{bmatrix}
 \begin{bmatrix}
-\hat{\bm{\theta}} \\ |
+\hat{\bm{w}} \\ |
 \end{bmatrix}=
 \begin{bmatrix}
 -3 \\ 4 \\ 2
 \end{bmatrix}
+=\bm{y}
 \quad
 \rightarrow
 \quad
-\hat{\bm{\theta}} =
+\hat{\bm{w}} =
 \bm{X}^{\dagger_l}
+\bm{y}=
+\begin{bmatrix}
+\frac{1}{3} & 0 & 0\\
+0 & \frac{1}{8} & 0
+\end{bmatrix}
 \begin{bmatrix}
 -3 \\ 4 \\ 2
 \end{bmatrix}
@@ -1709,8 +1757,11 @@ left singular vectors in $\bm{U}$
 
 
 \begin{frame}{Projection Matrices Based on Left Inverse}
-For full column rank $\bm{X}_{M \times N}$, rank $R=N$ the left inverse is
-$$\bm{X}^{\dagger_l} = \bm{V} \bm{\Sigma}^{\dagger_l}\bm{U}^\mathrm{H} = (\bm{X}^\mathrm{H}\bm{X})^{-1} \bm{X}^\mathrm{H}$$
+For full column rank $\bm{X}_{M \times N}$ with rank $R=N$, the left inverse is
+$$\bm{X}^{\dagger_l} =
+\bm{V} \bm{\Sigma}^{\dagger_l}\bm{U}^\mathrm{H} =
+\bm{V} \left[(\bm{\Sigma}^\mathrm{T} \bm{\Sigma})^{-1} \bm{\Sigma}^\mathrm{T}\right] \bm{U}^\mathrm{H} =
+(\bm{X}^\mathrm{H}\bm{X})^{-1} \bm{X}^\mathrm{H}$$
 from which we can create \underline{four projection matrices} into the \underline{four subspaces}
 \begin{itemize}
 \item[-] into \textcolor{C2}{row space} $\bm{P}_\text{row} = \bm{X}^{\dagger_l} \bm{X} = \bm{I}_{N \times N}$ \begin{footnotesize}(i.e. the concept of a left inverse)\end{footnotesize}
@@ -1719,8 +1770,8 @@ from which we can create \underline{four projection matrices} into the \underlin
 \item[-] into \textcolor{C4}{left nullspace} $\bm{P}_\text{left null} = \bm{I}_{M \times M} - \bm{P}_\text{column}$
 \end{itemize}
 
-Estimator $\hat{\bm{\theta}}$ from solving the inverse problem yields a vector $\hat{\bm{y}}$ living in the column space
-$$\bm{X} \hat{\bm{\theta}} = \bm{X} (\bm{X}^{\dagger_l} \bm{y}) = \bm{P}_\text{column} \bm{y} = \hat{\bm{y}}$$
+Estimator $\hat{\bm{w}}$ from solving the inverse problem yields a vector $\hat{\bm{y}}$ living in the column space
+$$\bm{X} \hat{\bm{w}} = \bm{X} (\bm{X}^{\dagger_l} \bm{y}) = (\bm{X} \bm{X}^{\dagger_l}) \bm{y} = \bm{P}_\text{column} \bm{y} = \hat{\bm{y}}$$
 This means that there is a remaining part (typically called residual) $\bm{e}$ from measured $\bm{y}$
 $$\bm{e} = \bm{y} - \hat{\bm{y}} = \bm{y} - \bm{P}_\text{column} \bm{y} = (\bm{I}_{M \times M} - \bm{P}_\text{column}) \bm{y}=
 \bm{P}_\text{left null} \bm{y} = \bm{e}$$
@@ -1750,9 +1801,9 @@ $
 %
 \qquad
 %
-$\min_{\text{wrt }\bm{\theta}} \lVert\bm{e}\rVert_2^2 = \min_{\text{wrt }\bm{\theta}} \lVert\bm{y} - \bm{X} \bm{\theta}\rVert_2^2
+$\min_{\text{wrt }\bm{w}} \lVert\bm{e}\rVert_2^2 = \min_{\text{wrt }\bm{w}} \lVert\bm{y} - \bm{X} \bm{w}\rVert_2^2
 \leftrightarrow
-\operatorname*{argmin}_{\bm{\theta}} \lVert\bm{y} - \bm{X} \bm{\theta}\rVert_2^2
+\operatorname*{argmin}_{\bm{w}} \lVert\bm{y} - \bm{X} \bm{w}\rVert_2^2
 $
 
 \addvspace{100mm}
@@ -1760,11 +1811,11 @@ $
 \end{frame}
 
 
-\begin{frame}{Linear Regression}
-Toy Example 2
+%\begin{frame}{Linear Regression}
+%Toy Example 2
 
-only on Clever Touch
-\end{frame}
+%only on Clever Touch
+%\end{frame}
 
 
 
@@ -1806,21 +1857,19 @@ $$
 \textcolor{C0}{2} & 0\\
 0 & \textcolor{C1}{\frac{2}{100}}
 \end{bmatrix}
-\left(
 \begin{bmatrix}
 \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\
 \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}}
-\end{bmatrix}
-\right)^T
+\end{bmatrix}^T
 $$
 \pause
 %
-Left-inverse / here actually the Exact-inverse requires
-$$\hat{\bm{\theta}} = \frac{\bm{u}_1^T \bm{y}}{\textcolor{C0}{\sigma_1}}\bm{v}_1 + \frac{\bm{u}_2^T \bm{y}}{\textcolor{C1}{\sigma_2}}\bm{v}_2$$
+Left-inverse / here actually the exact inverse requires
+$$\hat{\bm{w}} = \frac{\bm{u}_1^T \bm{y}}{\textcolor{C0}{\sigma_1}}\bm{v}_1 + \frac{\bm{u}_2^T \bm{y}}{\textcolor{C1}{\sigma_2}}\bm{v}_2$$
 \pause
 %
-for $\bm{y}=[1,1]^T$ we get
-$$\hat{\bm{\theta}} = \frac{1}{\textcolor{C0}{2}}\bm{v}_1 + \frac{1}{\textcolor{C1}{\frac{2}{100}}}\bm{v}_2 =
+for e.g. $\bm{y}=[1,1]^T$ we get $\bm{u}_1^T \bm{y} = 1$ and $\bm{u}_2^T \bm{y}=1$
+$$\hat{\bm{w}} = \frac{1}{\textcolor{C0}{2}}\bm{v}_1 + \frac{1}{\textcolor{C1}{\frac{2}{100}}}\bm{v}_2 =
 \frac{1}{\textcolor{C0}{2}}
 \begin{bmatrix}
 \frac{1}{\sqrt{2}}\\
@@ -1840,7 +1889,7 @@ $$
 \pause
 %
 for $\bm{y}=[1 \pm \epsilon_1, 1 \pm \epsilon_2]^T$ we get
-$$\hat{\bm{\theta}} =
+$$\hat{\bm{w}} =
 \frac{1 \pm \epsilon_1}{\textcolor{C0}{2}}\bm{v}_1 +
 \frac{1 \pm \epsilon_2}{\textcolor{C1}{\frac{2}{100}}}\bm{v}_2 =
 \frac{1 \pm \epsilon_1}{\textcolor{C0}{2}}
@@ -1871,7 +1920,7 @@ $$
 
 
 \begin{frame}[t]{Regularization of the LS-Problem}
-$\cdot$ full column rank inverse problem $\rightarrow$ solve with left inverse $\bm{X}^{\dagger_l} \bm{y} = \bm{\theta}$
+$\cdot$ full column rank inverse problem $\rightarrow$ solve with left inverse $\bm{X}^{\dagger_l} \bm{y} = \bm{w}$
 $$
 \bm{X}^{\dagger_l}_{N \times M}
 =
@@ -1903,7 +1952,7 @@ $$
 \begin{bmatrix}
 \frac{\sigma_1}{\sigma_1^2 + \textcolor{C0}{\lambda}} & 0 & 0 & 0 & 0 & 0\\
 0 & \frac{\sigma_2}{\sigma_2^2 + \textcolor{C0}{\lambda}} & 0 & 0 & 0 & 0\\
-0 & 0 & \frac{\sigma_i}{\sigma_i^2 + \textcolor{C0}{\lambda}} & 0 & 0 & 0\\
+0 & 0 & \frac{\sigma_r}{\sigma_r^2 + \textcolor{C0}{\lambda}} & 0 & 0 & 0\\
 0 & 0 & 0 & \frac{\sigma_R}{\sigma_R^2 + \textcolor{C0}{\lambda}} & 0 & 0
 \end{bmatrix}
 $$
@@ -1916,7 +1965,7 @@ $
 \begin{bmatrix}
 \frac{\sigma_1}{\sigma_1^2 + \textcolor{C0}{\lambda}} & 0 & 0 & 0 & 0 & 0\\
 0 & \frac{\sigma_2}{\sigma_2^2 + \textcolor{C0}{\lambda}} & 0 & 0 & 0 & 0\\
-0 & 0 & \frac{\sigma_i}{\sigma_i^2 + \textcolor{C0}{\lambda}} & 0 & 0 & 0\\
+0 & 0 & \frac{\sigma_r}{\sigma_r^2 + \textcolor{C0}{\lambda}} & 0 & 0 & 0\\
 0 & 0 & 0 & \frac{\sigma_R}{\sigma_R^2 + \textcolor{C0}{\lambda}} & 0 & 0
 \end{bmatrix}
 $
@@ -1944,7 +1993,7 @@ title={regularized singular value inversion}]
 
 \begin{frame}[t]{L-Curve to Find Optimum Regularization Parameter $\lambda$}
 $$
-\hat{\bm{\theta}}(\textcolor{C0}{\lambda}) \quad=\quad
+\hat{\bm{w}}(\textcolor{C0}{\lambda}) \quad=\quad
 \left[\bm{V} (\bm{\Sigma}^\mathrm{T} \bm{\Sigma} + \textcolor{C0}{\lambda}\bm{I})^{-1} \bm{\Sigma}^\mathrm{T} \bm{U}^\mathrm{T}\right] \bm{y} \quad=\quad
 \left[(\bm{X}^\mathrm{T}\bm{X} + \textcolor{C0}{\lambda}\bm{I})^{-1} \bm{X}^\mathrm{T}\right] \bm{y}
 $$
@@ -1952,8 +2001,8 @@ $$
 \begin{tikzpicture}[scale=1]
 \begin{axis}
 [
-xlabel={$\log_{10}(\lVert \bm{y} - \bm{X}\hat{\bm{\theta}}\rVert_2^2)$},
-ylabel={$\log_{10}(\lVert \hat{\bm{\theta}}\rVert_2^2)$}]
+xlabel={$\log_{10}(\lVert \bm{y} - \bm{X}\hat{\bm{w}}\rVert_2^2)$},
+ylabel={$\log_{10}(\lVert \hat{\bm{w}}\rVert_2^2)$}]
 \addplot[mark=o, color=black]
 coordinates {(2.111535073672359,1.9374862138307345)(2.1116189173400763,1.9179406901143072)(2.1117093198996537,1.8974485918662078)(2.1118064331906368,1.8759963319337574)(2.111910359738582,1.8535739649613479)(2.1120211470508305,1.830175603962491)(2.112138782658966,1.8057998415008494)(2.1122631901246884,1.7804501723459156)(2.112394226206225,1.7541354143971832)(2.112531679351133,1.7268701245749452)(2.112675269639379,1.6986750062035103)(2.1128246502497285,1.6695773040966553)(2.112979410465293,1.639611183016149)(2.1131390801738505,1.6088180843238344)(2.1133031357587573,1.5772470543949442)(2.1134710072206198,1.544955036620565)(2.113642086321722,1.5120071165358628)(2.1138157355074134,1.478476706741184)(2.1139912973332855,1.4444456548692113)(2.1141681041151705,1.410004254014596)(2.1143454875209553,1.37525113102209)(2.114522787838079,1.340292984210847)(2.1146993626767765,1.3052441390503273)(2.1148745949043666,1.270225888724319)(2.1150478996474744,1.2353655873001401)(2.115218730244241,1.2007954673176384)(2.115386583074499,1.1666511619432884)(2.115551001240152,1.1330699250899565)(2.115711577108509,1.1001885613165483)(2.1158679537665215,1.068141100418087)(2.11601982546278,1.037056277997946)(2.1161669371362017,1.007054910564738)(2.116309083145609,0.9782472784885935)(2.1164461053231896,0.9507306486073885)(2.1165778904778176,0.9245870765849667)(2.1167043674722255,0.8998816243422154)(2.1168255039920445,0.87666110870323)(2.1169413031156927,0.8549534647147454)(2.1170517997829794,0.8347677641141822)(2.117157057247913,0.8160948812415754)(2.117257163588327,0.7989087514113858)(2.1173522283321478,0.7831681263140827)(2.1174423792479082,0.7688187020534032)(2.117527759335815,0.7557954805263869)(2.1176085240455236,0.7440252242668157)(2.117684838737914,0.7334288767631709)(2.117756876400629,0.7239238413513156)(2.117824815620946,0.7154260381552079)(2.1178888388146193,0.7078516864121741)(2.117949130705606,0.7011187857530566)(2.118005877048923,0.6951482924562146)(2.1180592635871736,0.6898650042082011)(2.1181094752304657,0.6851981792042556)(2.118156695449283,0.6810819228711115)(2.118201105870427,0.6774553788469092)(2.118242886067188,0.6742627610332226)(2.1182822135364323,0.671453261473149)(2.1183192638572503,0.6689808653381029)(2.118354211028092,0.6668041001025019)(2.1183872279819753,0.6648857415608906)(2.1184184872823195,0.6631924950508753)(2.118448162005227,0.6616946663102274)(2.1184764268176903,0.6603658329371096)(2.1185034592651766,0.6591825244830672)(2.118529441286444,0.6581239167829298)(2.118554560978318,0.6571715441765998)(2.1185790146385304,0.6563090317506081)(2.1186030091207133,0.6555218485615588)(2.1186267645423507,0.6547970819385508)(2.1186505173939523,0.654123232340967)(2.1186745241061593,0.6534900278214899)(2.1186990651409325,0.6528882568688616)(2.118724449683664,0.6523096182447616)(2.1187510210250817,0.651746586354894)(2.1187791627354,0.6511922906824332)(2.11880930574847,0.6506404078438874)(2.1188419364909588,0.6500850648888835)(2.1188776062109627,0.6495207525455089)(2.118916941682254,0.6489422472035514)(2.118960657484724,0.6483445405233506)(2.1190095700887626,0.6477227756537961)(2.119064614001517,0.6470721891364337)(2.119126860266296,0.6463880576617214)(2.1191975376430543,0.6456656489271558)(2.1192780568377905,0.6449001759246437)(2.119370038191856,0.6440867540559502)(2.1194753432882476,0.6432203605404804)(2.1195961109805195,0.6422957956393021)(2.119734798400172,0.6413076452737028)(2.1198942275491164,0.6402502446661995)(2.120077638133322,0.63911764267742)(2.1202887473397256,0.6379035665542551)(2.1205318172976866,0.636601386843793)(2.120811730994491,0.635204082264455)(2.1211340774261433,0.6337042043610798)(2.1215052467528444,0.6320938418050998)(2.1219325361842487,0.6303645842350503)(2.1224242672317533,0.628507485567048)(2.122989914820136,0.6265130267401864)(2.1236402485326384,0.6243710778985797)(2.124387485952922,0.622070860050626)(2.1252454576423543,0.6196009062874555)(2.126229782727388,0.6169490226869792)(2.127358053343277,0.6141022490778995)(2.128650025260821,0.6110468198898391)(2.1301278108879216,0.6077681253716871)(2.131816069468935,0.6042506735205079)(2.1337421876938722,0.6004780531279676)(2.1359364420852347,0.5964328984200181)(2.138432132486612,0.5920968558382564)(2.1412656738028524,0.5874505535872641)(2.144476630950979,0.5824735746505099)(2.148107679944085,0.5771444340567427)(2.152204476381007,0.571440561257629)(2.1568154116529623,0.5653382885535984)(2.1619912372646763,0.5588128465759031)(2.1677845392020596,0.551838367895746)(2.1742490476635825,0.5443878998824194)(2.181438773054784,0.5364334279677112)(2.189406967138293,0.5279459104888987)(2.1982049186248642,0.5188953262726451)(2.2078806049594526,0.5092507360820187)(2.2184772358913527,0.4989803589736009)(2.230031738502925,0.48805166449639775)(2.2425732462333383,0.476431481504676)(2.2561216643783273,0.4640861241494426)(2.2706863898872727,0.4509815353558515)(2.2862652626236226,0.4370834477858121)};
 \addlegendentry{L-Curve}
@@ -1995,57 +2044,57 @@ coordinates {(2.11880930574847,0.6506404078438874)};
 \begin{frame}[t]{Linear Regression}
 Both optimization problems,
 
-$\cdot$ the Least Squares Error Problem with Tikhonov Regularization (aka Ridge Regression)
+$\cdot$ the Least Squares (LS) error problem with Tikhonov regularization (aka Ridge Regression)
 $$
-\min_{\text{wrt }\bm{\theta}} J(\bm{\theta}) \quad\text{with cost function}\quad
-J(\bm{\theta}) =
-\lVert\bm{y} - \bm{X} \bm{\theta}\rVert_2^2 + \textcolor{C0}{\lambda} \lVert \bm{\theta} \rVert_2^2
+\min_{\text{wrt }\bm{w}} J(\bm{w}) \quad\text{with cost function}\quad
+J(\bm{w}) =
+\lVert\bm{y} - \bm{X} \bm{w}\rVert_2^2 + \textcolor{C0}{\lambda} \lVert \bm{w} \rVert_2^2
 $$
 
-$\cdot$ and the ordinary Least Squares Error Problem (i.e. special case for $\textcolor{C0}{\lambda}=0$)
+$\cdot$ and the Ordinary Least Squares (OLS) error problem (i.e. the special case for $\textcolor{C0}{\lambda}=0$)
 $$
-\min_{\text{wrt }\bm{\theta}} J(\bm{\theta}) \quad\text{with cost function}\quad
-J(\bm{\theta}) =  \lVert\bm{y} - \bm{X} \bm{\theta}\rVert_2^2
+\min_{\text{wrt }\bm{w}} J(\bm{w}) \quad\text{with cost function}\quad
+J(\bm{w}) =  \lVert\bm{y} - \bm{X} \bm{w}\rVert_2^2
 $$
 
 have the closed form solution using the (regularized) left inverse of $\bm{X} = \bm{U}\bm{\Sigma}\bm{V}^\mathrm{T}$:
 $$
-\hat{\bm{\theta}} \quad=\quad
+\hat{\bm{w}} \quad=\quad
 \left[\bm{V} (\bm{\Sigma}^\mathrm{T} \bm{\Sigma} + \textcolor{C0}{\lambda \bm{I})}^{-1} \bm{\Sigma}^\mathrm{T} \bm{U}^\mathrm{T}\right] \bm{y} \quad=\quad
 \left[(\bm{X}^\mathrm{T}\bm{X} + \textcolor{C0}{\lambda \bm{I}})^{-1} \bm{X}^\mathrm{T}\right] \bm{y}
 $$
 
-Such a model has $N$ \underline{model parameters} $\bm{\theta} = [\theta_1, \theta_2 \dots \theta_N]^T$ and one \underline{hyper parameter} $\textcolor{C0}{\lambda}$ to be learned from the data $\bm{y}_{M \times 1}$ and the feature matrix $\bm{X}_{M \times N}$ with full column rank $R=N$.
+Such a model has $N$ \underline{model parameters} $\bm{w} = [w_1, w_2 \dots w_N]^T$ and one \underline{hyper parameter} $\textcolor{C0}{\lambda}$ to be learned from the data $\bm{y}_{M \times 1}$ and the feature matrix $\bm{X}_{M \times N}$ with full column rank $R=N$.
 
 \end{frame}
 
-\begin{frame}[t]{Normal Equations of Tikhonov Regularization in SDV Domain}
+\begin{frame}[t]{Normal Equations of Tikhonov Regularization in SVD Domain}
 
 The ridge regression optimization problem
 $$
-\min_{\text{wrt }\bm{\theta}} J(\bm{\theta}) \quad\text{with cost function}\quad
-J(\bm{\theta}) =
-\lVert\bm{y} - \bm{X} \bm{\theta}\rVert_2^2 + \textcolor{C0}{\lambda} \lVert \bm{\theta} \rVert_2^2
+\min_{\text{wrt }\bm{w}} J(\bm{w}) \quad\text{with cost function}\quad
+J(\bm{w}) =
+\lVert\bm{y} - \bm{X} \bm{w}\rVert_2^2 + \textcolor{C0}{\lambda} \lVert \bm{w} \rVert_2^2
 $$
 yields the normal equations
-$$(\bm{X}^\mathrm{T}\bm{X} + \lambda \bm{I}) \hat{\bm{\theta}} = \bm{X}^\mathrm{T} \bm{y}$$
+$$(\bm{X}^\mathrm{T}\bm{X} + \lambda \bm{I}) \hat{\bm{w}} = \bm{X}^\mathrm{T} \bm{y}$$
 and can be solved in SVD domain
-$$((\bm{U} \bm{\Sigma} \bm{V}^\mathrm{T})^\mathrm{T} (\bm{U} \bm{\Sigma} \bm{V}^\mathrm{T}) + \lambda \bm{I}) \hat{\bm{\theta}}=
+$$((\bm{U} \bm{\Sigma} \bm{V}^\mathrm{T})^\mathrm{T} (\bm{U} \bm{\Sigma} \bm{V}^\mathrm{T}) + \lambda \bm{I}) \hat{\bm{w}}=
 (\bm{U} \bm{\Sigma} \bm{V}^\mathrm{T})^\mathrm{T} \bm{y}$$
 
-%$$(\bm{V} \bm{\Sigma}^\mathrm{T} \bm{U}^\mathrm{T} \bm{U} \bm{\Sigma} \bm{V}^\mathrm{T} + \lambda \bm{I}) \hat{\bm{\theta}}=
+%$$(\bm{V} \bm{\Sigma}^\mathrm{T} \bm{U}^\mathrm{T} \bm{U} \bm{\Sigma} \bm{V}^\mathrm{T} + \lambda \bm{I}) \hat{\bm{w}}=
 %\bm{V} \bm{\Sigma}^\mathrm{T} \bm{U}^\mathrm{T} \bm{y}$$
 
-$$(\bm{V} \bm{\Sigma}^\mathrm{T} \bm{\Sigma} \bm{V}^\mathrm{T} + \lambda \bm{V}\bm{I}\bm{V}^\mathrm{T}) \hat{\bm{\theta}}=
+$$(\bm{V} \bm{\Sigma}^\mathrm{T} \bm{\Sigma} \bm{V}^\mathrm{T} + \lambda \bm{V}\bm{I}\bm{V}^\mathrm{T}) \hat{\bm{w}}=
 \bm{V} \bm{\Sigma}^\mathrm{T} \bm{U}^\mathrm{T} \bm{y}$$
 
-$$[\bm{V} (\bm{\Sigma}^\mathrm{T} \bm{\Sigma} + \lambda \bm{I})\bm{V}^\mathrm{T}] \hat{\bm{\theta}}=
+$$[\bm{V} (\bm{\Sigma}^\mathrm{T} \bm{\Sigma} + \lambda \bm{I})\bm{V}^\mathrm{T}] \hat{\bm{w}}=
 \bm{V} \bm{\Sigma}^\mathrm{T} \bm{U}^\mathrm{T} \bm{y}$$
-using left inverse
-$$\hat{\bm{\theta}}=
+using the left inverse
+$$\hat{\bm{w}}=
 [\bm{V} (\bm{\Sigma}^\mathrm{T} \bm{\Sigma} + \lambda \bm{I})\bm{V}^\mathrm{T}]^{-1} \bm{V} \bm{\Sigma}^\mathrm{T} \bm{U}^\mathrm{T} \bm{y}$$
 
-$$\hat{\bm{\theta}}=
+$$\hat{\bm{w}}=
 \bm{V} (\bm{\Sigma}^\mathrm{T} \bm{\Sigma} + \lambda \bm{I})^{-1} \bm{\Sigma}^\mathrm{T} \bm{U}^\mathrm{T} \bm{y}$$
 
 \end{frame}
@@ -2543,7 +2592,7 @@ data \underline{plane} in 2D space (PC3 not used)
 
 
 
-\section{Section IV: Train Models}
+\section{Section IV: Training of Models}
 
 \subsection{Exercise 09}
 \begin{frame}{Ex 09: Bias-Variance Trade Off}
@@ -2636,7 +2685,7 @@ optimum regularisation & \multicolumn{2}{l|}{optimum bias$^2$+variance}\\\hline
 %
 \vspace{-1em}
 %
-$\cdot$ ground truth model ($N=1+4=5$ features) with full column rank $M \times N$ matrix, $M>N$
+$\cdot$ ground \textbf{t}ruth model ($N=1+4=5$ features) with full column rank $M \times N$ matrix, $M>N$
 $$\bm{x}_1 = \frac{2\pi}{M} \cdot 0,\quad\bm{x}_2 = \frac{2\pi}{M} \cdot 1,\quad\dots,\quad\bm{x}_M = \frac{2\pi}{M} \cdot (M-1)$$
 $$
 \bm{X}_t =
@@ -2646,12 +2695,12 @@ $$
 \vdots & \vdots & \vdots & \vdots & \vdots\\
 1 & \cos(\bm{x}_M) & \sin(2\bm{x}_M) & \cos(5\bm{x}_M) & \cos(6\bm{x}_M)\\
 \end{bmatrix}\qquad
-\bm{\beta}_t =
+\bm{w}_t =
 \begin{bmatrix}
 3\\2\\1\\\nicefrac{1}{2}\\\nicefrac{1}{4}
 \end{bmatrix}
 \qquad
-\bm{t} = \bm{X}_t \bm{\beta}_t
+\bm{t} = \bm{X}_t \bm{w}_t
 $$
 
 $\cdot$ mean-free, fixed variance noise $\bm{n}$ $\rightarrow$ $l$ measurements, $1 \leq l \leq L$
@@ -2659,8 +2708,8 @@ $$\bm{y}^{(l)} = \bm{t} + \bm{n}^{(l)}$$
 
 $\cdot$ OLS with a model design matrix $\bm{X}$ and the $l$-th data set $\bm{y}^{(l)}$
 \begin{align*}
-&\hat{\bm{\beta}}^{(l)} = \quad\,\,\,\,(\bm{X}^\mathrm{T} \bm{X})^{-1} \bm{X}^\mathrm{T} \bm{y}^{(l)}\\
-\hat{\bm{y}}^{(l)} = \bm{X}\cdot &\hat{\bm{\beta}}^{(l)} = \bm{X}\cdot (\bm{X}^\mathrm{T} \bm{X})^{-1} \bm{X}^\mathrm{T} \bm{y}^{(l)}
+&\hat{\bm{w}}^{(l)} = \quad\,\,\,\,(\bm{X}^\mathrm{T} \bm{X})^{-1} \bm{X}^\mathrm{T} \bm{y}^{(l)}\\
+\hat{\bm{y}}^{(l)} = \bm{X}\cdot &\hat{\bm{w}}^{(l)} = \bm{X}\cdot (\bm{X}^\mathrm{T} \bm{X})^{-1} \bm{X}^\mathrm{T} \bm{y}^{(l)}
 \end{align*}
 
 $\cdot$ measurement: $\bm{y}_m^{(l)}$ is $m$-th entry of vector $\bm{y}^{(l)}$,\quad prediction: $\hat{\bm{y}}_m^{(l)}$ is $m$-th entry of vector $\hat{\bm{y}}^{(l)}$
@@ -2694,7 +2743,7 @@ $$
 \right)
 $$
 %
-$\cdot$ \underline{bias$^2$}: how much deviates mean of all predictions from the truth data $\rightarrow$ 2nd order moment
+$\cdot$ \underline{bias$^2$}: how much deviates the mean of all predictions from ground truth $\rightarrow$ 2nd order moment
 $$
 \begin{bmatrix}
 |\\\bm{e}_b\\|
@@ -2742,7 +2791,7 @@ $$
 
 
 
-\begin{frame}[t]{Bias Variance Trade-Off: Essence of Example}
+\begin{frame}[t]{Bias Variance Trade-Off: Essence of our Example}
 %
 \vspace{-1em}
 %
@@ -2827,7 +2876,7 @@ $\cdot$ measured $\bm{y}^{(l)}$, predicted $\hat{\bm{y}}^{(l)}$
 $\cdot$ we calculate all for the $l$-th data set, but we omit index $l$:
 
 - Sum of Squares \textbf{Error} (SS\textbf{E})
-$$\mathrm{SSE} = \sum_{m=1}^{M} (\bm{y}_m - \hat{\bm{y}}_m)^2 = (\bm{y} - \bm{X}\hat{\bm{\beta}})^\mathrm{T} (\bm{y} - \bm{X}\hat{\bm{\beta}})$$
+$$\mathrm{SSE} = \sum_{m=1}^{M} (\bm{y}_m - \hat{\bm{y}}_m)^2 = (\bm{y} - \bm{X}\hat{\bm{w}})^\mathrm{T} (\bm{y} - \bm{X}\hat{\bm{w}})$$
 
 - mean of measured data
 $$\bar{{y}} = \frac{1}{M} \sum_{m=1}^{M} \bm{y}_m$$
@@ -2857,7 +2906,7 @@ $\cdot$ $R_\text{adjusted}^2$ holds for models with intercept!
 
 \vspace{1em}
 
-$\cdot$ hence: measured $\bm{y}^{(l)}$, model design matrix $\bm{X}$, fitted $\hat{\bm{\beta}}^{(l)}$, predicted $\hat{\bm{y}}^{(l)}$ $\rightarrow$ $R_\text{adjusted}^{2,(l)}$
+$\cdot$ hence: measured $\bm{y}^{(l)}$, model design matrix $\bm{X}$, fitted $\hat{\bm{w}}^{(l)}$, predicted $\hat{\bm{y}}^{(l)}$ $\rightarrow$ $R_\text{adjusted}^{2,(l)}$
 
 \end{frame}
 
@@ -2876,8 +2925,8 @@ $\cdot$ hence: measured $\bm{y}^{(l)}$, model design matrix $\bm{X}$, fitted $\h
 
 
 
-\subsection{Exercise TBA}
-\begin{frame}{Ex TBA: Gradient Descent}
+\subsection{Exercise 10}
+\begin{frame}{Ex10: Gradient Descent}
 
 Objectives
 \begin{itemize}
@@ -2885,9 +2934,10 @@ Objectives
 \item local vs. global minima, saddle points
 \item crucial parameter settings for learning rate, number of iterations and init values
 \item improvements of plain GD: momentum
+\item no slides so far, but nice notebooks
 \end{itemize}
 
-no slides so far
+
 
 \end{frame}
 
@@ -3052,9 +3102,9 @@ $$
 
 
 
-\subsection{Exercise 10}
+\subsection{Exercise 11}
 
-\begin{frame}{Ex10: Non-Linear Model Introduction}
+\begin{frame}{Ex11: Non-Linear Model Introduction}
 Objectives
 \begin{itemize}
 \item XOR is a classification problem, which cannot be handled by linear algebra
@@ -3152,7 +3202,7 @@ XOR mapping well known as
 \end{bmatrix}
 \end{align*}
 Simple linear model with least squares error solution
-$$\bm{X} \bm{\theta} = \bm{y} \quad\rightarrow\quad \hat{\bm{\theta}} = (\bm{X}^\mathrm{T} \bm{X})^{-1} \bm{X}^\mathrm{T} \bm{y}
+$$\bm{X} \bm{w} = \bm{y} \quad\rightarrow\quad \hat{\bm{w}} = (\bm{X}^\mathrm{T} \bm{X})^{-1} \bm{X}^\mathrm{T} \bm{y}
 =
 \frac{1}{3}\cdot
 \begin{bmatrix}
@@ -3162,7 +3212,7 @@ $$\bm{X} \bm{\theta} = \bm{y} \quad\rightarrow\quad \hat{\bm{\theta}} = (\bm{X}^
 $$
 is not a convincing solution, because the model prediction
 \begin{align*}
-\bm{X} \hat{\bm{\theta}} =
+\bm{X} \hat{\bm{w}} =
 \frac{1}{3}
 \begin{bmatrix}
 0\\
@@ -3190,7 +3240,7 @@ is not a convincing solution, because the model prediction
 \end{align*}
 does not yield XOR. This is because $\bm{y}$ is not in the column space of $\bm{X}$ and
 the resulting column space solution $\hat{\bm{y}}$
-is useless for the intended application
+is useless for the intended application.
 
 \end{frame}
 
@@ -3222,7 +3272,7 @@ Feature matrix with additional typical \underline{intercept} represented by the 
 
 
 Least squares error solution
-$$\hat{\bm{\theta}} = (\bm{X}^\mathrm{T} \bm{X})^{-1} \bm{X}^\mathrm{T} \bm{y}
+$$\hat{\bm{w}} = (\bm{X}^\mathrm{T} \bm{X})^{-1} \bm{X}^\mathrm{T} \bm{y}
 =
 \frac{1}{2}\cdot
 \begin{bmatrix}
@@ -3233,7 +3283,7 @@ $$\hat{\bm{\theta}} = (\bm{X}^\mathrm{T} \bm{X})^{-1} \bm{X}^\mathrm{T} \bm{y}
 $$
 Prediction (again useless for XOR)
 \begin{align*}
-\bm{X} \hat{\bm{\theta}} =
+\bm{X} \hat{\bm{w}} =
 \frac{1}{2}
 \begin{bmatrix}
 1\\
@@ -3526,9 +3576,9 @@ What could be another model architecture and/or loss function for the given prob
 
 
 
-\subsection{Exercise 11}
+\subsection{Exercise 12}
 
-\begin{frame}{Ex11: Binary Classification}
+\begin{frame}{Ex12: Binary Classification}
 Objectives
 \begin{itemize}
 \item binary classifier as very simple non-linear model using sigmoid activation function
@@ -3964,9 +4014,9 @@ GD update / new state ??
 
 
 
-\subsection{Exercise 12}
+\subsection{Exercise 13}
 
-\begin{frame}{Ex12: Binary Classification with Hidden Layer Model / Multivariate Chain Rule / Metrics}
+\begin{frame}{Ex13: Binary Classification with Hidden Layer Model / Multivariate Chain Rule / Metrics}
 Objectives
 \begin{itemize}
 \item binary classification model with hidden layers means more complexity, more back prop effort
@@ -4333,9 +4383,9 @@ $$
 
 
 
-\subsection{Exercise 13}
+\subsection{Exercise 14}
 
-\begin{frame}{Ex13: Multi-Class Classification with Softmax Output Layer}
+\begin{frame}{Ex14: Multi-Class Classification with Softmax Output Layer}
 Objectives
 \begin{itemize}
 \item a potential (often used) multi-class classification with hidden layers
@@ -4542,9 +4592,12 @@ $};
 \begin{bmatrix}
 a_{13} = \hat{y}_1\\a_{23} = \hat{y}_2
 \end{bmatrix}
+=\hat{\bm{y}}
 $};
 %
-\node[](sigmoid) at (9.5,0)[]{\underline{softmax} $\sigma_3(\cdot)$};
+%\node[](sigmoid) at (9.5,0)[]{\underline{softmax} $\sigma_3(\cdot)$};
+\node[](sigmoid) at (8.125,+0.5)[]{\underline{softmax} $\sigma_3(\cdot)$};
+\node[](sigmoid) at (8.125,-2)[]{\underline{softmax} $\sigma_3(\cdot)$};
 %
 \end{tikzpicture}
 \end{center}
@@ -4776,9 +4829,12 @@ $};
 \begin{bmatrix}
 a_{13} = \hat{y}_1\\a_{23} = \hat{y}_2
 \end{bmatrix}
+=
+\hat{\bm{y}}
 $};
 %
-\node[](sigmoid) at (9.5,0)[]{\underline{softmax} $\sigma_3(\cdot)$};
+\node[](sigmoid) at (8.125,+0.5)[]{\underline{softmax} $\sigma_3(\cdot)$};
+\node[](sigmoid) at (8.125,-2)[]{\underline{softmax} $\sigma_3(\cdot)$};
 %
 \end{tikzpicture}
 \end{center}
@@ -5117,7 +5173,7 @@ e.g. 50\% & 25\% & 25\%
 
 
 
-\section{Appendix}
+%\section{Appendix}
 % \begin{frame}{}
 %   $$\im^2=-1, f(x)=x^2$$
 %   \begin{figure}
@@ -5722,7 +5778,7 @@ e.g. 50\% & 25\% & 25\%
 \item feel free to use them for your own purposes
 \item the text is licensed under \href{https://creativecommons.org/licenses/by/4.0/}{Creative Commons Attribution 4.0 International}
 \item the code snippets in the $*$.py / $*$.ipynb examples are licensed under the \href{https://opensource.org/licenses/MIT}{MIT license}
-\item please attribute the work as follows: Frank Schultz, Data Driven Audio Signal Processing - A Tutorial Featuring Computational Examples, University of Rostock,  ideally with relevant file(s), \href{https://github.com/spatialaudio/data-driven-audio-signal-processing-exercise}{https://github.com/spatialaudio/data-driven-audio-signal-processing-exercise}, commit number and/or version tag, year.
+\item please attribute the work as follows: Frank Schultz, Data-Driven Methods in Signal Processing - A Tutorial Featuring Computational Examples for Audio Signals, University of Rostock,  ideally with relevant file(s), \href{https://github.com/spatialaudio/data-driven-audio-signal-processing-exercise}{https://github.com/spatialaudio/data-driven-audio-signal-processing-exercise}, commit number and/or version tag, year.
 \end{itemize}
 
 \end{frame}
