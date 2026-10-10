@@ -120,7 +120,7 @@ University of Rostock, Rostock, Germany}
     \item \href{https://find.ub.uni-rostock.de/sk830}{SK830...SK840 statistics, (generalized) linear models, regression}
     \item QH 212...QH 236 statistics mainly for economy, (generalized) linear models, regression
   \end{itemize}
-  \vspace{1cm}
+  \vspace{0.5cm}
   highly recommended textbooks / I like very much
   \begin{itemize}
     \item K. P. Murphy (2022): "Probabilistic Machine Learning: An Introduction", MIT Press, 1st ed.
@@ -348,9 +348,9 @@ $
 \def\M{1}
 \def\N{2}
 \drawmatrix[fill=none, height=\M, width=\N]{A^\mathrm{T}}_\mathtt{N \times M}
-\drawmatrix[fill=none, height=\N, width=\M]A_\mathtt{M \times N}
+\drawmatrix[fill=none, height=\N, width=\M]{A}_\mathtt{M \times N}
 =
-\drawmatrix[bbox height=\M, bbox width=\M, height=\M, width=\rank\M]{A^\mathrm{T}A}_\mathtt{N \times N}
+\drawmatrix[bbox height=\M, bbox width=\M, height=\M, width=\M]{A^\mathrm{T} A}_\mathtt{N \times N}
 $
 
 $
@@ -682,16 +682,19 @@ $
 
 $$\bm{A} = \bm{U} \bm{\Sigma} \bm{V}^\mathrm{H} \qquad \qquad \text{unitary:} \qquad \bm{U}\bm{U}^H = \bm{U}^H\bm{U} = \bm{I}_{M \times M} \qquad \bm{V}\bm{V}^H = \bm{V}^H\bm{V} = \bm{I}_{N \times N}$$
 
+$\bm{\Sigma}$ is unique for $\bm{A}$
 
-left singular vectors\quad$\bm{U} = \mathrm{eigvec}(\bm{A}\bm{A}^\mathrm{H})$
-\begin{footnotesize}, order must match to the corresponding singular values\end{footnotesize}
+orthonormal bases $\bm{U}$ and $\bm{V}$ need to be linked, but they are not unique (we can have reflections or complex-valued rotations on vectors)
 
-right singular vectors $\bm{V} = \mathrm{eigvec}(\bm{A}^\mathrm{H}\bm{A})$
-\begin{footnotesize}, order must match to the corresponding singular values\end{footnotesize}
+%left singular vectors\quad$\bm{U} = \mathrm{eigvec}(\bm{A}\bm{A}^\mathrm{H})$
+%\begin{footnotesize}, order must match to the corresponding singular values\end{footnotesize}
 
-singular value matrix $\bm{\Sigma}$
-\begin{footnotesize}, $\text{min}(M,N)$ singular values on \underline{diagonal} descending order, $R$ of them non-zero
-\end{footnotesize}
+%right singular vectors $\bm{V} = \mathrm{eigvec}(\bm{A}^\mathrm{H}\bm{A})$
+%\begin{footnotesize}, order must match to the corresponding singular values\end{footnotesize}
+
+%singular value matrix $\bm{\Sigma}$
+%\begin{footnotesize}, $\text{min}(M,N)$ singular values on \underline{diagonal} descending order, $R$ of them non-zero
+%\end{footnotesize}
 
 
 \end{frame}
@@ -728,17 +731,17 @@ $
 
 %$$\bm{A} = \bm{U} \bm{\Sigma} \bm{V}^\mathrm{H}$$
 
-\vspace{3.25cm}
+%\vspace{3.25cm}
 
-left singular vectors\quad$\bm{U} = \mathrm{eigvec}(\bm{A}\bm{A}^\mathrm{H})$
-\begin{footnotesize}, order must match to the corresponding singular values\end{footnotesize}
+%left singular vectors\quad$\bm{U} = \mathrm{eigvec}(\bm{A}\bm{A}^\mathrm{H})$
+%\begin{footnotesize}, order must match to the corresponding singular values\end{footnotesize}
 
-right singular vectors $\bm{V} = \mathrm{eigvec}(\bm{A}^\mathrm{H}\bm{A})$
-\begin{footnotesize}, order must match to the corresponding singular values\end{footnotesize}
+%right singular vectors $\bm{V} = \mathrm{eigvec}(\bm{A}^\mathrm{H}\bm{A})$
+%\begin{footnotesize}, order must match to the corresponding singular values\end{footnotesize}
 
-singular value matrix $\bm{\Sigma}$
-\begin{footnotesize}, $\text{min}(M,N)$ singular values on \underline{diagonal} descending order, $R$ of them non-zero
-\end{footnotesize}
+%singular value matrix $\bm{\Sigma}$
+%\begin{footnotesize}, $\text{min}(M,N)$ singular values on \underline{diagonal} descending order, $R$ of them non-zero
+%\end{footnotesize}
 
 \end{frame}
 
@@ -793,17 +796,18 @@ $$\bm{A}
 \end{bmatrix}
 = $$
 
-\vspace{1.5cm}
+%\vspace{1.5cm}
 
-left singular vectors\quad$\bm{U} = \mathrm{eigvec}(\bm{A}\bm{A}^\mathrm{H})$
-\begin{footnotesize}, order must match to the corresponding singular values\end{footnotesize}
+%left singular vectors\quad$\bm{U} = \mathrm{eigvec}(\bm{A}\bm{A}^\mathrm{H})$
+%\begin{footnotesize}, order must match to the corresponding singular values\end{footnotesize}
 
-right singular vectors $\bm{V} = \mathrm{eigvec}(\bm{A}^\mathrm{H}\bm{A})$
-\begin{footnotesize}, order must match to the corresponding singular values\end{footnotesize}
+%right singular vectors $\bm{V} = \mathrm{eigvec}(\bm{A}^\mathrm{H}\bm{A})$
+%\begin{footnotesize}, order must match to the corresponding singular values\end{footnotesize}
 
-singular value matrix $\bm{\Sigma}$
-\begin{footnotesize}, $\text{min}(M,N)$ singular values on \underline{diagonal} descending order, $R$ of them non-zero
-\end{footnotesize}
+%singular value matrix $\bm{\Sigma}$
+%\begin{footnotesize}, $\text{min}(M,N)$ singular values on \underline{diagonal} descending order, $R$ of them non-zero
+%\end{footnotesize}
+
 \end{frame}
 
 
@@ -845,7 +849,7 @@ $$
 
 What is the rank of $\bm{A}$?
 
-What are the four subspaces of $\bm{A}$? Give them as equations and as a sketch...
+What are the four subspaces of $\bm{A}$? Give them as equations/vectors and as a sketch...
 
 \end{frame}
 
@@ -883,7 +887,7 @@ $$
 
 What is the rank of $\bm{A}$?
 
-What are the four subspaces of $\bm{A}$? Give them as equations and as a sketch...
+What are the four subspaces of $\bm{A}$? Give them as equations/vectors and as a sketch...
 
 \end{frame}
 
@@ -900,15 +904,15 @@ matrix $\bm{A}_{M \times N}$ spans four fundamental subspaces
 \hspace{0.75cm}
 \textcolor{C2}{row space} $\perp$ \textcolor{C1}{null space}
 
-\textcolor{C0}{column space / range / image in U:} $$\text{Range}(\bm{A}) = \{\bm{b}\in\mathbb{C}^M | \bm{A} \bm{x} = \bm{b},\qquad\forall \bm{x}\in\mathbb{C}^N\}$$
+\textcolor{C0}{column space / range / image in U:} $$\text{Range}(\bm{A}) = \{\bm{y}\in\mathbb{C}^M | \bm{A} \bm{x} = \bm{y},\qquad\forall \bm{x}\in\mathbb{C}^N\}$$
 
 \textcolor{C1}{null space / kernel in V:} $$\text{Null}(\bm{A}) = \{\bm{x}\in\mathbb{C}^N | \bm{A} \bm{x} = \bm{0}\}$$
 
 the column/null-space concept for transposed matrix $\bm{A}^H$ yields the two other spaces:
 
-\textcolor{C2}{row space in V:} $$\text{Range}(\bm{A}^H) = \{\bm{x}\in\mathbb{C}^N | \bm{A}^H \bm{b} = \bm{x},\qquad\forall \bm{b}\in\mathbb{C}^M\}$$
+\textcolor{C2}{row space in V:} $$\text{Range}(\bm{A}^H) = \{\bm{x}\in\mathbb{C}^N | \bm{A}^H \bm{y} = \bm{x},\qquad\forall \bm{y}\in\mathbb{C}^M\}$$
 
-\textcolor{C4}{left null space / cokernel in U:} $$\text{Null}(\bm{A}^H) = \{\bm{b}\in\mathbb{C}^M | \bm{A}^H \bm{b} = \bm{0}\}$$
+\textcolor{C4}{left null space / cokernel in U:} $$\text{Null}(\bm{A}^H) = \{\bm{y}\in\mathbb{C}^M | \bm{A}^H \bm{y} = \bm{0}\}$$
 
 matrix rank of $\bm{A}$ is $R\leq \text{min}(M,N)$ == dimension of column space == dimension of row space == number of independent columns and rows
 == number of pivots in rref($\bm{A}$)
@@ -953,25 +957,30 @@ $
 \vspace{0.75cm}
 
 Matrix $\bm{A}$ acts on single vectors stacked into a matrix:
-$$\bm{A}
+\begin{align*}
+&\bm{A}
 \begin{bmatrix}
-a \textcolor{C2}{\bm{v}_1} & b \textcolor{C2}{\bm{v}_2} & c \textcolor{C2}{\bm{v}_R} & \dots & y \textcolor{C1}{\bm{v}_{N-1}} & z \textcolor{C1}{\bm{v}_N}
+c_1 \textcolor{C2}{\bm{v}_1} & c_2 \textcolor{C2}{\bm{v}_2} & c_R \textcolor{C2}{\bm{v}_R} & \dots & c_{N-1} \textcolor{C1}{\bm{v}_{N-1}} & c_{N} \textcolor{C1}{\bm{v}_N}
 \end{bmatrix}
 =
 \begin{bmatrix}
-a \sigma_1 \textcolor{C0}{\bm{u}_1} & b \sigma_2 \textcolor{C0}{\bm{u}_2} & c \sigma_R \textcolor{C0}{\bm{u}_R} & \dots & \bm{0} & \bm{0}
+c_1 \sigma_1 \textcolor{C0}{\bm{u}_1} & c_2 \sigma_2 \textcolor{C0}{\bm{u}_2} & c_R \sigma_R \textcolor{C0}{\bm{u}_R} & \dots & \bm{0} & \bm{0}
 \end{bmatrix}
-\rightarrow
-\bm{A} \bm{V} = \bm{\Sigma} \bm{U}
-$$
+\rightarrow\\
+&\bm{A} \bm{V} \bm{C}_v = \bm{\Sigma} \bm{U} \bm{C}_u
+\end{align*}
 Matrix $\bm{A}$ acts on a linear combination:
-$$\bm{A}
+\begin{align*}
+&\bm{A}
 \begin{bmatrix}
-a \textcolor{C2}{\bm{v}_1} + b \textcolor{C2}{\bm{v}_2} + c \textcolor{C2}{\bm{v}_R} + \dots + y \textcolor{C1}{\bm{v}_{N-1}} + z \textcolor{C1}{\bm{v}_N}
+c_1 \textcolor{C2}{\bm{v}_1} + c_2 \textcolor{C2}{\bm{v}_2} + c_R \textcolor{C2}{\bm{v}_R} + \dots + c_{N-1} \textcolor{C1}{\bm{v}_{N-1}} + c_N \textcolor{C1}{\bm{v}_N}
 \end{bmatrix}
 =
-[a \sigma_1 \textcolor{C0}{\bm{u}_1} + b \sigma_2 \textcolor{C0}{\bm{u}_2} + c \sigma_R \textcolor{C0}{\bm{u}_R} + \dots + \bm{0} + \bm{0}]
-$$
+[c_1 \sigma_1 \textcolor{C0}{\bm{u}_1} + c_2 \sigma_2 \textcolor{C0}{\bm{u}_2} + c_R \sigma_R \textcolor{C0}{\bm{u}_R} + \dots + \bm{0} + \bm{0}]
+\rightarrow\\
+&\bm{A} \bm{x} = \bm{y}
+\end{align*}
+
 
 %\vspace{0.75cm}
 
@@ -1126,9 +1135,9 @@ left singular vectors in $\bm{U}$
 
 \end{frame}
 
-\againframe{SubspacesForSketch}
-\againframe{SubspacesForSketch}
-\againframe{SubspacesForSketch}
+%\againframe{SubspacesForSketch}
+%\againframe{SubspacesForSketch}
+%\againframe{SubspacesForSketch}
 
 \begin{frame}{Singular Value Decomposition (SVD), full rank cases}
 
@@ -1356,20 +1365,21 @@ $$
 3 & 0 \\ 0 & 8 \\ 0 & 0
 \end{bmatrix}
 \begin{bmatrix}
-{\bm{w}} \\ |
+\bm{w} \\ |
 \end{bmatrix}=
 \begin{bmatrix}
 -3 \\ 4 \\ 2
 \end{bmatrix}
 $$
 %
-optimization problem in least squares sense: $\min_{\text{wrt }\bm{w}} \lVert\bm{e}\rVert_2^2 = \min_{\text{wrt }\bm{w}} \lVert\bm{y} - \bm{X} \bm{w}\rVert_2^2$
+optimization problem in least squares sense:
+$\min_{\text{wrt }\bm{w}} \lVert\bm{e}\rVert_2^2 = \min_{\text{wrt }\bm{w}} \lVert\bm{y} - \bm{X} \bm{w}\rVert_2^2$
 %
 
 recall that $\lVert\bm{y} - \bm{X} \bm{w}\rVert_2^2 = (\bm{y} - \bm{X} \bm{w})^T (\bm{y} - \bm{X} \bm{w})$
 \begin{align*}
 \lVert \bm{y} - \bm{X} \bm{w}\rVert_2  &= \sqrt{(-3 - 3w_1)^2 + (4-8w_2)^2 + (2-0)^2}\\
-J(w_1, w_2) = \lVert\bm{y} - \bm{X} \bm{w}\rVert_2^\textcolor{C3}{2} &= \quad(-3 - 3w_1)^2 + (4-8w_2)^2 + (2-0)^2
+J(w_1, w_2) = \lVert \bm{y} - \bm{X} \bm{w} \rVert_2^{\textcolor{C3}{2}} &= \quad (-3 - 3w_1)^2 + (4-8w_2)^2 + (2-0)^2
 \end{align*}
 %
 $$
@@ -1409,7 +1419,6 @@ $$
 \frac{1}{2}
 \end{bmatrix}
 $$
-
 
 \end{frame}
 
@@ -1734,22 +1743,26 @@ left singular vectors in $\bm{U}$
 
 \begin{frame}[t]{4 Subspaces -> 4 Projection Matrices}
 
-pseudo-inverse maps the columns space to the row space
+a matrix maps from row space to column space
 
-we can derive 4 matrices from the pseudo-inverse which project into the 4 subspaces
+its pseudo-inverse maps from column space to row space
 
-\hspace{0.75cm}
-in $\bm{V}$: \textcolor{C2}{row space} $\perp$ \textcolor{C1}{null space}
-\hspace{2cm}
-in $\bm{U}$: \textcolor{C0}{column space} $\perp$ \textcolor{C4}{left null space}
+we can derive 4 projection matrices from the matrix and its pseudo-inverse, which project into the 4 subspaces
 
+%\hspace{0.75cm}
+%in $\bm{V}$: \textcolor{C2}{row space} $\perp$ \textcolor{C1}{null space}
+%\hspace{2cm}
+%in $\bm{U}$: \textcolor{C0}{column space} $\perp$ \textcolor{C4}{left null space}
+\vspace{1em}
 \centering
-\includegraphics[width=0.5\textwidth]{four_subspaces.pdf}
+\includegraphics[width=0.45\textwidth]{four_subspaces.pdf}
+\hspace{2em}
+\includegraphics[width=0.45\textwidth]{pseudo_inverse_four_subspaces.pdf}
 
-\hspace{0.75cm}
-right singular vectors in $\bm{V}$
-\hspace{4.5cm}
-left singular vectors in $\bm{U}$
+%\hspace{0.75cm}
+%right singular vectors in $\bm{V}$
+%\hspace{4.5cm}
+%left singular vectors in $\bm{U}$
 
 \end{frame}
 
@@ -1757,21 +1770,21 @@ left singular vectors in $\bm{U}$
 
 
 \begin{frame}{Projection Matrices Based on Left Inverse}
-For full column rank $\bm{X}_{M \times N}$ with rank $R=N$, the left inverse is
-$$\bm{X}^{\dagger_l} =
+For full column rank $\bm{A}_{M \times N}$ with rank $R=N$, the left inverse is
+$$\bm{A}^{\dagger_l} =
 \bm{V} \bm{\Sigma}^{\dagger_l}\bm{U}^\mathrm{H} =
 \bm{V} \left[(\bm{\Sigma}^\mathrm{T} \bm{\Sigma})^{-1} \bm{\Sigma}^\mathrm{T}\right] \bm{U}^\mathrm{H} =
-(\bm{X}^\mathrm{H}\bm{X})^{-1} \bm{X}^\mathrm{H}$$
+(\bm{A}^\mathrm{H}\bm{A})^{-1} \bm{A}^\mathrm{H}$$
 from which we can create \underline{four projection matrices} into the \underline{four subspaces}
 \begin{itemize}
-\item[-] into \textcolor{C2}{row space} $\bm{P}_\text{row} = \bm{X}^{\dagger_l} \bm{X} = \bm{I}_{N \times N}$ \begin{footnotesize}(i.e. the concept of a left inverse)\end{footnotesize}
+\item[-] into \textcolor{C2}{row space} $\bm{P}_\text{row} = \bm{A}^{\dagger_l} \bm{A} = \bm{I}_{N \times N}$ \begin{footnotesize}(i.e. the concept of a left inverse)\end{footnotesize}
 \item[-] into \textcolor{C1}{null space} $\bm{P}_\text{null} = \bm{I} - \bm{P}_\text{row} = \bm{0}_{N \times N}$ \begin{footnotesize}(because no null space when full column rank)\end{footnotesize}
-\item[-] into \textcolor{C0}{column space} $\bm{P}_\text{column} = (\bm{X} \bm{X}^{\dagger_l})_{M \times M}$ \begin{footnotesize}(very often called hat matrix)\end{footnotesize}
+\item[-] into \textcolor{C0}{column space} $\bm{P}_\text{column} = (\bm{A} \bm{A}^{\dagger_l})_{M \times M}$ \begin{footnotesize}(very often called hat matrix)\end{footnotesize}
 \item[-] into \textcolor{C4}{left nullspace} $\bm{P}_\text{left null} = \bm{I}_{M \times M} - \bm{P}_\text{column}$
 \end{itemize}
 
-Estimator $\hat{\bm{w}}$ from solving the inverse problem yields a vector $\hat{\bm{y}}$ living in the column space
-$$\bm{X} \hat{\bm{w}} = \bm{X} (\bm{X}^{\dagger_l} \bm{y}) = (\bm{X} \bm{X}^{\dagger_l}) \bm{y} = \bm{P}_\text{column} \bm{y} = \hat{\bm{y}}$$
+Estimator $\hat{\bm{x}}$ from solving the inverse problem yields a vector $\hat{\bm{y}}$ living in the column space
+$$\bm{A} \hat{\bm{x}} = \bm{A} (\bm{A}^{\dagger_l} \bm{y}) = (\bm{A} \bm{A}^{\dagger_l}) \bm{y} = \bm{P}_\text{column} \bm{y} = \hat{\bm{y}}$$
 This means that there is a remaining part (typically called residual) $\bm{e}$ from measured $\bm{y}$
 $$\bm{e} = \bm{y} - \hat{\bm{y}} = \bm{y} - \bm{P}_\text{column} \bm{y} = (\bm{I}_{M \times M} - \bm{P}_\text{column}) \bm{y}=
 \bm{P}_\text{left null} \bm{y} = \bm{e}$$
@@ -1805,6 +1818,23 @@ $\min_{\text{wrt }\bm{w}} \lVert\bm{e}\rVert_2^2 = \min_{\text{wrt }\bm{w}} \lVe
 \leftrightarrow
 \operatorname*{argmin}_{\bm{w}} \lVert\bm{y} - \bm{X} \bm{w}\rVert_2^2
 $
+
+\vspace{1em}
+
+for this toy data we should be able to manually calculate
+
+the SVD
+
+the left inverse
+
+the projection matrices
+
+and by that get the least squares solution $\hat{\bm{w}}$, the prediction $\hat{\bm{y}}$ and the error $\bm{e}$
+
+cf. the homework task on matrix fundamentals
+
+\vspace{1em}
+Toy Example 2: see line\_fit\_linear\_regression.ipynb
 
 \addvspace{100mm}
 
@@ -1864,7 +1894,7 @@ $$
 $$
 \pause
 %
-Left-inverse / here actually the exact inverse requires
+The left-inverse, which is here also the exact inverse, requires
 $$\hat{\bm{w}} = \frac{\bm{u}_1^T \bm{y}}{\textcolor{C0}{\sigma_1}}\bm{v}_1 + \frac{\bm{u}_2^T \bm{y}}{\textcolor{C1}{\sigma_2}}\bm{v}_2$$
 \pause
 %
@@ -1978,8 +2008,12 @@ ylabel={$\frac{\sigma}{\sigma^2 + \lambda}$},
 title={regularized singular value inversion}]
 \addplot[color=black, mark=o] {x / (x*x)};
 \addlegendentry{$\lambda=0$}
+\addplot[color=C1, mark=o] {x / (x*x + 0.01)};
+\addlegendentry{$\lambda=0.01$}
 \addplot[color=C0, mark=o] {x / (x*x + 4)};
 \addlegendentry{$\lambda=4$}
+\addplot[color=C2, mark=o] {x / (x*x + 100)};
+\addlegendentry{$\lambda=100$}
 \end{loglogaxis}
 \end{tikzpicture}
 %\end{center}
