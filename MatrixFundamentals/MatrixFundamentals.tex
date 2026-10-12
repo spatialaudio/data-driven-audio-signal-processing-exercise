@@ -62,7 +62,7 @@ This tells us that matrix $\bm{A}$ exhibits rank $r=2$.
 The rank is equal to the number of independent columns and to the number of independent rows of both matrices.
 The column rank and the row rank are always equal and identical to the matrix rank $r$.
 %
-The two following matrix factorisations
+The following matrix factorisation
 $$
 \bm{A} =
 \begin{bmatrix}
@@ -85,43 +85,17 @@ $$
 =
 \bm{C} \,\,\, \bm{R}
 $$
-
-$$
-\bm{A} =
-\begin{bmatrix}
-2 & \sqrt{5} & 0\\
-0 & 0 & 1\\
-0 & 0 & 0\\
-0 & 0 & 0
-\end{bmatrix}
-=
-\begin{bmatrix}
-2 &  0\\
-0 & 1\\
-0 & 0\\
-0 & 0
-\end{bmatrix}
-\begin{bmatrix}
-1 & 0 & \frac{\sqrt{5}}{2}\\
-0 & 1 & 0
-\end{bmatrix}
-\begin{bmatrix}
-1 & 0 & 0\\
-0 & 0 & 1\\
-0 & 1 & 0
-\end{bmatrix}
-=
-\bm{C} \,\,\, \bm{R}_p \bm{P}
-$$
-utilise the pivot columns of $\bm{A}$ for setting up $\bm{C}$ and the first $r=2$ rows of $\bm{R}_0$ for $\bm{R}$ (in direct order)
-and for $\bm{R}_p$ (in permuted order, which is then undone by the permutation matrix $\bm{P}$).
+utilises the two pivot columns of $\bm{A}$ (due to $r=2$) for setting up $\bm{C}$ and the first two rows of $\bm{R}_0$ (again due to $r=2$) for $\bm{R}$.
 %
 Matrix $\bm{A}$ exhibits $M=4$ rows and $N=3$ columns.
 %
 Due to $r<M$ and $r<N$ the matrix $\bm{A}$ is rank-deficient.
 
+Later in this tutorial we will see that $\bm{C}$ spans the column space of $\bm{A}$ and that $\bm{R}^\mathrm{T}$ spans the row space of $\bm{A}$.
+Note: in this very simple example no mixing matrix is needed in between $\bm{C}$ and $\bm{R}$.
+
 \section{Four Subspaces of a Matrix}
-Matrices $\bm{A}$ span four subspaces, i.e. two images (a.k.a ranges) and two kernels.
+Matrices span four subspaces, i.e. two images (a.k.a ranges) and two kernels.
 These four subspaces are strictly linked. They fundamentally explain the matrix, in our example the matrix $\bm{A}$.
 %
 The first subspace is the column space of $\bm{A}$ / image of $\bm{A}$ / range of $\bm{A}$ defined as
@@ -164,13 +138,13 @@ With the given subspace definitions, we might investigate the above numerical ex
 \begin{itemize}
 \item matrix $\bm{C}$ is a basis for the column space of $\bm{A}$, i.e. a basis for $\text{CS}(\bm{A})$
 \item matrix $\bm{R}^\mathrm{T}$ is a basis for the row space of $\bm{A}$, i.e. a basis for $\text{RS}(\bm{A})$
-\item matrix $\bm{R}_p^\mathrm{T}$ is also a basis for the row space of $\bm{A}$, i.e. a basis for $\text{RS}(\bm{A})$
 \end{itemize}
-The above factorisations are hence known as column space $\times$ row space matrix factorisation,
+The above factorisation is hence known as column space $\times$ row space matrix factorisation,
 because column space and row space are directly encoded in the matrices.
 These subspaces were nicely extracted from the pivot columns of $\bm{A}$ and
 from the pivot rows of the reduced row echelon form $\bm{R}_0$.
-This mindset reveals the essence of the Gauss-Jordan elimination.
+This mindset reveals the essence of the Gauss-Jordan elimination, which is here very simple.
+For the more general case cf. page 99 in G. Strang's Introduction to Linear Algebra, 6th ed. 2023.
 
 \section{Singular Value Decomposition (SVD) of a Matrix}
 The singular value decomposition (SVD) is the most important matrix factorisation.
@@ -1294,12 +1268,12 @@ The forward (top) and the inverse (bottom) problem is schematically depicted wit
 
 \section*{Exercise / Home Work Assignment}
 Learning new things is about thoroughly thinking about the new things in our own style and pace.
-Textbooks are still a good choice to support this approach, as (older) textbooks have undergone rigorous quality checks.
-We can thus assume their content to be valid and true, apart from inevitable typos.
+Handwritten textbooks are still a good choice to support this approach, as (older) textbooks have undergone rigorous quality checks.
+We can thus assume their content to be valid and true, apart from the inevitable (but very often obvious) typos.
 Further, almost all material that accompanies university lectures and tutorials is a valid resource for learning.
 This way we shared research knowledge over centuries, probably with some success,
 because humans were, are and will be(!) interested to share high quality, human-generated content to other humans, who
-then gained skills.
+then gained their skills.
 
 We should ask ourself: do nowadays available commercial large language models have the same moral intention and follow the same ethics?
 Who decided for what reason, if they have or might not have the above intention of sharing valid knowledge?
@@ -1309,10 +1283,11 @@ learning new things is probably not about consuming too much AI generated conten
 1. This content has---by the idea of statistics-driven text generation---no quality control,
 such that we need to check validity on our own. But this can become rather tricky, if we just want to learn the new things, right?
 
-2. Interaction with an AI is probably a nice and new way, but too much content and too fast interaction prevents us from really thinking about stuff on our own.
+2. Interaction with an AI is probably a nice and new way, but too much content and too fast interaction prevents us from really and deeply thinking about stuff on our own.
 
-3. Human interaction is probably even more efficient. Feel free to attend the lectures and tutorial in presence and ask many questions that could be answered by experts and with actually real intelligence.
-\\\\\noindent In this spirit and mindset, we could think about all of the above SVD ideas and concepts for the three matrices
+3. Human interaction is probably even more efficient. Feel free to attend the lectures and tutorial in presence and ask many questions that could be answered by expert lecturers, who typically spent years to understand
+the didactical pitfalls and typical students' headaches.
+\\\\\noindent In this spirit and mindset, we could think about all of the above SVD ideas and concepts for the three toy matrices
 $$
 \bm{A}_1 =
 \begin{bmatrix}
@@ -1346,7 +1321,7 @@ The numbers in practical data are even more crazy and the problems are even more
 \\\\\noindent Again: With AI we might solve this task within seconds, but then neither the AI nor we have really understood, what is actually going on.
 \textbf{Think for yourself} (what is the meaning of human life, if we don't do this?!?!).
 It might be a little pain in the beginning, but it is highly rewarding,
-once the brain begins to process and understand. Consuming (a)social media will by far not compete with this special feeling of happiness.
+once the brain begins to process and understand. Consuming (a)social media and too much AI generated content will by far not compete with this special feeling of happiness.
 
 \vspace{2em}
 
