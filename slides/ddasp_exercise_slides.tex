@@ -277,19 +277,143 @@ Let us assume that i) we know $\bm{X}$ (i.e. the individual audio tracks) and $\
 \section{Section II: SVD / 4 Subspaces / Pseudo-Inverse}
 
 \subsection{Exercise 02}
-\begin{frame}{Ex02: Singular Value Decomposition (SVD)}
+\begin{frame}{Ex02: Matrix Factorisations}
 Objectives
 \begin{itemize}
-\item recap important matrix factorizations
 \item recap eigenvalues / eigenvectors
-\item spectral theorem
-\item SVD as a fundamental matrix factorization
+\item recap spectral theorem
+\item recap A=CR and A=CMR factorisations
+\item instead of A=CMR we go for A=USV' -> SVD as a fundamental matrix factorization
 \end{itemize}
 \end{frame}
 
 
 
-\begin{frame}{Matrix Factorizations}
+
+
+
+
+% ##############################################################################
+% EVD
+\begin{frame}{Matrix Factorization from Eigenwert Problem for Square Matrix}
+
+for \underline{square} matrix $\bm{A}_{M \times M}$ we can have a factorization (known as diagonalization)
+
+$$\bm{A} = \bm{X} \bm{\Lambda} \bm{X}^{-1}$$
+
+(but only) when $M$ independent eigenvectors as columns in $\bm{X}$ (only then $\bm{X}^{-1}$ is possible)
+
+with the corresponding eigenvalues $\lambda$ in the diagonal matrix $\bm{\Lambda}$
+
+\begin{center}
+$
+\def\M{1}
+\def\N{1}
+\def\rank{0.9999}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times M} =
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\N]X_\mathtt{M \times M}
+\drawmatrix[diag]\Lambda_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=C4}, bbox height=\N, bbox width=\N, fill=C0, height=\N, width=\rank\N]{X}_\mathtt{M \times M}^{-1}
+$
+\end{center}
+
+the matrix is acting onto the $m$-th eigenvector as
+
+$$\bm{A} \bm{x}_m = \lambda_m \bm{x}_m$$
+
+$\bm{\Lambda}$ might be complex-valued
+
+$\bm{X}$ might be complex-valued
+
+if $\lambda_m=\textcolor{C3}{0}$ we get $\bm{A} \bm{x}_m = \textcolor{C3}{0} \cdot \bm{x}_m = \bm{0}$, i.e. $\bm{A}$ is a singular matrix, i.e. $\bm{A}$ is a non-full rank matrix
+
+rank of matrix $\bm{A}$ is $R$ == number of non-zero eigenvalues
+
+\end{frame}
+
+
+
+
+\begin{frame}{Matrix Factorization from Eigenwert Problem for Symmetric Matrix}
+
+for \textcolor{C0}{\underline{Hermitian}} matrix $\bm{A}_{M \times M} = \bm{A}_{M \times M}^H = \left((\bm{A}_{M \times M})^*\right)^T$
+
+and a dedicated \underline{unitary} matrix $\bm{Q}$ (i.e. it holds $\bm{Q} \bm{Q}^H = \bm{I}$, $\bm{Q}^H \bm{Q} = \bm{I}$)
+
+special case of diagonalization, known as \underline{spectral theorem}:
+$$\bm{A} = \bm{Q} \bm{\Lambda} \bm{Q}^{-1} = \bm{Q} \bm{\Lambda} \bm{Q}^{H}$$
+
+with $M$ independent, \underline{orthonormal} eigenvectors as columns in $\bm{Q}$
+
+with the corresponding eigenvalues $\textcolor{C0}{\lambda\in\mathbb{R}}$ in the diagonal matrix $\Lambda$
+
+\begin{center}
+$
+\def\M{1}
+\def\N{1}
+\def\rank{0.9999}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times M} =
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C1, height=\M, width=\rank\N]{Q}_\mathtt{M \times M}
+\drawmatrix[diag]\Lambda_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=C4}, bbox height=\N, bbox width=\N, fill=C1, height=\N, width=\rank\N]{Q}_\mathtt{M \times M}^{H}
+$
+\end{center}
+
+the matrix is acting onto the $m$-th eigenvector as
+
+$$\bm{A} \bm{q}_m = \lambda_m \bm{q}_m$$
+
+purely real eigenvalues $\textcolor{C0}{\bm{\Lambda}\in\mathbb{R}}$
+
+$\bm{Q}\in\mathbb{R}$ if $\bm{A}\in\mathbb{R}$, \qquad $\bm{Q}\in\mathbb{C}$ if $\bm{A}\in\mathbb{C}$
+
+if $\lambda_m=0$ we get $\bm{A} \bm{q}_m = 0 \cdot \bm{q}_m = \bm{0}$, i.e. $\bm{A}$ is a singular matrix, i.e. $\bm{A}$ is a non-full rank matrix
+
+rank of matrix $\bm{A}$ is $R$ == number of non-zero eigenvalues
+\end{frame}
+
+
+
+
+
+\begin{frame}[t]{Matrix Factorization from Eigenwert Problem for Symmetric Matrix}
+
+for a \textcolor{C3}{\underline{normal}} matrix $\bm{A}$ (i.e. it holds $\bm{A}^H \bm{A} = \bm{A} \bm{A}^H$, note: every Hermitian is normal)
+
+and a dedicated \textcolor{C3}{\underline{unitary}} matrix $\bm{Q}$ (i.e. it holds $\bm{Q} \bm{Q}^H = \bm{I}$, $\bm{Q}^H \bm{Q} = \bm{I}$)
+
+special case of diagonalization, known as \textcolor{C3}{\underline{spectral theorem}}:
+$$\bm{A} = \bm{Q} \bm{\Lambda} \bm{Q}^{-1} = \bm{Q} \bm{\Lambda} \bm{Q}^{H}$$
+
+with $M$ independent, \underline{orthonormal} eigenvectors as columns in $\textcolor{C3}{\bm{Q} \in\mathbb{R} \,\,\,\text{or}\,\,\, \bm{Q} \in\mathbb{C}}$
+
+with the corresponding eigenvalues in $\textcolor{C3}{\bm{\Lambda} \in\mathbb{R} \,\,\,\text{or}\,\,\, \bm{\Lambda} \in\mathbb{C}}$
+
+%i.e. diagonalization in terms of orthonormal eigenvectors in $\bm{Q}$ and eigenvalues in $\bm{\Lambda}\in\mathbb{C}$
+
+What does $\bm{A}$ with an eigenvector $\bm{q}$?
+
+\begin{flushleft}
+$
+\def\M{1}
+\def\N{1}
+\def\rank{0.9999}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times M}
+\drawmatrix[fill=none, height=\M, width=0]q_\mathtt{M \times 1}
+=
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C1, height=\M, width=\rank\N]{Q}_\mathtt{M \times M}
+\drawmatrix[diag]\Lambda_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=C4}, bbox height=\N, bbox width=\N, fill=C1, height=\N, width=\rank\N]{Q}_\mathtt{M \times M}^{H}
+\drawmatrix[fill=none, height=\M, width=0]q_\mathtt{M \times 1} = ?
+$
+
+%$$\bm{A} \bm{q} = \bm{Q} \bm{\Lambda} \bm{Q}^{H} \bm{q} = ?$$
+\end{flushleft}
+
+\end{frame}
+
+
+\begin{frame}{Important Matrix Factorizations}
 
 \begin{center}
 $
@@ -340,6 +464,349 @@ $
 \end{center}
 
 \end{frame}
+
+
+% ##############################################################################
+\begin{frame}{Matrix Factorisation A = C R}
+$$
+\bm{A} =
+\begin{bmatrix}
+1 & 1 & 0 & 0\\
+2 & 2 & 0 & 0\\
+3 & 4 & 2 & -2
+\end{bmatrix},\quad
+\bm{R}_0 =
+\begin{bmatrix}
+1 & 0 & -2 & 2\\
+0 & 1 & 2 & -2\\
+0 & 0 & 0 & 0
+\end{bmatrix},\quad
+\pause
+\bm{R} =
+\begin{bmatrix}
+1 & 0 & -2 & 2\\
+0 & 1 & 2 & -2\\
+\end{bmatrix},\quad
+\bm{C} =
+\begin{bmatrix}
+1 & 1\\
+2 & 2\\
+3 & 4
+\end{bmatrix}
+$$
+\pause
+$$
+\underbrace{
+\begin{bmatrix}
+1 & 1 & 0 & 0\\
+2 & 2 & 0 & 0\\
+3 & 4 & 2 & -2
+\end{bmatrix}
+}_{\bm{A}}
+=
+\underbrace{
+\begin{bmatrix}
+1 & 1\\
+2 & 2\\
+3 & 4
+\end{bmatrix}
+}_{\bm{C}}
+\underbrace{
+\begin{bmatrix}
+1 & 0 & -2 & 2\\
+0 & 1 & 2 & -2\\
+\end{bmatrix}
+}_{\bm{R}}
+$$
+\pause
+$$
+\underbrace{
+\begin{bmatrix}
+1 & 1 & 0 & 0\\
+2 & 2 & 0 & 0\\
+3 & 4 & 2 & -2
+\end{bmatrix}
+}_{\bm{A}}
+=
+\underbrace{
+\begin{bmatrix}
+1 & 1\\
+2 & 2\\
+3 & 4
+\end{bmatrix}
+}_{\bm{C}}
+\big(
+\underbrace{
+\begin{bmatrix}
+1&0\\
+0&1\\
+-2&2\\
+2&-2\\
+\end{bmatrix}
+}_{\bm{R}^\mathrm{T}}
+\big)
+^\mathrm{T}
+$$
+\end{frame}
+
+
+\begin{frame}{Matrix Factorisation A = C M R}
+\vspace{-1em}
+$$
+\underbrace{
+\begin{bmatrix}
+1 & 1 & 0 & 0\\
+2 & 2 & 0 & 0\\
+3 & 4 & 2 & -2
+\end{bmatrix}
+}_{\bm{A}}
+=
+\underbrace{
+\begin{bmatrix}
+1 & 1\\
+2 & 2\\
+3 & 4
+\end{bmatrix}
+}_{\bm{C}}
+\big(
+\underbrace{
+\begin{bmatrix}
+1&0\\
+0&1\\
+-2&2\\
+2&-2\\
+\end{bmatrix}
+}_{\bm{R}^\mathrm{T}}
+\big)
+^\mathrm{T}
+$$
+% ###
+\pause
+Diagonal mixing matrix
+$$
+\begin{bmatrix}
+1 & 1 & 0 & 0\\
+2 & 2 & 0 & 0\\
+3 & 4 & 2 & -2
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 & 1\\
+2 & 2\\
+3 & 4
+\end{bmatrix}
+\begin{bmatrix}
+1 & 0 \\
+0 & 1 \\
+\end{bmatrix}
+\begin{bmatrix}
+1&0\\
+0&1\\
+-2&2\\
+2&-2\\
+\end{bmatrix}
+^\mathrm{T}
+$$
+% ###
+\pause
+Diagonal mixing matrix with shape of $\bm{A}$
+$$
+\begin{bmatrix}
+1 & 1 & 0 & 0\\
+2 & 2 & 0 & 0\\
+3 & 4 & 2 & -2
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 & 1 & |\\
+2 & 2 & |\\
+3 & 4 & |
+\end{bmatrix}
+\begin{bmatrix}
+1 & 0 & 0 & 0\\
+0 & 1 & 0 & 0\\
+0 & 0 & 0 & 0\\
+\end{bmatrix}
+\begin{bmatrix}
+1&0 & | & |\\
+0&1 & | & |\\
+-2&2 & | & |\\
+2&-2 & | & |\\
+\end{bmatrix}
+^\mathrm{T}
+$$
+
+\end{frame}
+
+
+
+\begin{frame}{Matrix Factorisation A = C M R}
+\vspace{-1em}
+Other column space span, other diagonal mixing matrix, other row space span
+$$
+\begin{bmatrix}
+1 & 1 & 0 & 0\\
+2 & 2 & 0 & 0\\
+3 & 4 & 2 & -2
+\end{bmatrix}
+=
+\begin{bmatrix}
+\nicefrac{1}{2} & 2 & |\\
+1 & 4 & |\\
+\nicefrac{3}{2} & 8 & |
+\end{bmatrix}
+\begin{bmatrix}
+\nicefrac{2}{3} & 0 & 0 & 0\\
+0 & \nicefrac{3}{2} & 0 & 0\\
+0 & 0 & 0 & 0\\
+\end{bmatrix}
+\begin{bmatrix}
+3&0 & | & |\\
+0&\nicefrac{1}{3} & | & |\\
+-6&\nicefrac{2}{3} & | & |\\
+6&-\nicefrac{2}{3} & | & |\\
+\end{bmatrix}
+^\mathrm{T}
+$$
+\pause
+Other column space span, \underline{non-diagonal} mixing matrix, other row space span
+$$
+\begin{bmatrix}
+1 & 1 & 0 & 0\\
+2 & 2 & 0 & 0\\
+3 & 4 & 2 & -2
+\end{bmatrix}
+=
+\begin{bmatrix}
+3 & 0 & |\\
+6 & 0 & |\\
+10 & 1 & |
+\end{bmatrix}
+\begin{bmatrix}
+\nicefrac{2}{9} & \nicefrac{1}{9} & 0 & 0\\
+\nicefrac{1}{9} & -\nicefrac{4}{9} & 0 & 0\\
+0 & 0 & 0 & 0\\
+\end{bmatrix}
+\begin{bmatrix}
+1&1 & | & |\\
+2&-1 & | & |\\
+2&-4 & | & |\\
+-2&4 & | & |\\
+\end{bmatrix}
+^\mathrm{T}
+$$
+% ###
+\pause
+Ortho\underline{gonal} column space span, \underline{non-diagonal} mixing matrix, row space span from $\bm{R}^\mathrm{T}$
+$$
+\begin{bmatrix}
+1 & 1 & 0 & 0\\
+2 & 2 & 0 & 0\\
+3 & 4 & 2 & -2
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 & 1 & |\\
+2 & 2 & |\\
+\nicefrac{10}{3} & -\nicefrac{3}{2} & |
+\end{bmatrix}
+\begin{bmatrix}
+0.93103 & 1.13793 & 0 & 0\\
+0.06897 & -0.13793 & 0 & 0\\
+0 & 0 & 0 & 0\\
+\end{bmatrix}
+\begin{bmatrix}
+1&0 & | & |\\
+0&1 & | & |\\
+-2&2 & | & |\\
+2&-2 & | & |\\
+\end{bmatrix}
+^\mathrm{T}
+$$
+
+\end{frame}
+
+
+
+
+
+
+\begin{frame}{Matrix Factorisation: SVD, A = U S V' Essence}
+\vspace{-1em}
+\begin{center}
+$
+\def\M{1}
+\def\N{1.333334}
+\def\rank{0.666667}
+\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times N} =
+\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\M]U_\mathtt{M \times M}
+\drawmatrix[bbox style={fill=gray!50}, bbox height=\M, bbox width=\N, fill=white, height=\rank\M, width=\rank\M]\Sigma_\mathtt{M \times N}
+\drawmatrix[bbox style={fill=C1}, bbox height=\N, bbox width=\N, fill=C2, height=\N, width=\rank\M]{V}_\mathtt{N \times N}^\mathrm{T}
+$
+\end{center}
+\pause
+\begin{itemize}
+\item \underline{Diagonal, unique} mixing matrix
+\pause
+\item Ortho\underline{normal} \textcolor{C0}{column space span}
+\item Ortho\underline{normal} \textcolor{C2}{row space span}
+\pause
+\item Ortho\underline{normal} \textcolor{C1}{null space span}
+\item Ortho\underline{normal} \textcolor{C4}{left null space span}
+\end{itemize}
+\pause
+$$
+\begin{bmatrix}
+1 & 1 & 0 & 0\\
+2 & 2 & 0 & 0\\
+3 & 4 & 2 & -2
+\end{bmatrix}
+=
+\begin{bmatrix}
+\textcolor{C0}{|} & \textcolor{C0}{|} & \textcolor{C4}{|}\\
+\textcolor{C0}{u_1} & \textcolor{C0}{u_2} & \textcolor{C4}{u_3}\\
+\textcolor{C0}{|} & \textcolor{C0}{|} & \textcolor{C4}{|}
+\end{bmatrix}
+\begin{bmatrix}
+\sigma_1 & 0 & 0 & 0\\
+0 & \sigma_2 & 0 & 0\\
+0 & 0 & 0 & 0\\
+\end{bmatrix}
+\begin{bmatrix}
+\textcolor{C2}{|} & \textcolor{C2}{|} & \textcolor{C1}{|} & \textcolor{C1}{|}\\
+\textcolor{C2}{v_1} & \textcolor{C2}{v_2} & \textcolor{C1}{v_3} & \textcolor{C1}{v_4}\\
+\textcolor{C2}{|} & \textcolor{C2}{|} & \textcolor{C1}{|} & \textcolor{C1}{|}\\
+\textcolor{C2}{|} & \textcolor{C2}{|} & \textcolor{C1}{|} & \textcolor{C1}{|}
+\end{bmatrix}
+^\mathrm{T}
+$$
+
+\pause
+this simple-numbered matrix $\bm{A}$ example has a crazy-numbered SVD, try it...
+
+\end{frame}
+%###############################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \begin{frame}{Eigenwert Problem of Symmetric Matrices A' A and A A'}
 
@@ -499,127 +966,21 @@ q.e.d.
 
 
 
-\begin{frame}{Matrix Factorization from Eigenwert Problem for Square Matrix}
 
-for \underline{square} matrix $\bm{A}_{M \times M}$ we can have a factorization (known as diagonalization)
 
-$$\bm{A} = \bm{X} \bm{\Lambda} \bm{X}^{-1}$$
 
-(but only) when $M$ independent eigenvectors as columns in $\bm{X}$ (only then $\bm{X}^{-1}$ is possible)
 
-with the corresponding eigenvalues $\lambda$ in the diagonal matrix $\bm{\Lambda}$
 
-\begin{center}
-$
-\def\M{1}
-\def\N{1}
-\def\rank{0.9999}
-\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times M} =
-\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C0, height=\M, width=\rank\N]X_\mathtt{M \times M}
-\drawmatrix[diag]\Lambda_\mathtt{M \times M}
-\drawmatrix[bbox style={fill=C4}, bbox height=\N, bbox width=\N, fill=C0, height=\N, width=\rank\N]{X}_\mathtt{M \times M}^{-1}
-$
-\end{center}
-
-the matrix is acting onto the $m$-th eigenvector as
-
-$$\bm{A} \bm{x}_m = \lambda_m \bm{x}_m$$
-
-$\bm{\Lambda}$ might be complex-valued
-
-$\bm{X}$ might be complex-valued
-
-if $\lambda_m=\textcolor{C3}{0}$ we get $\bm{A} \bm{x}_m = \textcolor{C3}{0} \cdot \bm{x}_m = \bm{0}$, i.e. $\bm{A}$ is a singular matrix, i.e. $\bm{A}$ is a non-full rank matrix
-
-rank of matrix $\bm{A}$ is $R$ == number of non-zero eigenvalues
-
+\subsection{Exercise 03}
+\begin{frame}{Ex03: SVD and the 4 Matrix Subspaces}
+Objectives
+\begin{itemize}
+\item a matrix spans four subspaces
+\item the SVD explains these 4 subspaces elegantly within its orthonormal bases $\bm{V}$, $\bm{U}$
+\item non-zero singular values tell us the 'gain' from input to output singular vectors, i.e. mapping from row space to column space
+\item concept of rank-1 matrix superposition
+\end{itemize}
 \end{frame}
-
-
-
-
-\begin{frame}{Matrix Factorization from Eigenwert Problem for Symmetric Matrix}
-
-for \textcolor{C0}{\underline{Hermitian}} matrix $\bm{A}_{M \times M} = \bm{A}_{M \times M}^H = \left((\bm{A}_{M \times M})^*\right)^T$
-
-and a dedicated \underline{unitary} matrix $\bm{Q}$ (i.e. it holds $\bm{Q} \bm{Q}^H = \bm{I}$, $\bm{Q}^H \bm{Q} = \bm{I}$)
-
-special case of diagonalization, known as \underline{spectral theorem}:
-$$\bm{A} = \bm{Q} \bm{\Lambda} \bm{Q}^{-1} = \bm{Q} \bm{\Lambda} \bm{Q}^{H}$$
-
-with $M$ independent, \underline{orthonormal} eigenvectors as columns in $\bm{Q}$
-
-with the corresponding eigenvalues $\textcolor{C0}{\lambda\in\mathbb{R}}$ in the diagonal matrix $\Lambda$
-
-\begin{center}
-$
-\def\M{1}
-\def\N{1}
-\def\rank{0.9999}
-\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times M} =
-\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C1, height=\M, width=\rank\N]{Q}_\mathtt{M \times M}
-\drawmatrix[diag]\Lambda_\mathtt{M \times M}
-\drawmatrix[bbox style={fill=C4}, bbox height=\N, bbox width=\N, fill=C1, height=\N, width=\rank\N]{Q}_\mathtt{M \times M}^{H}
-$
-\end{center}
-
-the matrix is acting onto the $m$-th eigenvector as
-
-$$\bm{A} \bm{q}_m = \lambda_m \bm{q}_m$$
-
-purely real eigenvalues $\textcolor{C0}{\bm{\Lambda}\in\mathbb{R}}$
-
-$\bm{Q}\in\mathbb{R}$ if $\bm{A}\in\mathbb{R}$, \qquad $\bm{Q}\in\mathbb{C}$ if $\bm{A}\in\mathbb{C}$
-
-if $\lambda_m=0$ we get $\bm{A} \bm{q}_m = 0 \cdot \bm{q}_m = \bm{0}$, i.e. $\bm{A}$ is a singular matrix, i.e. $\bm{A}$ is a non-full rank matrix
-
-rank of matrix $\bm{A}$ is $R$ == number of non-zero eigenvalues
-\end{frame}
-
-
-
-
-
-\begin{frame}[t]{Matrix Factorization from Eigenwert Problem for Symmetric Matrix}
-
-for a \textcolor{C3}{\underline{normal}} matrix $\bm{A}$ (i.e. it holds $\bm{A}^H \bm{A} = \bm{A} \bm{A}^H$, note: every Hermitian is normal)
-
-and a dedicated \textcolor{C3}{\underline{unitary}} matrix $\bm{Q}$ (i.e. it holds $\bm{Q} \bm{Q}^H = \bm{I}$, $\bm{Q}^H \bm{Q} = \bm{I}$)
-
-special case of diagonalization, known as \textcolor{C3}{\underline{spectral theorem}}:
-$$\bm{A} = \bm{Q} \bm{\Lambda} \bm{Q}^{-1} = \bm{Q} \bm{\Lambda} \bm{Q}^{H}$$
-
-with $M$ independent, \underline{orthonormal} eigenvectors as columns in $\textcolor{C3}{\bm{Q} \in\mathbb{R} \,\,\,\text{or}\,\,\, \bm{Q} \in\mathbb{C}}$
-
-with the corresponding eigenvalues in $\textcolor{C3}{\bm{\Lambda} \in\mathbb{R} \,\,\,\text{or}\,\,\, \bm{\Lambda} \in\mathbb{C}}$
-
-%i.e. diagonalization in terms of orthonormal eigenvectors in $\bm{Q}$ and eigenvalues in $\bm{\Lambda}\in\mathbb{C}$
-
-What does $\bm{A}$ with an eigenvector $\bm{q}$?
-
-\begin{flushleft}
-$
-\def\M{1}
-\def\N{1}
-\def\rank{0.9999}
-\drawmatrix[fill=none, height=\M, width=\N]A_\mathtt{M \times M}
-\drawmatrix[fill=none, height=\M, width=0]q_\mathtt{M \times 1}
-=
-\drawmatrix[bbox style={fill=C4}, bbox height=\M, bbox width=\M, fill=C1, height=\M, width=\rank\N]{Q}_\mathtt{M \times M}
-\drawmatrix[diag]\Lambda_\mathtt{M \times M}
-\drawmatrix[bbox style={fill=C4}, bbox height=\N, bbox width=\N, fill=C1, height=\N, width=\rank\N]{Q}_\mathtt{M \times M}^{H}
-\drawmatrix[fill=none, height=\M, width=0]q_\mathtt{M \times 1} = ?
-$
-
-%$$\bm{A} \bm{q} = \bm{Q} \bm{\Lambda} \bm{Q}^{H} \bm{q} = ?$$
-\end{flushleft}
-
-\end{frame}
-
-
-
-
-
 
 
 \begin{frame}{Generalized Factorization: Singular Value Decomposition (SVD)}
@@ -813,17 +1174,9 @@ $$\bm{A}
 
 
 
-\subsection{Exercise 03}
 
-\begin{frame}{Ex03: SVD and the 4 Matrix Subspaces}
-Objectives
-\begin{itemize}
-\item a matrix spans four subspaces
-\item the SVD explains these 4 subspaces elegantly within its orthonormal bases $\bm{V}$, $\bm{U}$
-\item non-zero singular values tell us the 'gain' from input to output singular vectors, i.e. mapping from row space to column space
-\item concept of rank-1 matrix superposition
-\end{itemize}
-\end{frame}
+
+
 
 
 \begin{frame}[t]{Simple Numerical Example for the 4 Subspaces}
